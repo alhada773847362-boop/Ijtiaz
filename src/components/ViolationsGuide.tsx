@@ -72,6 +72,9 @@ export const ViolationsGuide: React.FC<ViolationsGuideProps> = ({ selectedCountr
         </ul>
       </div>
 
+      {/* Strategic Medium rectangle banner in Violations Guide */}
+      <AdBanner slotType="rectangle" adId="ad-violations-list-rectangle" />
+
       {/* Violations List */}
       <div className="space-y-4">
         {filteredViolations.map((item) => (

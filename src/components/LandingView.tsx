@@ -178,6 +178,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
         </div>
       </section>
 
+      {/* Strategic Mid-Landing AdBanner */}
+      <AdBanner slotType="rectangle" adId="mid-landing-rectangle-ad" />
+
       {/* 3. Interactive Test Modes (The Test Launcher) */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
@@ -193,6 +196,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           
+          {/* AdBanner spanning full width of the modes grid on large screens */}
+          <div className="col-span-full">
+            <AdBanner slotType="in_article" adId="landing-grid-inarticle-ad" />
+          </div>
+
           {/* Mode 1: Full Official Simulation */}
           <div className="p-6 rounded-2xl border-2 border-blue-500/80 bg-gradient-to-br from-blue-950/40 via-[#1E293B] to-slate-900 shadow-lg shadow-blue-500/10 flex flex-col justify-between space-y-4 relative">
             <div className="absolute -top-3 left-4 bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md shadow-blue-500/30">

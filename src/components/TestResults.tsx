@@ -15,8 +15,22 @@ import {
   Copy, 
   Check, 
   Info,
-  Printer
+  Printer,
+  PieChart as PieChartIcon,
+  BarChart3
 } from 'lucide-react';
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend
+} from 'recharts';
 import confetti from 'canvas-confetti';
 import { Question, CountryInfo, TestMode } from '../types';
 import { TrafficSignSvg } from './TrafficSignSvg';
@@ -46,6 +60,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
   onBackToHome,
 }) => {
   const [reviewFilter, setReviewFilter] = useState<'all' | 'wrong' | 'flagged'>('all');
+  const [chartType, setChartType] = useState<'pie' | 'bar'>('pie');
   const [showShareModal, setShowShareModal] = useState(false);
   const [userName, setUserName] = useState('سائق المستقبل');
   const [copiedLink, setCopiedLink] = useState(false);
@@ -90,6 +105,20 @@ export const TestResults: React.FC<TestResultsProps> = ({
     if (userAnswers[q.id] === q.correctOptionId) {
       categoryStats[q.category].correct++;
     }
+  });
+
+  const CHART_COLORS = ['#3b82f6', '#22c55e', '#f59e0b', '#a855f7', '#ec4899'];
+
+  const categoryChartData = Object.entries(categoryStats).map(([catKey, data], idx) => {
+    const percentage = Math.round((data.correct / data.total) * 100);
+    return {
+      name: data.name,
+      correct: data.correct,
+      wrong: data.total - data.correct,
+      total: data.total,
+      percentage,
+      fill: CHART_COLORS[idx % CHART_COLORS.length],
+    };
   });
 
   // Filtered review list
@@ -270,43 +299,144 @@ export const TestResults: React.FC<TestResultsProps> = ({
           </div>
         </div>
 
-        {/* Categories Performance Breakdown */}
+        {/* Categories Performance Chart & Breakdown */}
         <div className="bg-[#1E293B] rounded-3xl border border-slate-700/80 p-6 shadow-xl space-y-4">
-          <h3 className="text-base font-black text-slate-100 flex items-center gap-2">
-            <Target className="w-5 h-5 text-blue-400" />
-            <span>أداؤك حسب الأقسام والمواضيع</span>
-          </h3>
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-700/80 pb-3">
+            <h3 className="text-base font-black text-slate-100 flex items-center gap-2">
+              <Target className="w-5 h-5 text-blue-400" />
+              <span>مستوى الأداء حسب الأقسام والمواضيع</span>
+            </h3>
 
-          <div className="space-y-3 pt-1">
-            {Object.entries(categoryStats).map(([catKey, data]) => {
-              const catPercent = Math.round((data.correct / data.total) * 100);
-              return (
-                <div key={catKey} className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-bold text-slate-300">
+            {/* Chart Type Toggle Tabs */}
+            <div className="flex items-center gap-1 bg-slate-800 p-1 rounded-xl border border-slate-700">
+              <button
+                type="button"
+                onClick={() => setChartType('pie')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                  chartType === 'pie'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <PieChartIcon className="w-3.5 h-3.5" />
+                <span>دائري</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setChartType('bar')}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                  chartType === 'bar'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <BarChart3 className="w-3.5 h-3.5" />
+                <span>أعمدة</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Recharts Chart View */}
+          <div className="w-full h-52 sm:h-60 pt-2">
+            <ResponsiveContainer width="100%" height="100%">
+              {chartType === 'pie' ? (
+                <PieChart>
+                  <Pie
+                    data={categoryChartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={45}
+                    outerRadius={80}
+                    paddingAngle={4}
+                    dataKey="percentage"
+                    nameKey="name"
+                    label={({ name, percentage }) => `${name}: ${percentage}%`}
+                  >
+                    {categoryChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} stroke="#1E293B" strokeWidth={2} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#0F172A',
+                      borderColor: '#334155',
+                      borderRadius: '12px',
+                      color: '#F8FAFC',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
+                    }}
+                    formatter={(value: any, name: any, item: any) => [
+                      `${value}% (الإجابات الصحيحة: ${item.payload.correct} من ${item.payload.total})`,
+                      'نسبة الإنجاز',
+                    ]}
+                  />
+                </PieChart>
+              ) : (
+                <BarChart data={categoryChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fill: '#94A3B8', fontSize: 10 }}
+                    axisLine={{ stroke: '#334155' }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    domain={[0, 100]}
+                    tick={{ fill: '#94A3B8', fontSize: 10 }}
+                    axisLine={{ stroke: '#334155' }}
+                    tickLine={false}
+                    unit="%"
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#0F172A',
+                      borderColor: '#334155',
+                      borderRadius: '12px',
+                      color: '#F8FAFC',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                    }}
+                    formatter={(value: any) => [`${value}%`, 'نسبة الإنجاز']}
+                  />
+                  <Bar dataKey="percentage" radius={[8, 8, 0, 0]}>
+                    {categoryChartData.map((entry, index) => (
+                      <Cell key={`bar-cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              )}
+            </ResponsiveContainer>
+          </div>
+
+          {/* Detailed Progress Bars */}
+          <div className="space-y-2.5 pt-2 border-t border-slate-700/60">
+            {categoryChartData.map((data) => (
+              <div key={data.name} className="space-y-1">
+                <div className="flex justify-between text-xs font-bold text-slate-300">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: data.fill }} />
                     <span>{data.name}</span>
-                    <span className="font-mono text-slate-400">
-                      {data.correct} من {data.total} ({catPercent}%)
-                    </span>
-                  </div>
-                  <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-300 ${
-                        catPercent >= 80
-                          ? 'bg-green-500 shadow-sm shadow-green-500/50'
-                          : catPercent >= 60
-                          ? 'bg-amber-500'
-                          : 'bg-red-500'
-                      }`}
-                      style={{ width: `${catPercent}%` }}
-                    />
-                  </div>
+                  </span>
+                  <span className="font-mono text-slate-400">
+                    {data.correct} من {data.total} ({data.percentage}%)
+                  </span>
                 </div>
-              );
-            })}
+                <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-300"
+                    style={{ width: `${data.percentage}%`, backgroundColor: data.fill }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
       </div>
+
+      {/* Strategic Medium Rectangle banner on Results page */}
+      <AdBanner slotType="rectangle" adId="results-review-rectangle-ad" />
 
       {/* Detailed Question Review Section */}
       <div className="bg-[#1E293B] rounded-3xl border border-slate-700/80 p-6 sm:p-8 shadow-xl space-y-6">

@@ -167,6 +167,9 @@ export const TrafficSignsGuide: React.FC<TrafficSignsGuideProps> = ({ onStartSig
 
       </div>
 
+      {/* Strategic Medium rectangle banner in Signs Guide */}
+      <AdBanner slotType="rectangle" adId="ad-signs-guide-mid" />
+
       {/* Signs Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {filteredSigns.length === 0 ? (

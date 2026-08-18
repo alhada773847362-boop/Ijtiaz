@@ -304,10 +304,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
           </div>
 
           {/* Ad Placement in Sidebar */}
-          <div className="w-full bg-slate-800/40 border border-dashed border-slate-700/80 flex flex-col items-center justify-center text-slate-500 rounded-xl p-3 text-center">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight mb-1">إعلان جانبي</span>
-            <div className="text-[11px] text-slate-500">Sponsored Unit</div>
-          </div>
+          <AdBanner slotType="sidebar" adId="simulator-sidebar-ad" />
         </aside>
 
         {/* Question Center Terminal (Col 9 or Full) */}
@@ -444,6 +441,9 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                 );
               })}
             </div>
+
+            {/* In-Test banner placed right below the multiple choice options */}
+            <AdBanner slotType="in_test" adId="simulator-under-options-ad" />
 
             {/* Practice Mode Explanation Box */}
             {isPracticeMode && isAnswered && (
