@@ -1,0 +1,6 @@
+{
+  "name": "Ijtiaz Driving Test Simulator",
+  "description": "منصة ذكية متكاملة لمحاكاة اختبار القيادة النظري لرخص القيادة (دله السعودية، المرور، وهيئة الطرق والمواصلات) مع دليل الإشارات المرورية والتحليلات المتقدمة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
