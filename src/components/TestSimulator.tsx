@@ -14,12 +14,15 @@ import {
   Pause,
   Play,
   RotateCcw,
-  ShieldCheck
+  ShieldCheck,
+  MessageSquarePlus
 } from 'lucide-react';
 import { Question, CountryInfo, TestMode } from '../types';
 import { TrafficSignSvg, RoadSituationDiagram } from './TrafficSignSvg';
 import { AdBanner } from './AdBanner';
 import { TRANSLATIONS } from '../data/translations';
+import { soundEffects } from '../utils/audioEffects';
+import { FeedbackModal } from './FeedbackModal';
 
 interface TestSimulatorProps {
   country: CountryInfo;
@@ -61,6 +64,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showFinishConfirm, setShowFinishConfirm] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const currentQuestion = questions[currentIndex] || questions[0];
   const isPracticeMode = mode === 'practice';
@@ -109,6 +113,18 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
       ...prev,
       [currentQuestion.id]: optionId,
     }));
+
+    if (isAudioEnabled) {
+      if (isPracticeMode) {
+        if (optionId === currentQuestion.correctOptionId) {
+          soundEffects.playCorrect();
+        } else {
+          soundEffects.playWrong();
+        }
+      } else {
+        soundEffects.playClick();
+      }
+    }
   };
 
   const handleToggleFlag = () => {
@@ -116,6 +132,9 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
     setFlaggedIds((prev) =>
       prev.includes(qId) ? prev.filter((id) => id !== qId) : [...prev, qId]
     );
+    if (isAudioEnabled) {
+      soundEffects.playClick();
+    }
   };
 
   const handleNext = () => {
@@ -360,6 +379,18 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                 >
                   <Bookmark className={`w-3.5 h-3.5 ${isFlagged ? 'fill-amber-400 text-amber-400' : ''}`} />
                   <span>{isFlagged ? t.flagged : t.flagAction}</span>
+                </button>
+
+                {/* Report / Note button */}
+                <button
+                  id="report-question-btn"
+                  type="button"
+                  onClick={() => setIsReportModalOpen(true)}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-400 hover:text-blue-400 hover:bg-slate-750 border border-slate-700 transition-all cursor-pointer"
+                  title={locale === 'en' ? 'Report issue or suggest edit' : 'إبلاغ عن ملاحظة في السؤال'}
+                >
+                  <MessageSquarePlus className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{locale === 'en' ? 'Report' : 'ملاحظة'}</span>
                 </button>
               </div>
             </div>
@@ -694,6 +725,15 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
           </div>
         </div>
       )}
+
+      {/* Question Feedback & Report Modal */}
+      <FeedbackModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        currentQuestion={currentQuestion}
+        selectedCountry={country}
+        locale={locale}
+      />
 
     </div>
   );

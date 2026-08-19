@@ -6,12 +6,19 @@ import { TRANSLATIONS } from '../data/translations';
 interface FooterProps {
   selectedCountry: CountryInfo;
   onNavigate: (view: 'home' | 'test' | 'signs' | 'violations' | 'history') => void;
+  onOpenLegal?: (type: 'privacy' | 'terms' | 'disclaimer' | 'contact') => void;
   locale?: 'ar' | 'en';
 }
 
-export const Footer: React.FC<FooterProps> = ({ selectedCountry, onNavigate, locale = 'ar' }) => {
+export const Footer: React.FC<FooterProps> = ({ 
+  selectedCountry, 
+  onNavigate, 
+  onOpenLegal,
+  locale = 'ar' 
+}) => {
   const currentLocale = locale || 'ar';
   const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
+  const isAr = currentLocale === 'ar';
 
   return (
     <footer className="bg-[#0B1120] text-slate-400 border-t border-slate-800 pt-12 pb-8 mt-16">
@@ -72,13 +79,48 @@ export const Footer: React.FC<FooterProps> = ({ selectedCountry, onNavigate, loc
             </ul>
           </div>
 
-          {/* Tips / Disclaimer */}
+          {/* Legal & Policy Links */}
           <div className="space-y-3">
-            <h4 className="text-sm font-bold text-slate-100">{t.footerTipsTitle}</h4>
-            <ul className="space-y-2 text-xs text-slate-400 leading-normal">
-              {t.footerTips.map((tip, idx) => (
-                <li key={idx}>• {tip.replace('%country%', selectedCountry.name).replace('%score%', String(selectedCountry.passingScorePercentage))}</li>
-              ))}
+            <h4 className="text-sm font-bold text-slate-100">
+              {isAr ? 'السياسات والشفافية' : 'Legal & Policies'}
+            </h4>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <button 
+                  onClick={() => onOpenLegal?.('privacy')} 
+                  className="hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1.5"
+                  id="footer-privacy-btn"
+                >
+                  <span>{isAr ? 'سياسة الخصوصية والكوكيز' : 'Privacy Policy & Cookies'}</span>
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onOpenLegal?.('terms')} 
+                  className="hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1.5"
+                  id="footer-terms-btn"
+                >
+                  <span>{isAr ? 'شروط الاستخدام والخدمة' : 'Terms of Service'}</span>
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onOpenLegal?.('disclaimer')} 
+                  className="hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1.5"
+                  id="footer-disclaimer-btn"
+                >
+                  <span>{isAr ? 'إخلاء المسؤولية الرسمي' : 'Official Disclaimer'}</span>
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onOpenLegal?.('contact')} 
+                  className="hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1.5"
+                  id="footer-contact-btn"
+                >
+                  <span>{isAr ? 'تواصل معنا والدعم' : 'Contact & Support'}</span>
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -86,8 +128,18 @@ export const Footer: React.FC<FooterProps> = ({ selectedCountry, onNavigate, loc
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <div>
-            {t.footerCopyright.replace('%year%', String(new Date().getFullYear()))}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span>{t.footerCopyright.replace('%year%', String(new Date().getFullYear()))}</span>
+            <span className="hidden sm:inline">•</span>
+            <button onClick={() => onOpenLegal?.('privacy')} className="hover:underline cursor-pointer">
+              {isAr ? 'الخصوصية' : 'Privacy'}
+            </button>
+            <button onClick={() => onOpenLegal?.('terms')} className="hover:underline cursor-pointer">
+              {isAr ? 'الشروط' : 'Terms'}
+            </button>
+            <button onClick={() => onOpenLegal?.('contact')} className="hover:underline cursor-pointer">
+              {isAr ? 'الدعم' : 'Contact'}
+            </button>
           </div>
           <div className="flex items-center gap-1 text-slate-400">
             <span>{t.footerCrafted}</span>

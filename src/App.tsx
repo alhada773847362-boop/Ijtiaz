@@ -14,6 +14,7 @@ import { ViolationsGuide } from './components/ViolationsGuide';
 import { PastTestsHistory } from './components/PastTestsHistory';
 import { HilltopAdsLoader } from './components/HilltopAdsLoader';
 import { AdBanner } from './components/AdBanner';
+import { LegalModals, LegalModalType, CookieConsentBanner } from './components/LegalModals';
 
 export const LanguageContext = createContext<{
   t: any;
@@ -128,6 +129,9 @@ export default function App() {
     flaggedQuestionIds: string[];
     timeSpentSeconds: number;
   } | null>(null);
+
+  // Legal Modals State (Privacy, Terms, Disclaimer, Contact)
+  const [activeLegalModal, setActiveLegalModal] = useState<LegalModalType>(null);
 
   // Synchronize state with browser URL changes (for perfect back/forward navigation support)
   useEffect(() => {
@@ -413,8 +417,19 @@ export default function App() {
       <Footer
         selectedCountry={selectedCountry}
         onNavigate={handleNavigate}
+        onOpenLegal={(type) => setActiveLegalModal(type)}
         locale={locale}
       />
+
+      {/* Legal Modals (Privacy Policy, Terms, Disclaimer, Contact) */}
+      <LegalModals
+        activeModal={activeLegalModal}
+        onClose={() => setActiveLegalModal(null)}
+        locale={locale}
+      />
+
+      {/* GDPR / Cookie Consent Banner */}
+      <CookieConsentBanner locale={locale} />
 
       {/* Premium Dynamic Interstitial Ad Modal */}
       {showInterstitial && (

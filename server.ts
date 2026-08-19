@@ -143,9 +143,15 @@ async function startServer() {
     }
   };
 
-  function injectMetadata(html: string, countryCode: string): string {
+  function injectMetadata(html: string, countryCode: string, req?: express.Request): string {
     const seo = COUNTRY_SEO[countryCode.toLowerCase()];
     if (!seo) return html;
+
+    const protocol = req?.headers['x-forwarded-proto'] || req?.protocol || 'https';
+    const host = req?.get('host') || 'ijtiaz.vercel.app';
+    const baseUrl = `${protocol}://${host}`;
+    const pageUrl = `${baseUrl}/${countryCode.toLowerCase()}`;
+    const imageUrl = `${baseUrl}/og-image.jpg`;
 
     let modifiedHtml = html;
 
@@ -179,6 +185,27 @@ async function startServer() {
     const newOgDesc = `<meta property="og:description" content="${seo.description}" />`;
     if (ogDescRegex.test(modifiedHtml)) {
       modifiedHtml = modifiedHtml.replace(ogDescRegex, newOgDesc);
+    }
+
+    // Replace og:url
+    const ogUrlRegex = /<meta property="og:url" content="[^"]*"\s*\/?>/i;
+    const newOgUrl = `<meta property="og:url" content="${pageUrl}" />`;
+    if (ogUrlRegex.test(modifiedHtml)) {
+      modifiedHtml = modifiedHtml.replace(ogUrlRegex, newOgUrl);
+    }
+
+    // Replace og:image
+    const ogImgRegex = /<meta property="og:image" content="[^"]*"\s*\/?>/i;
+    const newOgImg = `<meta property="og:image" content="${imageUrl}" />`;
+    if (ogImgRegex.test(modifiedHtml)) {
+      modifiedHtml = modifiedHtml.replace(ogImgRegex, newOgImg);
+    }
+
+    // Replace twitter:image
+    const twImgRegex = /<meta name="twitter:image" content="[^"]*"\s*\/?>/i;
+    const newTwImg = `<meta name="twitter:image" content="${imageUrl}" />`;
+    if (twImgRegex.test(modifiedHtml)) {
+      modifiedHtml = modifiedHtml.replace(twImgRegex, newTwImg);
     }
 
     return modifiedHtml;
@@ -229,7 +256,7 @@ async function startServer() {
         html = fs.readFileSync(path.join(process.cwd(), 'dist/index.html'), 'utf-8');
       }
 
-      const seoHtml = injectMetadata(html, countryCode);
+      const seoHtml = injectMetadata(html, countryCode, req);
       res.setHeader('Content-Type', 'text/html');
       res.status(200).send(seoHtml);
     } catch (err) {

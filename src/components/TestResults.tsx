@@ -16,6 +16,7 @@ import {
   Check, 
   Info,
   Printer,
+  Download,
   PieChart as PieChartIcon,
   BarChart3
 } from 'lucide-react';
@@ -36,6 +37,7 @@ import { Question, CountryInfo, TestMode } from '../types';
 import { TrafficSignSvg } from './TrafficSignSvg';
 import { AdBanner } from './AdBanner';
 import { TRANSLATIONS } from '../data/translations';
+import { soundEffects } from '../utils/audioEffects';
 
 interface TestResultsProps {
   country: CountryInfo;
@@ -88,15 +90,18 @@ export const TestResults: React.FC<TestResultsProps> = ({
   const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
   const passed = scorePercentage >= country.passingScorePercentage;
 
-  // Trigger celebration confetti on mount if passed
+  // Trigger celebration confetti & victory fanfare on mount if passed
   useEffect(() => {
     if (passed) {
+      soundEffects.playVictory();
       confetti({
         particleCount: 90,
         spread: 80,
         origin: { y: 0.6 },
         colors: ['#3b82f6', '#22c55e', '#60a5fa', '#34d399', '#fbbf24'],
       });
+    } else {
+      soundEffects.playWrong();
     }
   }, [passed]);
 
@@ -163,6 +168,107 @@ export const TestResults: React.FC<TestResultsProps> = ({
 
   const handlePrintCertificate = () => {
     window.print();
+  };
+
+  // Download high-resolution certificate as PNG image
+  const handleDownloadCertificateImage = () => {
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1200;
+      canvas.height = 760;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Dark Luxury Gradient Background
+      const bgGrad = ctx.createLinearGradient(0, 0, 1200, 760);
+      bgGrad.addColorStop(0, '#0B1120');
+      bgGrad.addColorStop(0.5, '#1E293B');
+      bgGrad.addColorStop(1, '#0F172A');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1200, 760);
+
+      // Gold / Blue Outer Border
+      ctx.strokeStyle = '#3B82F6';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(30, 30, 1140, 700);
+
+      ctx.strokeStyle = '#F59E0B';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(42, 42, 1116, 676);
+
+      // Certificate Header
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#60A5FA';
+      ctx.font = 'bold 22px Tajawal, sans-serif';
+      ctx.fillText(locale === 'en' ? 'OFFICIAL CERTIFICATE OF ACHIEVEMENT' : 'شهادة اجتياز اختبار القيادة النظري المعتمدة', 600, 110);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 36px Tajawal, sans-serif';
+      ctx.fillText(locale === 'en' ? 'IJTIAS DRIVING SIMULATION PLATFORM' : 'منصة اجتياز لاختبارات رخص القيادة 2026', 600, 170);
+
+      // Gold Decorative Divider
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(350, 210);
+      ctx.lineTo(850, 210);
+      ctx.stroke();
+
+      // Student Name Label
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '20px Tajawal, sans-serif';
+      ctx.fillText(locale === 'en' ? 'This is proudly presented to:' : 'تشهد المنصة بأن المتدرب(ـة):', 600, 265);
+
+      // Student Name
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = 'bold 44px Tajawal, sans-serif';
+      ctx.fillText(userName || (locale === 'en' ? 'Future Driver' : 'سائق المستقبل'), 600, 330);
+
+      // Country and Exam Text
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = '22px Tajawal, sans-serif';
+      const examText = locale === 'en'
+        ? `Successfully completed the theory driving exam for ${country.name} (${country.popularSchool})`
+        : `قد أتم بنجاح اختبار محاكاة رخصة القيادة النظري لـ ${country.name} (${country.popularSchool})`;
+      ctx.fillText(examText, 600, 395);
+
+      // Score Badge Box
+      ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
+      ctx.strokeStyle = '#3B82F6';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(430, 445, 340, 120, 20);
+      ctx.fill();
+      ctx.stroke();
+
+      // Score inside box
+      ctx.fillStyle = '#22C55E';
+      ctx.font = 'bold 46px monospace';
+      ctx.fillText(`${scorePercentage}%`, 600, 505);
+
+      ctx.fillStyle = '#E2E8F0';
+      ctx.font = 'bold 20px Tajawal, sans-serif';
+      ctx.fillText(passed ? (locale === 'en' ? 'RESULT: PASSED ★★★' : 'النتيجة: اجتياز بتفوق ★★★') : (locale === 'en' ? 'RESULT: COMPLETED' : 'النتيجة: تم التدريب بنجاح'), 600, 545);
+
+      // Footer Meta
+      ctx.fillStyle = '#64748B';
+      ctx.font = '16px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(`SERIAL: IJT-${Math.floor(100000 + Math.random() * 900000)}`, 70, 675);
+
+      ctx.textAlign = 'right';
+      const dateStr = new Date().toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US');
+      ctx.fillText(`DATE: ${dateStr} | ijtiaz.vercel.app`, 1130, 675);
+
+      // Trigger download
+      const link = document.createElement('a');
+      link.download = `ijtiaz-certificate-${country.id}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (e) {
+      console.error('Error generating certificate image:', e);
+      window.print();
+    }
   };
 
   return (
@@ -709,11 +815,11 @@ export const TestResults: React.FC<TestResultsProps> = ({
               <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  onClick={handleCopyShareLink}
-                  className="py-2.5 px-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
+                  onClick={handleDownloadCertificateImage}
+                  className="py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md shadow-blue-600/20 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedLink ? t.linkCopied : t.copyResultLink}</span>
+                  <Download className="w-4 h-4" />
+                  <span>{locale === 'en' ? 'Download Image (PNG)' : 'تحميل كصورة (PNG)'}</span>
                 </button>
 
                 <button
@@ -725,6 +831,15 @@ export const TestResults: React.FC<TestResultsProps> = ({
                   <span>{t.printPDF}</span>
                 </button>
               </div>
+
+              <button
+                type="button"
+                onClick={handleCopyShareLink}
+                className="w-full py-2.5 px-3 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4 text-slate-400" />}
+                <span>{copiedLink ? t.linkCopied : t.copyResultLink}</span>
+              </button>
             </div>
 
           </div>

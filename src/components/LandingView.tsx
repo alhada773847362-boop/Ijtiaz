@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Award, 
   BookOpen, 
@@ -12,6 +12,8 @@ import {
   Target,
   FileCheck2,
   ChevronLeft,
+  ChevronDown,
+  HelpCircle,
   Navigation
 } from 'lucide-react';
 import { CountryInfo, TestMode } from '../types';
@@ -39,6 +41,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
 }) => {
   const currentLocale = locale || 'ar';
   const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
+
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   const getCountryName = (cId: string) => {
     if (locale === 'en' && COUNTRY_TRANSLATIONS[cId]) {
@@ -494,6 +498,84 @@ export const LandingView: React.FC<LandingViewProps> = ({
               {t.step4Desc}
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* 6. Comprehensive SEO & User FAQ Section */}
+      <section className="space-y-5 pt-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
+            <HelpCircle className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-100">
+              {locale === 'en' ? 'Frequently Asked Questions' : 'الأسئلة الشائعة حول اختبار القيادة'}
+            </h2>
+            <p className="text-xs text-slate-400">
+              {locale === 'en' 
+                ? 'Everything you need to know to pass the driving theory exam from the first attempt' 
+                : `كل ما تود معرفته عن اختبار رخصة القيادة النظري في ${getCountryName(selectedCountry.id)}`}
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          {[
+            {
+              qAr: `كم درجة ونسبة النجاح في اختبار القيادة النظري بـ ${getCountryName(selectedCountry.id)}؟`,
+              qEn: `What is the passing score for the driving theory test in ${getCountryName(selectedCountry.id)}?`,
+              aAr: `نسبة النجاح المعتمدة في ${getCountryName(selectedCountry.id)} لدى (${getCountryAuthority(selectedCountry.id)}) هي ${selectedCountry.passingScorePercentage}%، أي ما يعادل الإجابة الصحيحة على ما لا يقل عن ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} سؤالاً من أصل ${selectedCountry.questionsPerExam} سؤالاً خلال ${selectedCountry.timeLimitMinutes} دقيقة.`,
+              aEn: `The official passing score in ${getCountryName(selectedCountry.id)} under ${getCountryAuthority(selectedCountry.id)} is ${selectedCountry.passingScorePercentage}%. You need at least ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} correct answers out of ${selectedCountry.questionsPerExam} questions within ${selectedCountry.timeLimitMinutes} minutes.`
+            },
+            {
+              qAr: 'هل الأسئلة وإشارات المرور في المنصة مطابقة للمناهج الرسمية لعام 2026؟',
+              qEn: 'Are the questions and traffic signs updated and compliant with official 2026 guidelines?',
+              aAr: 'نعم، تم تدقيق وتحديث بنك الأسئلة بالكامل ومطابقته مع أحدث لوائح المرور ومدارس تعليم القيادة المعتمدة، مع شروحات تفصيلية فورية لكل سؤال وإشارة مرورية.',
+              aEn: 'Yes, our entire question bank is rigorously calibrated and updated to match the latest official guidelines from regional driving schools and traffic licensing authorities.'
+            },
+            {
+              qAr: 'هل محاكي اختبار القيادة مجاني بالكامل؟',
+              qEn: 'Is this driving test simulator completely free?',
+              aAr: 'نعم، منصة اجتياز مجانية بنسبة 100% لجميع المتدربين بدون أي رسوم خفية وبدون اشتراك، ويمكنك إجراء اختبارات تجريبية غير محدودة في أي وقت.',
+              aEn: 'Yes, Ijtiaz is 100% free with unlimited mock test sessions, traffic signs review, and penalty guide access without registration.'
+            },
+            {
+              qAr: 'كيف أضمن اجتياز الاختبار النظري من المحاولة الأولى؟',
+              qEn: 'How can I ensure passing the theory test on my first attempt?',
+              aAr: 'ننصحك باتباع 3 خطوات: 1) مراجعة دليل إشارات المرور والمخالفات، 2) إجراء 3 إلى 5 اختبارات تجريبية بوضع الامتحان الرسمي، 3) استخدام ميزة "مراجعة الأسئلة الخاطئة فقط" حتى تحقق درجة 95% فما فوق.',
+              aEn: 'We recommend: 1) Studying the traffic signs guide, 2) Practicing 3 to 5 full mock exams under timed conditions, and 3) Retaking your mistake questions until you consistently score above 95%.'
+            }
+          ].map((item, idx) => {
+            const isOpen = openFaqIndex === idx;
+            return (
+              <div 
+                key={idx}
+                className="bg-[#1E293B] border border-slate-700/80 rounded-2xl overflow-hidden transition-colors"
+              >
+                <button
+                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                  className="w-full p-4 sm:p-5 text-right ltr:text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-100 hover:text-blue-400 transition-colors cursor-pointer"
+                  aria-expanded={isOpen}
+                  id={`faq-item-toggle-${idx}`}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <span className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-400 text-xs font-black flex items-center justify-center shrink-0">
+                      {idx + 1}
+                    </span>
+                    <span>{locale === 'en' ? item.qEn : item.qAr}</span>
+                  </span>
+                  <ChevronDown className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-blue-400' : ''}`} />
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 animate-in fade-in duration-150">
+                    <p className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
+                      {locale === 'en' ? item.aEn : item.aAr}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </section>
 

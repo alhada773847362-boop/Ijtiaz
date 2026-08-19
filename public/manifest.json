@@ -1,0 +1,48 @@
+{
+  "name": "منصة اجتياز لاختبار القيادة النظري",
+  "short_name": "اجتياز",
+  "description": "المحاكي المعتمد لاختبار رخصة القيادة النظري وبنك أسئلة إشارات وقواعد المرور لـ 26 دولة",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1120",
+  "theme_color": "#10b981",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "utilities"],
+  "shortcuts": [
+    {
+      "name": "بدء اختبار تجريبي",
+      "short_name": "اختبار جديد",
+      "description": "ابدأ محاكاة اختبار القيادة النظري فوراً",
+      "url": "/?view=test",
+      "icons": [{ "src": "/favicon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "دليل إشارات المرور",
+      "short_name": "إشارات المرور",
+      "description": "تصفح بنك علامات وإشارات المرور الشامل",
+      "url": "/?view=signs",
+      "icons": [{ "src": "/favicon.png", "sizes": "96x96" }]
+    }
+  ]
+}

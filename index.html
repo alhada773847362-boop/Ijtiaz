@@ -31,9 +31,20 @@
     <meta name="twitter:image:alt" content="معاينة منصة اجتياز لاختبار القيادة" />
 
     <meta name="theme-color" content="#10b981" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="اجتياز" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Standard & Apple Favicons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="image_src" href="https://ijtiaz.vercel.app/og-image.jpg" />
     <meta name="e66521e914efba44401e9cbf064ba6df7e45e4df" content="e66521e914efba44401e9cbf064ba6df7e45e4df" />
     <!-- Google Search Console Verification Meta Tag -->
     <meta name="google-site-verification" content="googled26e0b9780f8aa69" />
@@ -41,19 +52,84 @@
     
     <!-- Schema.org JSON-LD Structured Data for Google Search Indexing -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "منصة اجتياز لاختبار رخصة القيادة النظري",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "All",
-      "description": "منصة ذكية للتدرب على اختبار رخصة القيادة النظري وبنك أسئلة إشارات المرور وقواعد السير لـ 22 دولة عربية والولايات المتحدة.",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "منصة اجتياز لاختبار رخصة القيادة النظري",
+        "url": "https://ijtiaz.vercel.app/",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "All",
+        "description": "منصة ذكية للتدرب على اختبار رخصة القيادة النظري وبنك أسئلة إشارات المرور وقواعد السير لـ 26 دولة عربية وأمريكا.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "كم درجة ونسبة النجاح في اختبار القيادة النظري (دله والمرور)؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "تبلغ نسبة النجاح المعتمدة في المملكة العربية السعودية (دله) 80% (الإجابة على ما لا يقل عن 24 سؤالاً من أصل 30)، وفي الإمارات ومصر والأردن تتراوح بين 75% و 85% بحسب اللوائح المحلية لكل دولة."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "هل الأسئلة وإشارات المرور في منصة اجتياز مطابقة للاختبار الرسمي؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نعم، تم إعداد بنك الأسئلة بالكامل ومطابقته بدقة مع أحدث المناهج المعتمدة لدى مدارس القيادة وإدارات المرور وهيئات الطرق والنقل لعام 2026 مع شروحات فورية لكل سؤال."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "هل محاكي اختبار القيادة مجاني بالكامل؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "نعم، منصة اجتياز مجانية بنسبة 100% دون الحاجة إلى إنشاء حساب أو دفع أي رسوم، وتتيح إجراء اختبارات تجريبية غير محدودة ومراجعة الإشارات والمخالفات وسجل النتائج."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "ما هي أفضل طريقة لاجتياز اختبار القيادة النظري من المحاولة الأولى؟",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "أفضل طريقة هي: 1) مراجعة دليل إشارات المرور (التحذيرية، المانعة، والإرشادية)، 2) التدرب على نمط الاختبار الكامل مع ضبط الوقت، 3) مراجعة الأسئلة الخاطئة وإعادة اختبارها حتى تحقيق نسبة 95% فما فوق."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "الرئيسية",
+            "item": "https://ijtiaz.vercel.app/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "محاكي اختبار القيادة",
+            "item": "https://ijtiaz.vercel.app/?view=test"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "دليل إشارات المرور",
+            "item": "https://ijtiaz.vercel.app/?view=signs"
+          }
+        ]
       }
-    }
+    ]
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
