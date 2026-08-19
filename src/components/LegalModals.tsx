@@ -13,10 +13,13 @@ import {
   Eye,
   Server,
   HelpCircle,
-  Sparkles
+  Sparkles,
+  Download,
+  Image as ImageIcon,
+  Palette
 } from 'lucide-react';
 
-export type LegalModalType = 'privacy' | 'terms' | 'disclaimer' | 'contact' | null;
+export type LegalModalType = 'privacy' | 'terms' | 'disclaimer' | 'contact' | 'brand' | null;
 
 interface LegalModalsProps {
   activeModal: LegalModalType;
@@ -52,6 +55,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                 {activeModal === 'terms' && <FileText className="w-5 h-5" />}
                 {activeModal === 'disclaimer' && <AlertTriangle className="w-5 h-5" />}
                 {activeModal === 'contact' && <Mail className="w-5 h-5" />}
+                {activeModal === 'brand' && <Palette className="w-5 h-5" />}
               </div>
               <div>
                 <h3 className="text-lg font-black text-white">
@@ -59,6 +63,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   {activeModal === 'terms' && (isAr ? 'شروط الاستخدام والخدمة' : 'Terms of Service')}
                   {activeModal === 'disclaimer' && (isAr ? 'إخلاء المسؤولية القانونية' : 'Legal Disclaimer')}
                   {activeModal === 'contact' && (isAr ? 'تواصل معنا والدعم الفني' : 'Contact & Support')}
+                  {activeModal === 'brand' && (isAr ? 'حقيبة الهوية البصرية والأيقونة الاحترافية (Brand Kit)' : 'Official Brand Kit & HD Icons')}
                 </h3>
                 <p className="text-xs text-slate-400">
                   {isAr ? 'منصة اجتياز - آخر تحديث: 2026' : 'Ijtiaz Simulator - Last Updated: 2026'}
@@ -229,6 +234,140 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                     {isAr ? '⚡ وقت الاستجابة المعتاد:' : '⚡ Average Response Time:'}
                   </span>
                   {isAr ? 'يتم الرد على استفسارات المتدربين ومراجعة الأسئلة خلال 24 ساعة.' : 'We review inquiries and feedback within 24 hours.'}
+                </div>
+              </div>
+            )}
+
+            {/* 5. BRAND KIT & DOWNLOADS */}
+            {activeModal === 'brand' && (
+              <div className="space-y-6">
+                <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300 flex items-start gap-3">
+                  <Sparkles className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                  <p>
+                    {isAr 
+                      ? 'يمكنك تحميل الشعار والأيقونة الرسمية لمنصة اجتياز بأعلى جودة بجميع الصيغ والأحجام المعتمدة للمواقع والتطبيقات والمطبوعات.'
+                      : 'Download the official Ijtiaz brand assets in high definition across all supported formats (PNG, SVG, ICO, JPG).'}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Card 1: Ultra HD App Icon PNG */}
+                  <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src="/icon.png" 
+                        alt="Ijtiaz HD Icon" 
+                        className="w-16 h-16 rounded-2xl shadow-lg border border-slate-700 object-cover shrink-0" 
+                        referrerPolicy="no-referrer"
+                      />
+                      <div>
+                        <h4 className="font-bold text-white text-sm">
+                          {isAr ? 'أيقونة التطبيق الفائقة (HD PNG)' : 'Ultra HD App Icon (PNG)'}
+                        </h4>
+                        <p className="text-[11px] text-slate-400">1024 × 1024 px • 300 DPI</p>
+                        <span className="inline-block mt-1 text-[10px] bg-emerald-500/20 text-emerald-300 font-semibold px-2 py-0.5 rounded-md">
+                          {isAr ? 'للتطبيقات والويب' : 'Apps & Web'}
+                        </span>
+                      </div>
+                    </div>
+                    <a
+                      href="/icon.png"
+                      download="Ijtiaz-App-Icon-1024x1024.png"
+                      className="flex items-center justify-center gap-2 w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      {isAr ? 'تحميل الأيقونة (1024px PNG)' : 'Download (1024px PNG)'}
+                    </a>
+                  </div>
+
+                  {/* Card 2: Vector Scalable SVG */}
+                  <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-16 h-16 rounded-2xl bg-[#0f172a] border border-blue-500/30 flex items-center justify-center p-2 shrink-0">
+                        <img 
+                          src="/favicon.svg" 
+                          alt="Ijtiaz Vector" 
+                          className="w-12 h-12" 
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-white text-sm">
+                          {isAr ? 'شعار المتجهات المتجاوب (SVG)' : 'Scalable Vector Graphic (SVG)'}
+                        </h4>
+                        <p className="text-[11px] text-slate-400">{isAr ? 'دقة لا متناهية بلا بكسلة' : 'Infinite Scalability'}</p>
+                        <span className="inline-block mt-1 text-[10px] bg-blue-500/20 text-blue-300 font-semibold px-2 py-0.5 rounded-md">
+                          {isAr ? 'للمصممين والمطورين' : 'Designers & Devs'}
+                        </span>
+                      </div>
+                    </div>
+                    <a
+                      href="/favicon.svg"
+                      download="Ijtiaz-Logo-Vector.svg"
+                      className="flex items-center justify-center gap-2 w-full py-2 px-3 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      {isAr ? 'تحميل الشعار (Vector SVG)' : 'Download (Vector SVG)'}
+                    </a>
+                  </div>
+
+                  {/* Card 3: Favicon ICO & Small Icons */}
+                  <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src="/favicon.png" 
+                        alt="Ijtiaz Favicon" 
+                        className="w-12 h-12 rounded-xl shadow-md border border-slate-700 object-cover shrink-0" 
+                        referrerPolicy="no-referrer"
+                      />
+                      <div>
+                        <h4 className="font-bold text-white text-sm">
+                          {isAr ? 'حزمة فافيكون المتصفح (Favicon)' : 'Browser Favicon Package'}
+                        </h4>
+                        <p className="text-[11px] text-slate-400">favicon.ico + 32x32 + 16x16</p>
+                        <span className="inline-block mt-1 text-[10px] bg-amber-500/20 text-amber-300 font-semibold px-2 py-0.5 rounded-md">
+                          {isAr ? 'لتبويبات المتصفح' : 'Browser Tabs'}
+                        </span>
+                      </div>
+                    </div>
+                    <a
+                      href="/favicon.ico"
+                      download="favicon.ico"
+                      className="flex items-center justify-center gap-2 w-full py-2 px-3 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      {isAr ? 'تحميل ملف (favicon.ico)' : 'Download (favicon.ico)'}
+                    </a>
+                  </div>
+
+                  {/* Card 4: Social Banner (OpenGraph 1200x630) */}
+                  <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src="/og-image.jpg" 
+                        alt="Ijtiaz Banner" 
+                        className="w-16 h-10 rounded-lg shadow-md border border-slate-700 object-cover shrink-0" 
+                        referrerPolicy="no-referrer"
+                      />
+                      <div>
+                        <h4 className="font-bold text-white text-sm">
+                          {isAr ? 'بانر المشاركة والسوشيال (16:9)' : 'Social Share Banner (16:9)'}
+                        </h4>
+                        <p className="text-[11px] text-slate-400">1200 × 630 px (HD)</p>
+                        <span className="inline-block mt-1 text-[10px] bg-purple-500/20 text-purple-300 font-semibold px-2 py-0.5 rounded-md">
+                          {isAr ? 'لواتساب وتويتر وفيسبوك' : 'WhatsApp & Twitter'}
+                        </span>
+                      </div>
+                    </div>
+                    <a
+                      href="/og-image.jpg"
+                      download="Ijtiaz-Social-Banner-1200x630.jpg"
+                      className="flex items-center justify-center gap-2 w-full py-2 px-3 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      {isAr ? 'تحميل البانر (1200x630 JPG)' : 'Download (1200x630 JPG)'}
+                    </a>
+                  </div>
                 </div>
               </div>
             )}

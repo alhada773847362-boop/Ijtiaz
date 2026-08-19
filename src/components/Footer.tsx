@@ -6,7 +6,7 @@ import { TRANSLATIONS } from '../data/translations';
 interface FooterProps {
   selectedCountry: CountryInfo;
   onNavigate: (view: 'home' | 'test' | 'signs' | 'violations' | 'history') => void;
-  onOpenLegal?: (type: 'privacy' | 'terms' | 'disclaimer' | 'contact') => void;
+  onOpenLegal?: (type: 'privacy' | 'terms' | 'disclaimer' | 'contact' | 'brand') => void;
   locale?: 'ar' | 'en';
 }
 
@@ -119,6 +119,15 @@ export const Footer: React.FC<FooterProps> = ({
                   id="footer-contact-btn"
                 >
                   <span>{isAr ? 'تواصل معنا والدعم' : 'Contact & Support'}</span>
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onOpenLegal?.('brand')} 
+                  className="text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer flex items-center gap-1.5 font-semibold"
+                  id="footer-brand-btn"
+                >
+                  <span>{isAr ? '🎨 تحميل الأيقونة والهوية (HD)' : '🎨 Download Brand Kit & HD Icons'}</span>
                 </button>
               </li>
             </ul>
