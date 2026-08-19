@@ -184,10 +184,15 @@ async function startServer() {
     return modifiedHtml;
   }
 
-  // 3. SEO Static Files
+  // 3. SEO Static Files & Google Site Verification
+  app.get('/googled26e0b9780f8aa69.html', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.send('google-site-verification: googled26e0b9780f8aa69.html');
+  });
+
   app.get('/robots.txt', (req, res) => {
     res.setHeader('Content-Type', 'text/plain');
-    res.send(`User-agent: *\nAllow: /\n\nSitemap: https://${req.get('host') || 'ais-pre-q2yo4lfx65raw24ko3tzyz-209163676622.europe-west2.run.app'}/sitemap.xml\n`);
+    res.send(`User-agent: *\nAllow: /\n\nSitemap: https://ijtiaz.vercel.app/sitemap.xml\n`);
   });
 
   app.get('/sitemap.xml', (req, res) => {
