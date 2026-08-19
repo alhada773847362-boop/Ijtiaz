@@ -3,17 +3,23 @@ import { History, Award, Trash2, RotateCcw, CheckCircle2, XCircle, ArrowLeft, Cl
 import { TestHistoryItem } from '../types';
 import { AdBanner } from './AdBanner';
 
+import { TRANSLATIONS } from '../data/translations';
+
 interface PastTestsHistoryProps {
   history: TestHistoryItem[];
   onClearHistory: () => void;
   onStartNewTest: () => void;
+  locale?: 'ar' | 'en';
 }
 
 export const PastTestsHistory: React.FC<PastTestsHistoryProps> = ({
   history,
   onClearHistory,
   onStartNewTest,
+  locale = 'ar',
 }) => {
+  const currentLocale = locale || 'ar';
+  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
   const totalTaken = history.length;
   const passedCount = history.filter((h) => h.passed).length;
   const avgScore = totalTaken > 0 ? Math.round(history.reduce((acc, cur) => acc + cur.percentage, 0) / totalTaken) : 0;
@@ -27,7 +33,7 @@ export const PastTestsHistory: React.FC<PastTestsHistoryProps> = ({
         <div className="flex items-center justify-between">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold">
             <History className="w-3.5 h-3.5" />
-            <span>سجل الأداء الشخصي</span>
+            <span>{t.historyBadge}</span>
           </div>
 
           {totalTaken > 0 && (
@@ -37,16 +43,16 @@ export const PastTestsHistory: React.FC<PastTestsHistoryProps> = ({
               className="text-xs text-red-400 hover:text-red-300 flex items-center gap-1 cursor-pointer p-1.5 rounded-lg hover:bg-red-950/30 transition-colors"
             >
               <Trash2 className="w-3.5 h-3.5" />
-              <span>مسح السجل</span>
+              <span>{t.clearHistory}</span>
             </button>
           )}
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-black text-slate-100">
-          سجل اختباراتي ونتائج التدريب السابقة
+          {t.historyTitle}
         </h1>
         <p className="text-xs sm:text-sm text-slate-400">
-          تتبع منحنى تقدمك ومعدل درجاتك مع كل جلسة تدريبية للتأكد من جاهزيتك التامة للاختبار الفعلي.
+          {t.historySub}
         </p>
 
         {/* Aggregate Stats Cards */}
@@ -54,22 +60,22 @@ export const PastTestsHistory: React.FC<PastTestsHistoryProps> = ({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
             <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-center">
               <div className="text-2xl font-black text-slate-100 font-mono">{totalTaken}</div>
-              <div className="text-[11px] font-bold text-slate-400">إجمالي الاختبارات</div>
+              <div className="text-[11px] font-bold text-slate-400">{t.statTotalTests}</div>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-center">
               <div className="text-2xl font-black text-green-400 font-mono">{passedCount}</div>
-              <div className="text-[11px] font-bold text-slate-400">الاختبارات المجتازة</div>
+              <div className="text-[11px] font-bold text-slate-400">{t.statPassedTests}</div>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-center">
               <div className="text-2xl font-black text-blue-400 font-mono">{avgScore}%</div>
-              <div className="text-[11px] font-bold text-slate-400">متوسط الدرجات</div>
+              <div className="text-[11px] font-bold text-slate-400">{t.statAvgScore}</div>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 text-center">
               <div className="text-2xl font-black text-amber-400 font-mono">{bestScore}%</div>
-              <div className="text-[11px] font-bold text-slate-400">أعلى نتيجة محققة</div>
+              <div className="text-[11px] font-bold text-slate-400">{t.statBestScore}</div>
             </div>
           </div>
         )}
@@ -82,9 +88,9 @@ export const PastTestsHistory: React.FC<PastTestsHistoryProps> = ({
             <div className="w-16 h-16 rounded-2xl bg-slate-800 text-slate-400 border border-slate-700 flex items-center justify-center mx-auto text-3xl">
               📋
             </div>
-            <h3 className="text-base font-bold text-slate-100">لا توجد اختبارات مسجلة بعد</h3>
+            <h3 className="text-base font-bold text-slate-100">{t.historyEmptyTitle}</h3>
             <p className="text-xs text-slate-400 max-w-sm mx-auto">
-              ابدأ أول اختبار تجريبي الآن لتسجيل نتائجك ومتابعة مستواك بمرور الوقت.
+              {t.historyEmptySub}
             </p>
             <button
               type="button"
@@ -92,7 +98,7 @@ export const PastTestsHistory: React.FC<PastTestsHistoryProps> = ({
               className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-black shadow-lg shadow-blue-500/30 inline-flex items-center gap-2 cursor-pointer"
             >
               <Award className="w-4 h-4" />
-              <span>بدء أول اختبار تجريبي</span>
+              <span>{t.btnStartFirstTest}</span>
             </button>
           </div>
         ) : (
@@ -122,7 +128,7 @@ export const PastTestsHistory: React.FC<PastTestsHistoryProps> = ({
                     <span>•</span>
                     <span className="flex items-center gap-1">
                       <Clock className="w-3 h-3 text-slate-500" />
-                      <span>{Math.round(item.timeSpentSeconds / 60)} دقيقة</span>
+                      <span>{Math.round(item.timeSpentSeconds / 60)} {t.minutesUnit}</span>
                     </span>
                   </div>
                 </div>
@@ -138,7 +144,7 @@ export const PastTestsHistory: React.FC<PastTestsHistoryProps> = ({
                     {item.percentage}%
                   </div>
                   <div className="text-[10px] text-slate-400">
-                    {item.score} من {item.totalQuestions}
+                    {item.score} {locale === 'ar' ? 'من' : 'of'} {item.totalQuestions}
                   </div>
                 </div>
               </div>

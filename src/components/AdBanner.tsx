@@ -15,16 +15,21 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Inject HilltopAds Desktop/Mobile banner dynamically based on slotType
+    // Inject HilltopAds Desktop/Mobile banner dynamically based on device and slotType
     if (containerRef.current) {
       containerRef.current.innerHTML = '';
       const script = document.createElement('script');
       
+      const isMobile = typeof window !== 'undefined' && 
+        (window.innerWidth < 768 || /mobi|ipad|iphone|blackberry|android/i.test(navigator.userAgent));
+      
       // Load standard high-performing banner zones
-      if (slotType === 'leaderboard' || slotType === 'in_article') {
-        script.src = '//massivesalad.com/bdXpV/sad.GslG0QYsWScj/reQmm9ouRZ_U/lUkePDT/c/z/MUD/I/y/OATrc/t/NKznM-wAM/jeMEwzMkQP';
+      if (isMobile) {
+        // High-earnings mobile banner script provided by the user
+        script.src = '//massivesalad.com/bqXxV.s/ddGul_0qYEWvcO/oeDmG9Vu/ZEUolTkLPYThc/ztMjzTMF5aM_DMU/tkNqzvM/z-MuzJkpwhOXQI';
       } else {
-        script.src = '//massivesalad.com/b/XJVps.dWGfl/0GYwWfcX/NeCmY9iurZjUrl/kLPLTKcezoMMDxI_ybOEDSU/tDNWzVMVwLMRjBIb4wOlQe';
+        // High-earnings desktop banner script provided by the user
+        script.src = '//massivesalad.com/bGXkVKsUd.G/l/0tYhWccq/Pe/m-9OuzZ/UilzkxPrTcc/ziMPzeMT5fMOT/cVt/NUzdMEzvMuzMkGy/MZQD';
       }
       
       script.async = true;

@@ -35,6 +35,7 @@ import confetti from 'canvas-confetti';
 import { Question, CountryInfo, TestMode } from '../types';
 import { TrafficSignSvg } from './TrafficSignSvg';
 import { AdBanner } from './AdBanner';
+import { TRANSLATIONS } from '../data/translations';
 
 interface TestResultsProps {
   country: CountryInfo;
@@ -43,6 +44,7 @@ interface TestResultsProps {
   userAnswers: Record<string, string>;
   flaggedQuestionIds: string[];
   timeSpentSeconds: number;
+  locale?: 'ar' | 'en';
   onRetakeFullTest: () => void;
   onRetakeWrongOnly: (wrongQuestions: Question[]) => void;
   onBackToHome: () => void;
@@ -55,14 +57,17 @@ export const TestResults: React.FC<TestResultsProps> = ({
   userAnswers,
   flaggedQuestionIds,
   timeSpentSeconds,
+  locale = 'ar',
   onRetakeFullTest,
   onRetakeWrongOnly,
   onBackToHome,
 }) => {
+  const currentLocale = locale || 'ar';
+  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
   const [reviewFilter, setReviewFilter] = useState<'all' | 'wrong' | 'flagged'>('all');
   const [chartType, setChartType] = useState<'pie' | 'bar'>('pie');
   const [showShareModal, setShowShareModal] = useState(false);
-  const [userName, setUserName] = useState('سائق المستقبل');
+  const [userName, setUserName] = useState(t.futureDriver || (currentLocale === 'en' ? 'Future Driver' : 'سائق المستقبل'));
   const [copiedLink, setCopiedLink] = useState(false);
   const certificateRef = useRef<HTMLDivElement>(null);
 
@@ -133,21 +138,25 @@ export const TestResults: React.FC<TestResultsProps> = ({
   const formatTime = (totalSecs: number) => {
     const mins = Math.floor(totalSecs / 60);
     const secs = totalSecs % 60;
-    return `${mins} دقيقة و ${secs} ثانية`;
+    return t.minutesAndSeconds.replace('%mins%', String(mins)).replace('%secs%', String(secs));
   };
 
   const avgSecondsPerQuestion = totalQuestions > 0 ? Math.round(timeSpentSeconds / totalQuestions) : 0;
 
   // Social Share
   const handleShareWhatsApp = () => {
-    const text = `🎉 حققت نتيجة ${scorePercentage}% (${passed ? 'ناجح ✅' : 'تدريب 🚗'}) في محاكي اختبار القيادة النظري المعتمد لـ ${country.name} على منصة اجتياز!\nجرب اختبارك الآن مجاناً: ${window.location.href}`;
+    const passedLabel = passed ? (locale === 'ar' ? 'ناجح ✅' : 'Passed ✅') : (locale === 'ar' ? 'تدريب 🚗' : 'Practice 🚗');
+    const text = locale === 'ar' 
+      ? `🎉 حققت نتيجة ${scorePercentage}% (${passedLabel}) في محاكي اختبار القيادة النظري المعتمد لـ ${country.name} على منصة اجتياز!\nجرب اختبارك الآن مجاناً: ${window.location.href}`
+      : `🎉 I scored ${scorePercentage}% (${passedLabel}) on the ${country.name} Driving Theory Simulator at Ijtiaz!\nTry it yourself: ${window.location.href}`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const handleCopyShareLink = () => {
-    navigator.clipboard.writeText(
-      `حصلت على ${scorePercentage}% في اختبار قيادة ${country.name} على منصة اجتياز: ${window.location.href}`
-    );
+    const text = locale === 'ar'
+      ? `حصلت على ${scorePercentage}% في اختبار قيادة ${country.name} على منصة اجتياز: ${window.location.href}`
+      : `I scored ${scorePercentage}% on the ${country.name} Driving Test at Ijtiaz: ${window.location.href}`;
+    navigator.clipboard.writeText(text);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
   };
@@ -188,13 +197,13 @@ export const TestResults: React.FC<TestResultsProps> = ({
             </div>
             
             <h1 className="text-2xl sm:text-3xl font-black">
-              {passed ? 'مبروك! لقد اجتزت الاختبار بنجاح' : 'تحتاج لمزيد من التدريب لاجتياز الاختبار'}
+              {passed ? t.passTitle : t.failTitle}
             </h1>
             
             <p className="text-xs sm:text-sm text-slate-300">
               {passed
-                ? `أداؤك متميز وتجاوزت نسبة النجاح المطلوبة (${country.passingScorePercentage}%) المعتمدة رسمياً.`
-                : `نسبة النجاح المطلوبة هي ${country.passingScorePercentage}%. راجع الأسئلة الخاطئة وأعد المحاولة.`}
+                ? t.passDesc.replace('%score%', String(country.passingScorePercentage))
+                : t.failDesc.replace('%score%', String(country.passingScorePercentage))}
             </p>
           </div>
 
@@ -204,21 +213,21 @@ export const TestResults: React.FC<TestResultsProps> = ({
               <div className="text-3xl sm:text-4xl font-black font-mono text-blue-400">
                 {scorePercentage}%
               </div>
-              <div className="text-[11px] text-slate-400 font-bold">النسبة المئوية</div>
+              <div className="text-[11px] text-slate-400 font-bold">{t.scoreLabel}</div>
             </div>
 
             <div className="space-y-1 border-x border-slate-700">
               <div className="text-3xl sm:text-4xl font-black font-mono text-green-400">
                 {correctCount}/{totalQuestions}
               </div>
-              <div className="text-[11px] text-slate-400 font-bold">الإجابات الصحيحة</div>
+              <div className="text-[11px] text-slate-400 font-bold">{t.correctLabel}</div>
             </div>
 
             <div className="space-y-1">
               <div className="text-3xl sm:text-4xl font-black font-mono text-red-400">
                 {totalQuestions - correctCount}
               </div>
-              <div className="text-[11px] text-slate-400 font-bold">الإجابات الخاطئة</div>
+              <div className="text-[11px] text-slate-400 font-bold">{t.wrongLabel}</div>
             </div>
           </div>
 
@@ -231,7 +240,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
               className="bg-blue-600 hover:bg-blue-500 text-white text-xs sm:text-sm font-black px-6 py-3 rounded-2xl shadow-lg shadow-blue-500/30 transition-all flex items-center gap-2 cursor-pointer"
             >
               <Share2 className="w-4 h-4" />
-              <span>مشاركة النتيجة وإصدار الشهادة</span>
+              <span>{t.shareResults}</span>
             </button>
 
             <button
@@ -240,7 +249,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
               className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 text-xs sm:text-sm font-bold px-5 py-3 rounded-2xl transition-all flex items-center gap-2 cursor-pointer"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>إعادة الاختبار بنموذج جديد</span>
+              <span>{t.retakeFull}</span>
             </button>
 
             {wrongQuestions.length > 0 && (
@@ -250,7 +259,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                 className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs sm:text-sm font-bold px-5 py-3 rounded-2xl transition-all flex items-center gap-2 cursor-pointer"
               >
                 <AlertTriangle className="w-4 h-4" />
-                <span>إعادة حل الأسئلة الخاطئة فقط ({wrongQuestions.length})</span>
+                <span>{t.retakeWrong.replace('%count%', String(wrongQuestions.length))}</span>
               </button>
             )}
 
@@ -259,7 +268,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
               className="text-xs text-slate-400 hover:text-white px-3 py-2 transition-colors flex items-center gap-1 cursor-pointer"
             >
               <Home className="w-3.5 h-3.5" />
-              <span>الرئيسية</span>
+              <span>{t.home}</span>
             </button>
 
           </div>
@@ -277,25 +286,25 @@ export const TestResults: React.FC<TestResultsProps> = ({
         <div className="bg-[#1E293B] rounded-3xl border border-slate-700/80 p-6 shadow-xl space-y-4">
           <h3 className="text-base font-black text-slate-100 flex items-center gap-2">
             <Clock className="w-5 h-5 text-blue-400" />
-            <span>تحليل الوقت وسرعة الاستجابة</span>
+            <span>{t.timeAnalysis}</span>
           </h3>
 
           <div className="grid grid-cols-2 gap-3 pt-1">
             <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-1">
-              <div className="text-xs font-semibold text-slate-400">إجمالي الوقت المستغرق</div>
+              <div className="text-xs font-semibold text-slate-400">{t.totalTime}</div>
               <div className="text-base font-black text-slate-100">{formatTime(timeSpentSeconds)}</div>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-1">
-              <div className="text-xs font-semibold text-slate-400">متوسط الوقت لكل سؤال</div>
-              <div className="text-base font-black text-slate-100">{avgSecondsPerQuestion} ثانية</div>
+              <div className="text-xs font-semibold text-slate-400">{t.avgTimePerQuestion}</div>
+              <div className="text-base font-black text-slate-100">{avgSecondsPerQuestion} {t.seconds}</div>
             </div>
           </div>
 
           <div className="p-3.5 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300 leading-relaxed font-medium">
             {avgSecondsPerQuestion < 35
-              ? '⚡ سرعة إجابتك ممتازة جداً وتمنحك وقتاً كافياً لمراجعة الأسئلة في قاعة الفحص.'
-              : '💡 يُفضل التدريب على سرعة قراءة السؤال لتفادي انتهاء وقت الامتحان الرسمي.'}
+              ? t.fastTimeFeedback
+              : t.slowTimeFeedback}
           </div>
         </div>
 
@@ -304,7 +313,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-700/80 pb-3">
             <h3 className="text-base font-black text-slate-100 flex items-center gap-2">
               <Target className="w-5 h-5 text-blue-400" />
-              <span>مستوى الأداء حسب الأقسام والمواضيع</span>
+              <span>{t.performanceTitle}</span>
             </h3>
 
             {/* Chart Type Toggle Tabs */}
@@ -319,7 +328,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                 }`}
               >
                 <PieChartIcon className="w-3.5 h-3.5" />
-                <span>دائري</span>
+                <span>{t.chartPie}</span>
               </button>
 
               <button
@@ -332,7 +341,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                 }`}
               >
                 <BarChart3 className="w-3.5 h-3.5" />
-                <span>أعمدة</span>
+                <span>{t.chartBar}</span>
               </button>
             </div>
           </div>
@@ -368,8 +377,8 @@ export const TestResults: React.FC<TestResultsProps> = ({
                       boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
                     }}
                     formatter={(value: any, name: any, item: any) => [
-                      `${value}% (الإجابات الصحيحة: ${item.payload.correct} من ${item.payload.total})`,
-                      'نسبة الإنجاز',
+                      t.chartTooltip.replace('%value%', String(value)).replace('%correct%', String(item.payload.correct)).replace('%total%', String(item.payload.total)),
+                      t.chartTarget,
                     ]}
                   />
                 </PieChart>
@@ -397,7 +406,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                       fontSize: '12px',
                       fontWeight: 'bold',
                     }}
-                    formatter={(value: any) => [`${value}%`, 'نسبة الإنجاز']}
+                    formatter={(value: any) => [`${value}%`, t.chartTarget]}
                   />
                   <Bar dataKey="percentage" radius={[8, 8, 0, 0]}>
                     {categoryChartData.map((entry, index) => (
@@ -419,7 +428,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                     <span>{data.name}</span>
                   </span>
                   <span className="font-mono text-slate-400">
-                    {data.correct} من {data.total} ({data.percentage}%)
+                    {data.correct} {locale === 'ar' ? 'من' : 'of'} {data.total} ({data.percentage}%)
                   </span>
                 </div>
                 <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
@@ -445,10 +454,10 @@ export const TestResults: React.FC<TestResultsProps> = ({
           <div>
             <h2 className="text-lg sm:text-xl font-black text-slate-100 flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-blue-400" />
-              <span>مراجعة الأسئلة وتوضيح الإجابات</span>
+              <span>{t.reviewTitle}</span>
             </h2>
             <p className="text-xs text-slate-400">
-              استعرض إجاباتك مع التفسير الكامل وتبرير كل قاعدة مرورية
+              {t.reviewDesc}
             </p>
           </div>
 
@@ -462,7 +471,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              الكل ({totalQuestions})
+              {t.filterAll} ({totalQuestions})
             </button>
 
             <button
@@ -473,7 +482,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              الخاطئة فقط ({wrongQuestions.length})
+              {t.filterWrong} ({wrongQuestions.length})
             </button>
 
             <button
@@ -484,7 +493,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              المميزة ({flaggedQuestionIds.length})
+              {t.filterFlagged} ({flaggedQuestionIds.length})
             </button>
           </div>
         </div>
@@ -493,7 +502,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
         <div className="space-y-4">
           {filteredQuestions.length === 0 ? (
             <div className="text-center py-10 text-slate-400 text-xs">
-              لا توجد أسئلة تطابق هذا التصنيف.
+              {t.noQuestionsFound}
             </div>
           ) : (
             filteredQuestions.map((q) => {
@@ -520,7 +529,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                         {isCorrect ? '✓' : '✗'}
                       </span>
                       <span className="text-xs font-bold text-slate-400">
-                        السؤال {questions.findIndex((item) => item.id === q.id) + 1}
+                        {t.questionLabel} {questions.findIndex((item) => item.id === q.id) + 1}
                       </span>
                       <span className="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-medium border border-slate-700">
                         {q.categoryName}
@@ -530,7 +539,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                     {isFlagged && (
                       <span className="text-[10px] font-bold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full flex items-center gap-1 border border-amber-500/30">
                         <Bookmark className="w-3 h-3 fill-amber-400" />
-                        مميز بنجمة
+                        {t.filterFlagged}
                       </span>
                     )}
                   </div>
@@ -576,13 +585,13 @@ export const TestResults: React.FC<TestResultsProps> = ({
                             {isTheRightAnswer && (
                               <span className="text-green-400 flex items-center gap-1">
                                 <CheckCircle2 className="w-3.5 h-3.5" />
-                                الإجابة الصحيحة
+                                {t.correctAnswer}
                               </span>
                             )}
                             {isUserChoice && !isCorrect && (
                               <span className="text-red-400 flex items-center gap-1">
                                 <XCircle className="w-3.5 h-3.5" />
-                                اختيارك الخاطئ
+                                {t.yourWrongAnswer}
                               </span>
                             )}
                           </div>
@@ -595,7 +604,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                   <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-slate-300 space-y-1">
                     <div className="font-bold text-blue-400 flex items-center gap-1">
                       <Info className="w-3.5 h-3.5 text-blue-400" />
-                      <span>التفسير والشرح:</span>
+                      <span>{t.explanationLabel}</span>
                     </div>
                     <p className="text-slate-400 leading-relaxed">{q.explanation}</p>
                   </div>
@@ -616,7 +625,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
             <div className="flex items-center justify-between border-b border-slate-700/80 pb-3">
               <h3 className="text-lg font-black text-white flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-blue-400" />
-                <span>شهادة وبطاقة نتيجة الاختبار (قابلة للمشاركة)</span>
+                <span>{t.certificateTitle}</span>
               </h3>
               <button
                 type="button"
@@ -629,12 +638,12 @@ export const TestResults: React.FC<TestResultsProps> = ({
 
             {/* Custom Name Input */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-300">اكتب اسمك ليظهر على الشهادة:</label>
+              <label className="text-xs font-bold text-slate-300">{t.nameOnCertificate}</label>
               <input
                 type="text"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-                placeholder="اسمك الكامل"
+                placeholder={t.fullNamePlaceholder}
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-800 text-xs font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -649,40 +658,40 @@ export const TestResults: React.FC<TestResultsProps> = ({
               
               <div className="space-y-1 pt-2">
                 <div className="text-xs text-blue-400 font-bold tracking-widest uppercase">
-                  شهادة إنجاز محاكاة اختبار القيادة
+                  {t.certHeading}
                 </div>
-                <h4 className="text-xl font-black text-white">منصة اجتياز الذكية</h4>
+                <h4 className="text-xl font-black text-white">{t.certSubheading}</h4>
               </div>
 
               <div className="py-2 space-y-1 border-y border-white/10">
-                <div className="text-xs text-slate-300">تشهد المنصة بأن المتدرب:</div>
-                <div className="text-lg font-black text-blue-300">{userName || 'سائق المستقبل'}</div>
+                <div className="text-xs text-slate-300">{t.certStudentLabel}</div>
+                <div className="text-lg font-black text-blue-300">{userName || t.futureDriver}</div>
                 <div className="text-xs text-slate-300">
-                  قد أتم بنجاح محاكاة اختبار القيادة النظري لـ <strong>{country.name}</strong>
+                  {t.certSuccessDesc} <strong>{country.name}</strong>
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-2 bg-white/5 p-3 rounded-2xl border border-white/10 text-center">
                 <div>
-                  <div className="text-xs text-slate-400">النتيجة</div>
+                  <div className="text-xs text-slate-400">{t.certResult}</div>
                   <div className="text-base font-black text-blue-400">{scorePercentage}%</div>
                 </div>
                 <div className="border-x border-white/10">
-                  <div className="text-xs text-slate-400">الحالة</div>
+                  <div className="text-xs text-slate-400">{t.certStatus}</div>
                   <div className="text-xs font-bold text-white mt-1">
-                    {passed ? 'ناجح معتمد ✅' : 'مكتمل 🚗'}
+                    {passed ? t.certPassed : t.certCompleted}
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400">التاريخ</div>
+                  <div className="text-xs text-slate-400">{t.certDate}</div>
                   <div className="text-xs font-bold text-slate-200 mt-1">
-                    {new Date().toLocaleDateString('ar-SA')}
+                    {new Date().toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1">
-                <span>كود التحقق: IJT-{Math.floor(100000 + Math.random() * 900000)}</span>
+                <span>{t.certCode} IJT-{Math.floor(100000 + Math.random() * 900000)}</span>
                 <span>ijtiaz.app</span>
               </div>
             </div>
@@ -694,7 +703,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                 onClick={handleShareWhatsApp}
                 className="w-full py-3 px-4 bg-green-600 hover:bg-green-500 text-white rounded-2xl text-xs font-black shadow-lg shadow-green-600/30 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>مشاركة فورية عبر واتساب (WhatsApp)</span>
+                <span>{t.shareWhatsApp}</span>
               </button>
 
               <div className="grid grid-cols-2 gap-2">
@@ -704,7 +713,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                   className="py-2.5 px-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copiedLink ? 'تم نسخ الرابط!' : 'نسخ رابط النتيجة'}</span>
+                  <span>{copiedLink ? t.linkCopied : t.copyResultLink}</span>
                 </button>
 
                 <button
@@ -713,7 +722,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
                   className="py-2.5 px-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Printer className="w-4 h-4" />
-                  <span>طباعة أو حفظ PDF</span>
+                  <span>{t.printPDF}</span>
                 </button>
               </div>
             </div>

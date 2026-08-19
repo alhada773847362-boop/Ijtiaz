@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../hooks/useLanguage';
 
 interface TrafficSignSvgProps {
   signId: string;
@@ -11,6 +12,8 @@ export const TrafficSignSvg: React.FC<TrafficSignSvgProps> = ({
   size = 96,
   className = '',
 }) => {
+  const { t } = useLanguage();
+
   const renderSignContent = () => {
     switch (signId) {
       // 1. STOP SIGN
@@ -19,7 +22,7 @@ export const TrafficSignSvg: React.FC<TrafficSignSvgProps> = ({
           <svg width={size} height={size} viewBox="0 0 100 100" fill="none" className="drop-shadow-sm">
             <polygon points="30,5 70,5 95,30 95,70 70,95 30,95 5,70 5,30" fill="#dc2626" stroke="#ffffff" strokeWidth="3" />
             <polygon points="31,8 69,8 92,31 92,69 69,92 31,92 8,69 8,31" fill="#dc2626" stroke="#b91c1c" strokeWidth="1" />
-            <text x="50" y="47" textAnchor="middle" fill="#ffffff" fontSize="20" fontWeight="900" fontFamily="Cairo, Tajawal, sans-serif">قف</text>
+            <text x="50" y="47" textAnchor="middle" fill="#ffffff" fontSize="20" fontWeight="900" fontFamily="Cairo, Tajawal, sans-serif">{t.stopSignText}</text>
             <text x="50" y="66" textAnchor="middle" fill="#ffffff" fontSize="13" fontWeight="800" letterSpacing="1" fontFamily="sans-serif">STOP</text>
           </svg>
         );
@@ -30,8 +33,8 @@ export const TrafficSignSvg: React.FC<TrafficSignSvgProps> = ({
           <svg width={size} height={size} viewBox="0 0 100 100" fill="none" className="drop-shadow-sm">
             <polygon points="50,92 8,14 92,14" fill="#dc2626" />
             <polygon points="50,76 18,22 82,22" fill="#ffffff" />
-            <text x="50" y="46" textAnchor="middle" fill="#dc2626" fontSize="12" fontWeight="900" fontFamily="Cairo, sans-serif">أعطِ</text>
-            <text x="50" y="60" textAnchor="middle" fill="#dc2626" fontSize="10" fontWeight="800" fontFamily="Cairo, sans-serif">الأولوية</text>
+            <text x="50" y="46" textAnchor="middle" fill="#dc2626" fontSize="12" fontWeight="900" fontFamily="Cairo, sans-serif">{t.yieldTop}</text>
+            <text x="50" y="60" textAnchor="middle" fill="#dc2626" fontSize="10" fontWeight="800" fontFamily="Cairo, sans-serif">{t.yieldBottom}</text>
           </svg>
         );
 
@@ -307,7 +310,7 @@ export const TrafficSignSvg: React.FC<TrafficSignSvgProps> = ({
         return (
           <svg width={size} height={size} viewBox="0 0 100 100" fill="none" className="drop-shadow-sm">
             <circle cx="50" cy="50" r="45" fill="#f1f5f9" stroke="#94a3b8" strokeWidth="4" />
-            <text x="50" y="55" textAnchor="middle" fill="#64748b" fontSize="12" fontWeight="700" fontFamily="Cairo, sans-serif">إشارة مرورية</text>
+            <text x="50" y="55" textAnchor="middle" fill="#64748b" fontSize="12" fontWeight="700" fontFamily="Cairo, sans-serif">{t.trafficSignDefault}</text>
           </svg>
         );
     }
@@ -321,10 +324,12 @@ export const RoadSituationDiagram: React.FC<{
   type: 'intersection_1' | 'roundabout_1' | 'overtaking_1' | 'parking_1';
   size?: number;
 }> = ({ type, size = 260 }) => {
+  const { t } = useLanguage();
+
   if (type === 'intersection_1') {
     return (
       <div className="bg-slate-800 p-3 rounded-xl border border-slate-700 shadow-md text-white">
-        <div className="text-xs text-amber-400 font-bold mb-2 text-center">مخطط أسبقية المرور عند التقاطع غير المنظم</div>
+        <div className="text-xs text-amber-400 font-bold mb-2 text-center">{t.intersectionTitle}</div>
         <svg width="100%" height="180" viewBox="0 0 300 200" fill="none">
           {/* Roads */}
           <rect x="0" y="65" width="300" height="70" fill="#334155" />
@@ -364,7 +369,7 @@ export const RoadSituationDiagram: React.FC<{
   if (type === 'roundabout_1') {
     return (
       <div className="bg-slate-800 p-3 rounded-xl border border-slate-700 shadow-md text-white">
-        <div className="text-xs text-amber-400 font-bold mb-2 text-center">أولوية السير داخل الدوار</div>
+        <div className="text-xs text-amber-400 font-bold mb-2 text-center">{t.roundaboutTitle}</div>
         <svg width="100%" height="180" viewBox="0 0 300 200" fill="none">
           {/* Roundabout Island */}
           <circle cx="150" cy="100" r="35" fill="#1e293b" stroke="#10b981" strokeWidth="4" />
@@ -383,7 +388,7 @@ export const RoadSituationDiagram: React.FC<{
             <text x="10" y="20" fill="#ffffff" fontSize="11" fontWeight="900" textAnchor="middle">B</text>
           </g>
           
-          <text x="150" y="105" textAnchor="middle" fill="#6ee7b7" fontSize="11" fontWeight="700">جزيرة الدوار</text>
+          <text x="150" y="105" textAnchor="middle" fill="#6ee7b7" fontSize="11" fontWeight="700">{t.roundaboutIsland}</text>
         </svg>
       </div>
     );

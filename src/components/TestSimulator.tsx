@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Clock, 
   ChevronRight, 
@@ -18,12 +19,14 @@ import {
 import { Question, CountryInfo, TestMode } from '../types';
 import { TrafficSignSvg, RoadSituationDiagram } from './TrafficSignSvg';
 import { AdBanner } from './AdBanner';
+import { TRANSLATIONS } from '../data/translations';
 
 interface TestSimulatorProps {
   country: CountryInfo;
   mode: TestMode;
   questions: Question[];
   isAudioEnabled: boolean;
+  locale?: 'ar' | 'en';
   onFinishTest: (sessionData: {
     questions: Question[];
     userAnswers: Record<string, string>;
@@ -38,9 +41,12 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
   mode,
   questions,
   isAudioEnabled,
+  locale = 'ar',
   onFinishTest,
   onCancelTest,
 }) => {
+  const currentLocale = locale || 'ar';
+  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [flaggedIds, setFlaggedIds] = useState<string[]>([]);
@@ -82,11 +88,11 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
     if (isAudioEnabled && currentQuestion && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(currentQuestion.questionText);
-      utterance.lang = 'ar-SA';
+      utterance.lang = locale === 'ar' ? 'ar-SA' : 'en-US';
       utterance.rate = 0.95;
       window.speechSynthesis.speak(utterance);
     }
-  }, [currentIndex, isAudioEnabled, currentQuestion]);
+  }, [currentIndex, isAudioEnabled, currentQuestion, locale]);
 
   const handleAutoSubmit = () => {
     const timeSpent = totalTimeLimitSeconds - remainingSeconds;
@@ -192,10 +198,10 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
             type="button"
             onClick={() => setIsPaletteOpen(true)}
             className="p-2 sm:px-3 sm:py-1.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-300 flex items-center gap-1.5 text-xs font-bold transition-all cursor-pointer"
-            title="عرض خريطة الأسئلة"
+            title={t.questionMap}
           >
             <LayoutGrid className="w-4 h-4 text-blue-400" />
-            <span className="hidden sm:inline">خريطة الأسئلة</span>
+            <span className="hidden sm:inline">{t.questionMap}</span>
             <span className="text-blue-400 font-mono">({answeredCount}/{questions.length})</span>
           </button>
         </div>
@@ -204,7 +210,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
         <div className="flex items-center gap-4 sm:gap-6">
           
           <div className="flex flex-col items-end">
-            <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">الوقت المتبقي</span>
+            <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">{t.remainingTime}</span>
             <div
               className={`text-2xl sm:text-3xl font-mono font-bold transition-colors ${
                 isTimeCritical ? 'text-red-400 animate-pulse' : 'text-amber-400'
@@ -229,7 +235,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
             onClick={() => setShowFinishConfirm(true)}
             className="bg-blue-600 hover:bg-blue-500 active:scale-98 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/30 transition-all cursor-pointer"
           >
-            تسليم الاختبار
+            {t.submitTest}
           </button>
 
           {/* Exit button */}
@@ -237,7 +243,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
             type="button"
             onClick={() => setShowExitConfirm(true)}
             className="text-slate-400 hover:text-red-400 p-1.5 transition-colors cursor-pointer"
-            title="خروج من الاختبار"
+            title={t.exitTest}
           >
             <XCircle className="w-5 h-5" />
           </button>
@@ -253,8 +259,8 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
         <aside className="hidden lg:flex lg:col-span-3 bg-[#0F172A] border border-slate-800 rounded-3xl p-5 flex-col gap-6 shadow-xl sticky top-20">
           <div>
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center justify-between">
-              <span>خريطة الأسئلة</span>
-              <span className="text-blue-400 font-mono text-[11px]">{answeredCount} من {questions.length}</span>
+              <span>{t.questionMap}</span>
+              <span className="text-blue-400 font-mono text-[11px]">{answeredCount} {t.footerDesc.includes('in') ? 'of' : 'من'} {questions.length}</span>
             </h3>
             
             <div className="grid grid-cols-5 gap-2 max-h-[320px] overflow-y-auto pr-0.5">
@@ -292,7 +298,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
           {/* Progress gauge */}
           <div className="space-y-2 pt-2 border-t border-slate-800">
             <div className="flex justify-between items-center text-xs">
-              <span className="text-slate-400">درجة الإنجاز</span>
+              <span className="text-slate-400">{t.completionRate}</span>
               <span className="font-mono font-bold text-blue-400">{progressPercent}٪</span>
             </div>
             <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
@@ -316,7 +322,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
             <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
               <div className="flex items-center gap-2">
                 <span className="inline-block px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-bold tracking-wider rounded-full border border-blue-500/20">
-                  السؤال {currentIndex + 1} من {questions.length}
+                  {t.questionCount.replace('%current%', String(currentIndex + 1)).replace('%total%', String(questions.length))}
                 </span>
                 <span className="text-xs text-slate-400 bg-slate-800/60 px-2.5 py-1 rounded-lg border border-slate-700/60 font-medium">
                   {currentQuestion?.categoryName}
@@ -331,12 +337,12 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                     if ('speechSynthesis' in window && currentQuestion) {
                       window.speechSynthesis.cancel();
                       const utterance = new SpeechSynthesisUtterance(currentQuestion.questionText);
-                      utterance.lang = 'ar-SA';
+                      utterance.lang = locale === 'ar' ? 'ar-SA' : 'en-US';
                       window.speechSynthesis.speak(utterance);
                     }
                   }}
                   className="p-2 rounded-lg text-slate-400 hover:text-blue-400 hover:bg-slate-800 transition-colors cursor-pointer"
-                  title="قراءة السؤال صوتياً"
+                  title={t.readQuestion}
                 >
                   <Volume2 className="w-4 h-4" />
                 </button>
@@ -353,110 +359,123 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                   }`}
                 >
                   <Bookmark className={`w-3.5 h-3.5 ${isFlagged ? 'fill-amber-400 text-amber-400' : ''}`} />
-                  <span>{isFlagged ? 'سؤال مميز' : 'تمييز بنجمة'}</span>
+                  <span>{isFlagged ? t.flagged : t.flagAction}</span>
                 </button>
               </div>
             </div>
 
-            {/* Question Text & Embedded Visual Diagram */}
-            <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
-              
-              <div className="space-y-3 flex-1">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-snug text-white">
-                  {currentQuestion?.questionText}
-                </h2>
-              </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentQuestion?.id}
+                initial={{ opacity: 0, x: 25 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -25 }}
+                transition={{ duration: 0.22, ease: 'easeInOut' }}
+                className="space-y-6"
+              >
+                {/* Question Text & Embedded Visual Diagram */}
+                <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+                  
+                  <div className="space-y-3 flex-1">
+                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-snug text-white">
+                      {currentQuestion?.questionText}
+                    </h2>
+                  </div>
 
-              {/* Visual Traffic Sign / Diagram in crisp container */}
-              {currentQuestion?.signId && (
-                <div className="w-44 h-44 bg-white rounded-2xl flex items-center justify-center p-3 shadow-2xl shadow-black/60 shrink-0 border border-slate-700/50">
-                  <TrafficSignSvg signId={currentQuestion.signId} size={110} />
-                </div>
-              )}
-
-              {currentQuestion?.diagramType && (
-                <div className="w-full max-w-sm shrink-0">
-                  <RoadSituationDiagram type={currentQuestion.diagramType} />
-                </div>
-              )}
-
-            </div>
-
-            {/* Multiple Choice Option Buttons (Immersive UI grid cards) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              {currentQuestion?.options.map((option) => {
-                const isSelected = currentAnswer === option.id;
-                const isCorrect = option.id === currentQuestion.correctOptionId;
-                const showPracticeValidation = isPracticeMode && isAnswered;
-
-                let cardStyle = 'bg-slate-800/50 border-2 border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200';
-                let circleStyle = 'border border-slate-600 text-slate-300 group-hover:bg-blue-500 group-hover:border-blue-400 group-hover:text-white';
-
-                if (isSelected) {
-                  cardStyle = 'bg-blue-600/15 border-2 border-blue-500 text-blue-50 shadow-lg shadow-blue-500/10 font-bold';
-                  circleStyle = 'bg-blue-600 border border-blue-400 text-white';
-                }
-
-                if (showPracticeValidation) {
-                  if (isCorrect) {
-                    cardStyle = 'bg-green-600/15 border-2 border-green-500 text-green-50 shadow-lg shadow-green-500/10';
-                    circleStyle = 'bg-green-600 border border-green-400 text-white';
-                  } else if (isSelected && !isCorrect) {
-                    cardStyle = 'bg-red-600/15 border-2 border-red-500 text-red-50 shadow-lg shadow-red-500/10';
-                    circleStyle = 'bg-red-600 border border-red-400 text-white';
-                  }
-                }
-
-                return (
-                  <button
-                    key={option.id}
-                    id={`option-${option.id}`}
-                    type="button"
-                    onClick={() => handleSelectOption(option.id)}
-                    className={`group flex items-center p-5 rounded-2xl transition-all text-right relative overflow-hidden cursor-pointer ${cardStyle}`}
-                  >
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ml-4 shrink-0 transition-colors font-bold text-sm ${circleStyle}`}>
-                      {option.id}
+                  {/* Visual Traffic Sign / Diagram in crisp container */}
+                  {currentQuestion?.signId && (
+                    <div className="w-44 h-44 bg-white rounded-2xl flex items-center justify-center p-3 shadow-2xl shadow-black/60 shrink-0 border border-slate-700/50">
+                      <TrafficSignSvg signId={currentQuestion.signId} size={110} />
                     </div>
-                    <span className="text-sm sm:text-base font-medium leading-relaxed flex-1">
-                      {option.text}
-                    </span>
+                  )}
 
-                    {isSelected && !showPracticeValidation && (
-                      <div className="absolute top-2 left-2 text-blue-400">
-                        <CheckCircle2 className="w-4 h-4" />
-                      </div>
-                    )}
-                    {showPracticeValidation && isCorrect && (
-                      <div className="absolute top-2 left-2 text-green-400">
-                        <CheckCircle2 className="w-4 h-4" />
-                      </div>
-                    )}
-                    {showPracticeValidation && isSelected && !isCorrect && (
-                      <div className="absolute top-2 left-2 text-red-400">
-                        <XCircle className="w-4 h-4" />
-                      </div>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+                  {currentQuestion?.diagramType && (
+                    <div className="w-full max-w-sm shrink-0">
+                      <RoadSituationDiagram type={currentQuestion.diagramType} />
+                    </div>
+                  )}
 
-            {/* In-Test banner placed right below the multiple choice options */}
-            <AdBanner slotType="in_test" adId="simulator-under-options-ad" />
-
-            {/* Practice Mode Explanation Box */}
-            {isPracticeMode && isAnswered && (
-              <div className="p-4 rounded-2xl bg-[#1E293B] border border-blue-500/30 text-slate-200 space-y-2 animate-in fade-in duration-150">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-blue-400">
-                  <Info className="w-4 h-4 text-blue-400" />
-                  <span>التفسير والقاعدة المرورية:</span>
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed font-normal">
-                  {currentQuestion?.explanation}
-                </p>
-              </div>
-            )}
+
+                {/* Multiple Choice Option Buttons (Immersive UI grid cards) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                  {currentQuestion?.options.map((option) => {
+                    const isSelected = currentAnswer === option.id;
+                    const isCorrect = option.id === currentQuestion.correctOptionId;
+                    const showPracticeValidation = isPracticeMode && isAnswered;
+
+                    let cardStyle = 'bg-slate-800/50 border-2 border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200';
+                    let circleStyle = 'border border-slate-600 text-slate-300 group-hover:bg-blue-500 group-hover:border-blue-400 group-hover:text-white';
+
+                    if (isSelected) {
+                      cardStyle = 'bg-blue-600/15 border-2 border-blue-500 text-blue-50 shadow-lg shadow-blue-500/10 font-bold';
+                      circleStyle = 'bg-blue-600 border border-blue-400 text-white';
+                    }
+
+                    if (showPracticeValidation) {
+                      if (isCorrect) {
+                        cardStyle = 'bg-green-600/15 border-2 border-green-500 text-green-50 shadow-lg shadow-green-500/10';
+                        circleStyle = 'bg-green-600 border border-green-400 text-white';
+                      } else if (isSelected && !isCorrect) {
+                        cardStyle = 'bg-red-600/15 border-2 border-red-500 text-red-50 shadow-lg shadow-red-500/10';
+                        circleStyle = 'bg-red-600 border border-red-400 text-white';
+                      }
+                    }
+
+                    return (
+                      <motion.button
+                        key={option.id}
+                        id={`option-${option.id}`}
+                        type="button"
+                        whileHover={{ scale: 1.015 }}
+                        whileTap={{ scale: 0.985 }}
+                        onClick={() => handleSelectOption(option.id)}
+                        className={`group flex items-center p-5 rounded-2xl transition-all text-right relative overflow-hidden cursor-pointer ${cardStyle}`}
+                      >
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ml-4 shrink-0 transition-colors font-bold text-sm ${circleStyle}`}>
+                          {option.id}
+                        </div>
+                        <span className="text-sm sm:text-base font-medium leading-relaxed flex-1">
+                          {option.text}
+                        </span>
+
+                        {isSelected && !showPracticeValidation && (
+                          <div className="absolute top-2 left-2 text-blue-400">
+                            <CheckCircle2 className="w-4 h-4" />
+                          </div>
+                        )}
+                        {showPracticeValidation && isCorrect && (
+                          <div className="absolute top-2 left-2 text-green-400">
+                            <CheckCircle2 className="w-4 h-4" />
+                          </div>
+                        )}
+                        {showPracticeValidation && isSelected && !isCorrect && (
+                          <div className="absolute top-2 left-2 text-red-400">
+                            <XCircle className="w-4 h-4" />
+                          </div>
+                        )}
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
+                {/* In-Test banner placed right below the multiple choice options */}
+                <AdBanner slotType="in_test" adId="simulator-under-options-ad" />
+
+                {/* Practice Mode Explanation Box */}
+                {isPracticeMode && isAnswered && (
+                  <div className="p-4 rounded-2xl bg-[#1E293B] border border-blue-500/30 text-slate-200 space-y-2 animate-in fade-in duration-150">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-blue-400">
+                      <Info className="w-4 h-4 text-blue-400" />
+                      <span>{t.explanationTitle}</span>
+                    </div>
+                    <p className="text-xs text-slate-300 leading-relaxed font-normal">
+                      {currentQuestion?.explanation}
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
 
           </div>
 
@@ -475,8 +494,8 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                     : 'bg-slate-700 text-slate-100 hover:bg-slate-600'
                 }`}
               >
-                <ChevronRight className="w-4 h-4" />
-                <span>السابق</span>
+                <ChevronRight className={`w-4 h-4 ${locale === 'ar' ? '' : 'rotate-180'}`} />
+                <span>{t.prev}</span>
               </button>
 
               <button
@@ -485,16 +504,16 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                 onClick={handleSkip}
                 className="px-5 py-2.5 border border-slate-700 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-xl font-bold transition-colors cursor-pointer text-xs sm:text-sm"
               >
-                تخطي
+                {t.skip}
               </button>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="hidden sm:block text-left ml-2">
-                <div className="text-[10px] uppercase text-slate-500 font-bold tracking-widest">حفظ تلقائي</div>
+                <div className="text-[10px] uppercase text-slate-500 font-bold tracking-widest">{t.autoSave}</div>
                 <div className="text-[10px] text-green-400 font-medium flex items-center gap-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  <span>متصل بالنظام</span>
+                  <span>{t.systemConnected}</span>
                 </div>
               </div>
 
@@ -504,8 +523,8 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                 onClick={handleNext}
                 className="px-8 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold shadow-lg shadow-blue-500/30 hover:translate-y-[-1px] transition-all flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
               >
-                <span>{currentIndex === questions.length - 1 ? 'مراجعة وتسليم' : 'السؤال التالي'}</span>
-                <ChevronLeft className="w-4 h-4" />
+                <span>{currentIndex === questions.length - 1 ? t.reviewSubmit : t.next}</span>
+                <ChevronLeft className={`w-4 h-4 ${locale === 'ar' ? '' : 'rotate-180'}`} />
               </button>
             </div>
 
@@ -526,7 +545,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
             <div className="flex items-center justify-between border-b border-slate-700/80 pb-3">
               <h3 className="text-base font-black text-slate-100 flex items-center gap-2">
                 <LayoutGrid className="w-5 h-5 text-blue-400" />
-                <span>لوحة التنقل السريع بين الأسئلة</span>
+                <span>{t.paletteTitle}</span>
               </h3>
               <button
                 type="button"
@@ -541,15 +560,15 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
             <div className="grid grid-cols-3 gap-2 text-[11px] font-bold text-slate-300 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">
               <div className="flex items-center gap-1.5">
                 <div className="w-3.5 h-3.5 rounded bg-green-500/30 border border-green-500/50" />
-                <span>تمت الإجابة ({answeredCount})</span>
+                <span>{t.answered} ({answeredCount})</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3.5 h-3.5 rounded bg-amber-500/30 border border-amber-500/50" />
-                <span>مميز بنجمة ({flaggedIds.length})</span>
+                <span>{t.flagged} ({flaggedIds.length})</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-3.5 h-3.5 rounded bg-slate-700" />
-                <span>لم يُجب ({questions.length - answeredCount})</span>
+                <span>{t.unanswered} ({questions.length - answeredCount})</span>
               </div>
             </div>
 
@@ -594,7 +613,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                 onClick={() => setIsPaletteOpen(false)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-500 transition-colors"
               >
-                إغلاق والعودة للاختبار
+                {t.closeReturn}
               </button>
             </div>
 
@@ -610,13 +629,13 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
               📝
             </div>
             <h3 className="text-lg font-black text-white">
-              هل أنت متأكد من إنهاء وتسليم الاختبار؟
+              {t.confirmSubmitTitle}
             </h3>
             <div className="text-xs text-slate-300 space-y-1">
-              <p>لقد أجبت على <strong>{answeredCount}</strong> من أصل <strong>{questions.length}</strong> سؤالاً.</p>
+              <p dangerouslySetInnerHTML={{ __html: t.answeredSummary.replace('%count%', String(answeredCount)).replace('%total%', String(questions.length)) }} />
               {questions.length - answeredCount > 0 && (
                 <p className="text-amber-400 font-bold">
-                  تنبيه: لديك {questions.length - answeredCount} سؤالاً بدون إجابة سيتم احتسابها خاطئة.
+                  {t.unansweredWarning.replace('%count%', String(questions.length - answeredCount))}
                 </p>
               )}
             </div>
@@ -627,7 +646,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                 onClick={() => setShowFinishConfirm(false)}
                 className="py-2.5 px-4 rounded-xl border border-slate-700 text-slate-300 text-xs font-bold hover:bg-slate-800"
               >
-                متابعة الحل
+                {t.continueSolving}
               </button>
               <button
                 id="confirm-submit-test-btn"
@@ -635,7 +654,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                 onClick={handleConfirmFinish}
                 className="py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-black shadow-lg shadow-blue-500/20 cursor-pointer"
               >
-                نعم، تسليم الاختبار
+                {t.yesSubmit}
               </button>
             </div>
           </div>
@@ -650,10 +669,10 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
               ⚠️
             </div>
             <h3 className="text-lg font-black text-white">
-              هل تريد إلغاء الاختبار والعودة للرئيسية؟
+              {t.exitConfirmTitle}
             </h3>
             <p className="text-xs text-slate-400">
-              لن يتم حفظ تقدمك في هذا الاختبار إذا خرجت الآن.
+              {t.exitConfirmDesc}
             </p>
 
             <div className="grid grid-cols-2 gap-3 pt-3">
@@ -662,14 +681,14 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
                 onClick={() => setShowExitConfirm(false)}
                 className="py-2.5 px-4 rounded-xl border border-slate-700 text-slate-300 text-xs font-bold hover:bg-slate-800"
               >
-                البقاء في الاختبار
+                {t.stayInTest}
               </button>
               <button
                 type="button"
                 onClick={onCancelTest}
                 className="py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-black shadow-md shadow-red-600/20 cursor-pointer"
               >
-                نعم، إلغاء وخروج
+                {t.yesExit}
               </button>
             </div>
           </div>

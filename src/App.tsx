@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { CountryInfo, TestMode, Question, TestHistoryItem, CountryId } from './types';
 import { COUNTRIES_DATA } from './data/countriesData';
-import { getQuestionsForTest, QUESTIONS_BANK } from './data/questionsData';
+import { getQuestionsForTest } from './data/questionsData';
+import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from './data/translations';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { LandingView } from './components/LandingView';
@@ -13,20 +15,85 @@ import { PastTestsHistory } from './components/PastTestsHistory';
 import { HilltopAdsLoader } from './components/HilltopAdsLoader';
 import { AdBanner } from './components/AdBanner';
 
+export const LanguageContext = createContext<{
+  t: any;
+  locale: 'ar' | 'en';
+  setLocale: React.Dispatch<React.SetStateAction<'ar' | 'en'>>;
+} | null>(null);
+
 export default function App() {
+  // Helper to parse country code and sub-view from URL path
+  const getRouteFromPath = () => {
+    if (typeof window === 'undefined') {
+      return { country: COUNTRIES_DATA.sa, view: 'home' as const };
+    }
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const countrySlug = pathParts[0]?.toLowerCase();
+    
+    let country = COUNTRIES_DATA.sa;
+    if (countrySlug && COUNTRIES_DATA[countrySlug as CountryId]) {
+      country = COUNTRIES_DATA[countrySlug as CountryId];
+    } else {
+      // Graceful fallback from localStorage if path doesn't contain valid country
+      const savedCountryId = localStorage.getItem('ijtiaz_selected_country') as CountryId;
+      if (savedCountryId && COUNTRIES_DATA[savedCountryId]) {
+        country = COUNTRIES_DATA[savedCountryId];
+      }
+    }
+    
+    const subView = pathParts[1]?.toLowerCase();
+    let view: 'home' | 'test' | 'results' | 'signs' | 'violations' | 'history' = 'home';
+    if (subView === 'test') view = 'test';
+    else if (subView === 'signs') view = 'signs';
+    else if (subView === 'violations') view = 'violations';
+    else if (subView === 'history') view = 'history';
+    
+    return { country, view };
+  };
+
+  const initialRoute = getRouteFromPath();
+
   // Navigation View
   const [currentView, setCurrentView] = useState<
     'home' | 'test' | 'results' | 'signs' | 'violations' | 'history'
-  >('home');
+  >(initialRoute.view);
 
   // Selected Country (default Saudi Arabia, with localStorage persistence)
-  const [selectedCountry, setSelectedCountry] = useState<CountryInfo>(() => {
-    const savedCountryId = localStorage.getItem('ijtiaz_selected_country') as CountryId;
-    if (savedCountryId && COUNTRIES_DATA[savedCountryId]) {
-      return COUNTRIES_DATA[savedCountryId];
-    }
-    return COUNTRIES_DATA.sa;
+  const [selectedCountry, setSelectedCountry] = useState<CountryInfo>(initialRoute.country);
+
+  // Locale (default 'ar')
+  const [locale, setLocale] = useState<'ar' | 'en'>(() => {
+    return (localStorage.getItem('ijtiaz_selected_locale') as 'ar' | 'en') || 'ar';
   });
+
+  const t = TRANSLATIONS[locale];
+
+  useEffect(() => {
+    document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = locale;
+    localStorage.setItem('ijtiaz_selected_locale', locale);
+
+    // Update Meta Tags for SEO
+    const countryName = locale === 'ar' ? selectedCountry.name : (COUNTRY_TRANSLATIONS[selectedCountry.id]?.name || selectedCountry.name);
+    const defaultTitle = locale === 'ar' ? `منصة اجتياز - اختبار القيادة النظري ${countryName}` : `Ijtiaz - ${countryName} Driving Theory Test`;
+    
+    // Check if country has custom SEO data
+    const seoData = selectedCountry.seo?.[locale];
+    
+    document.title = seoData ? seoData.keywords.split(',')[0] : defaultTitle;
+    
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', seoData ? seoData.description : selectedCountry.description);
+  }, [locale, selectedCountry]);
+
+  const handleToggleLocale = () => {
+    setLocale((prev) => (prev === 'ar' ? 'en' : 'ar'));
+  };
 
   // Audio Voice Reader setting
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(() => {
@@ -62,10 +129,49 @@ export default function App() {
     timeSpentSeconds: number;
   } | null>(null);
 
-  // Sync selected country to storage
+  // Synchronize state with browser URL changes (for perfect back/forward navigation support)
+  useEffect(() => {
+    const handleUrlSync = () => {
+      const { country, view } = getRouteFromPath();
+      setSelectedCountry(country);
+      setCurrentView(view);
+
+      // Ensure path normalization (redirect "/" to "/sa" or saved country)
+      if (window.location.pathname === '/' || window.location.pathname === '') {
+        window.history.replaceState(null, '', `/${country.id}`);
+      }
+    };
+
+    window.addEventListener('popstate', handleUrlSync);
+    // Trigger initial sync and normalization
+    handleUrlSync();
+
+    return () => {
+      window.removeEventListener('popstate', handleUrlSync);
+    };
+  }, []);
+
+  // Sync selected country to storage and push new URL path
   const handleSelectCountry = (country: CountryInfo) => {
     setSelectedCountry(country);
     localStorage.setItem('ijtiaz_selected_country', country.id);
+
+    // Keep the current subview in URL if applicable
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const subView = pathParts[1] ? `/${pathParts[1]}` : '';
+    const newPath = `/${country.id}${subView}`;
+
+    window.history.pushState(null, '', newPath);
+    // Dispatch a popstate event to let all components know the URL has updated
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+
+  // Navigate with complete URL path synchronization for SEO indexability
+  const handleNavigate = (view: 'home' | 'test' | 'signs' | 'violations' | 'history') => {
+    setCurrentView(view);
+    const subPath = view === 'home' ? '' : `/${view}`;
+    window.history.pushState(null, '', `/${selectedCountry.id}${subPath}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Toggle Audio
@@ -109,7 +215,7 @@ export default function App() {
         ? 10
         : selectedCountry.totalOfficialQuestions);
 
-    const questions = getQuestionsForTest(selectedCountry.id, mode, questionsCount);
+    const questions = getQuestionsForTest(selectedCountry.id, mode, locale, questionsCount);
     setActiveMode(mode);
     setActiveQuestions(questions);
     setCurrentView('test');
@@ -136,26 +242,19 @@ export default function App() {
     const percentage = Math.round((correctCount / total) * 100);
     const passed = percentage >= selectedCountry.passingScorePercentage;
 
-    const modeLabels: Record<TestMode, string> = {
-      exam: 'اختبار رسمي كامل',
-      practice: 'تدريب تفاعلي',
-      signs_only: 'إشارات المرور',
-      priority_only: 'أولويات السير',
-      quick_10: 'اختبار سريع (10)',
-      hard_questions: 'الأسئلة الصعبة',
-    };
+    const modeLabels = TRANSLATIONS[locale].modeLabels;
 
     // Save to history
     const historyItem: TestHistoryItem = {
       id: 'test_' + Date.now(),
-      date: new Date().toLocaleDateString('ar-SA', {
+      date: new Date().toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
       }),
       countryId: selectedCountry.id,
-      countryName: selectedCountry.name,
-      modeTitle: modeLabels[activeMode] || 'اختبار تجريبي',
+      countryName: locale === 'en' && COUNTRY_TRANSLATIONS[selectedCountry.id] ? COUNTRY_TRANSLATIONS[selectedCountry.id].name : selectedCountry.name,
+      modeTitle: modeLabels[activeMode] || 'Test',
       score: correctCount,
       totalQuestions: total,
       percentage,
@@ -207,22 +306,22 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B1120] text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white">
-      
-      {/* HilltopAds Global Script & Direct Link Engine */}
-      <HilltopAdsLoader />
+    <LanguageContext.Provider value={{ t, locale, setLocale }}>
+      <div className="min-h-screen bg-[#0B1120] text-slate-100 flex flex-col selection:bg-blue-600 selection:text-white">
+        
+        {/* HilltopAds Global Script & Direct Link Engine */}
+        <HilltopAdsLoader />
 
       {/* Top Navigation */}
       <Navbar
         currentView={currentView === 'results' ? 'test' : currentView}
-        onNavigate={(view) => {
-          setCurrentView(view);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onNavigate={handleNavigate}
         selectedCountry={selectedCountry}
         onSelectCountry={handleSelectCountry}
         isAudioEnabled={isAudioEnabled}
         onToggleAudio={handleToggleAudio}
+        locale={locale}
+        onToggleLocale={handleToggleLocale}
       />
 
       {/* Main Content Area */}
@@ -231,76 +330,79 @@ export default function App() {
         {/* Responsive Leaderboard banner on EVERY page */}
         <AdBanner slotType="leaderboard" adId="global-top-leaderboard" className="max-w-5xl my-3" />
         
-        {currentView === 'home' && (
-          <LandingView
-            selectedCountry={selectedCountry}
-            onSelectCountry={handleSelectCountry}
-            onStartTest={handleStartTest}
-            onNavigateToSigns={() => {
-              setCurrentView('signs');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onNavigateToViolations={() => {
-              setCurrentView('violations');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          />
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${selectedCountry.id}-${currentView}`}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.22, ease: 'easeInOut' }}
+          >
+            {currentView === 'home' && (
+              <LandingView
+                selectedCountry={selectedCountry}
+                onSelectCountry={handleSelectCountry}
+                onStartTest={handleStartTest}
+                onNavigateToSigns={() => handleNavigate('signs')}
+                onNavigateToViolations={() => handleNavigate('violations')}
+                locale={locale}
+              />
+            )}
 
-        {currentView === 'test' && (
-          <TestSimulator
-            country={selectedCountry}
-            mode={activeMode}
-            questions={
-              activeQuestions.length > 0
-                ? activeQuestions
-                : getQuestionsForTest(selectedCountry.id, 'exam', selectedCountry.totalOfficialQuestions)
-            }
-            isAudioEnabled={isAudioEnabled}
-            onFinishTest={handleFinishTest}
-            onCancelTest={() => {
-              setCurrentView('home');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          />
-        )}
+            {currentView === 'test' && (
+              <TestSimulator
+                country={selectedCountry}
+                mode={activeMode}
+                questions={
+                  activeQuestions.length > 0
+                    ? activeQuestions
+                    : getQuestionsForTest(selectedCountry.id, 'exam', locale, selectedCountry.totalOfficialQuestions)
+                }
+                isAudioEnabled={isAudioEnabled}
+                locale={locale}
+                onFinishTest={handleFinishTest}
+                onCancelTest={() => handleNavigate('home')}
+              />
+            )}
 
-        {currentView === 'results' && completedResult && (
-          <TestResults
-            country={completedResult.country}
-            mode={completedResult.mode}
-            questions={completedResult.questions}
-            userAnswers={completedResult.userAnswers}
-            flaggedQuestionIds={completedResult.flaggedQuestionIds}
-            timeSpentSeconds={completedResult.timeSpentSeconds}
-            onRetakeFullTest={handleRetakeFullTest}
-            onRetakeWrongOnly={handleRetakeWrongOnly}
-            onBackToHome={() => {
-              setCurrentView('home');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          />
-        )}
+            {currentView === 'results' && completedResult && (
+              <TestResults
+                country={completedResult.country}
+                mode={completedResult.mode}
+                questions={completedResult.questions}
+                userAnswers={completedResult.userAnswers}
+                flaggedQuestionIds={completedResult.flaggedQuestionIds}
+                timeSpentSeconds={completedResult.timeSpentSeconds}
+                locale={locale}
+                onRetakeFullTest={handleRetakeFullTest}
+                onRetakeWrongOnly={handleRetakeWrongOnly}
+                onBackToHome={() => handleNavigate('home')}
+              />
+            )}
 
-        {currentView === 'signs' && (
-          <TrafficSignsGuide
-            onStartSignQuiz={() => {
-              handleStartTest('signs_only', 15);
-            }}
-          />
-        )}
+            {currentView === 'signs' && (
+              <TrafficSignsGuide
+                locale={locale}
+                onStartSignQuiz={() => {
+                  handleStartTest('signs_only', 15);
+                }}
+              />
+            )}
 
-        {currentView === 'violations' && (
-          <ViolationsGuide selectedCountry={selectedCountry} />
-        )}
+            {currentView === 'violations' && (
+              <ViolationsGuide selectedCountry={selectedCountry} locale={locale} />
+            )}
 
-        {currentView === 'history' && (
-          <PastTestsHistory
-            history={testHistory}
-            onClearHistory={handleClearHistory}
-            onStartNewTest={() => handleStartTest('exam')}
-          />
-        )}
+            {currentView === 'history' && (
+              <PastTestsHistory
+                history={testHistory}
+                locale={locale}
+                onClearHistory={handleClearHistory}
+                onStartNewTest={() => handleStartTest('exam')}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
 
         {/* Responsive Rectangle banner on EVERY page */}
         <AdBanner slotType="rectangle" adId="global-bottom-rectangle" className="max-w-5xl my-4" />
@@ -310,28 +412,26 @@ export default function App() {
       {/* Global Footer */}
       <Footer
         selectedCountry={selectedCountry}
-        onNavigate={(view) => {
-          setCurrentView(view);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onNavigate={handleNavigate}
+        locale={locale}
       />
 
       {/* Premium Dynamic Interstitial Ad Modal */}
       {showInterstitial && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200"
-          dir="rtl"
+          dir={locale === 'ar' ? 'rtl' : 'ltr'}
         >
           <div className="max-w-md w-full bg-[#1E293B] border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 text-center animate-in zoom-in-95 duration-200">
             <div className="space-y-1">
               <span className="inline-flex items-center gap-1 text-xs font-black text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3 py-1 rounded-full">
-                💎 إعلان مدعوم • مساحة شريك رسمي
+                {t.interstitialBadge}
               </span>
               <h3 className="text-lg font-black text-white pt-2">
-                جاري توليد نموذج الاختبار لعام 2026...
+                {t.interstitialTitle.replace('%year%', '2026')}
               </h3>
               <p className="text-xs text-slate-400 leading-relaxed">
-                يرجى الانتظار بضع ثوانٍ لتجهيز الأسئلة الرسمية لـ {selectedCountry.name}.
+                {t.interstitialSub.replace('%country%', locale === 'en' && COUNTRY_TRANSLATIONS[selectedCountry.id] ? COUNTRY_TRANSLATIONS[selectedCountry.id].name : selectedCountry.name)}
               </p>
             </div>
 
@@ -348,7 +448,7 @@ export default function App() {
                   className="w-full py-3.5 px-4 bg-slate-800 text-slate-400 rounded-2xl text-xs sm:text-sm font-bold border border-slate-700 flex items-center justify-center gap-2"
                 >
                   <span className="w-4 h-4 rounded-full border-2 border-slate-600 border-t-blue-400 animate-spin shrink-0" />
-                  <span>بدء الاختبار تلقائياً بعد ({interstitialCountdown}) ثوانٍ...</span>
+                  <span>{t.interstitialWaiting.replace('%count%', String(interstitialCountdown))}</span>
                 </button>
               ) : (
                 <button
@@ -356,11 +456,11 @@ export default function App() {
                   onClick={proceedToTest}
                   className="w-full py-3.5 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-xs sm:text-sm font-black shadow-lg shadow-blue-500/30 active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer animate-pulse"
                 >
-                  <span>تخطي وبدء الاختبار الفوري الآن 🚀</span>
+                  <span>{t.interstitialSkip}</span>
                 </button>
               )}
               <p className="text-[10px] text-slate-500 select-none">
-                تدعم هذه المساحة استمرار تقديم شروحات واختبارات القيادة مجاناً.
+                {t.interstitialFooter}
               </p>
             </div>
           </div>
@@ -368,5 +468,6 @@ export default function App() {
       )}
 
     </div>
+    </LanguageContext.Provider>
   );
 }

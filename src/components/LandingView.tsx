@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { CountryInfo, TestMode } from '../types';
 import { COUNTRIES_LIST } from '../data/countriesData';
+import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from '../data/translations';
 import { AdBanner } from './AdBanner';
 import { TrafficSignSvg } from './TrafficSignSvg';
 
@@ -25,6 +26,7 @@ interface LandingViewProps {
   onStartTest: (mode: TestMode, customQuestionsCount?: number) => void;
   onNavigateToSigns: () => void;
   onNavigateToViolations: () => void;
+  locale?: 'ar' | 'en';
 }
 
 export const LandingView: React.FC<LandingViewProps> = ({
@@ -33,7 +35,32 @@ export const LandingView: React.FC<LandingViewProps> = ({
   onStartTest,
   onNavigateToSigns,
   onNavigateToViolations,
+  locale = 'ar',
 }) => {
+  const currentLocale = locale || 'ar';
+  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
+
+  const getCountryName = (cId: string) => {
+    if (locale === 'en' && COUNTRY_TRANSLATIONS[cId]) {
+      return COUNTRY_TRANSLATIONS[cId].name;
+    }
+    return COUNTRIES_LIST.find((c) => c.id === cId)?.name || '';
+  };
+
+  const getCountrySchool = (cId: string) => {
+    if (locale === 'en' && COUNTRY_TRANSLATIONS[cId]) {
+      return COUNTRY_TRANSLATIONS[cId].popularSchool;
+    }
+    return COUNTRIES_LIST.find((c) => c.id === cId)?.popularSchool || '';
+  };
+
+  const getCountryAuthority = (cId: string) => {
+    if (locale === 'en' && COUNTRY_TRANSLATIONS[cId]) {
+      return COUNTRY_TRANSLATIONS[cId].authority;
+    }
+    return COUNTRIES_LIST.find((c) => c.id === cId)?.authority || '';
+  };
+
   return (
     <div className="space-y-12 pb-12 animate-in fade-in duration-200 text-slate-100">
       
@@ -47,25 +74,36 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="absolute top-0 left-0 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 max-w-3xl space-y-6 text-right">
+        <div className="relative z-10 max-w-3xl space-y-6 text-right ltr:text-left">
           
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            <span>المنصة المعتمدة لمحاكاة اختبار القيادة النظري لعام {new Date().getFullYear()}</span>
+            <span>{t.heroBadge.replace('%year%', new Date().getFullYear().toString())}</span>
+          </div>
+
+          {/* Visual Localization Block for High Dwell-time SEO */}
+          <div className="flex items-center gap-2.5 bg-slate-800/80 border border-slate-700/60 rounded-2xl px-4 py-2.5 w-fit shadow-lg shadow-black/10">
+            <span className="text-2xl leading-none" role="img" aria-label={getCountryName(selectedCountry.id)}>{selectedCountry.flag}</span>
+            <span className="text-xs sm:text-sm font-black text-slate-100 flex items-center gap-1.5">
+              <span>{t.heroSimulatorIn}</span>
+              <span className="text-blue-400">{getCountryName(selectedCountry.id)}</span>
+            </span>
           </div>
 
           {/* Heading */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight sm:leading-tight">
-            اجتياز اختبار رخصة القيادة <br className="hidden sm:inline" />
+            {t.heroPassTitle}<br className="hidden sm:inline" />
             <span className="bg-gradient-to-l from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
-              من المحاولة الأولى بكل ثقة
+              {t.heroPassSub}
             </span>
           </h1>
 
           {/* Subtext */}
           <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl font-medium">
-            تدرّب الآن على أحدث نماذج اختبارات الحاسب الآلي الرسمية المعتمدة في <strong className="text-white underline decoration-blue-500 underline-offset-4">{selectedCountry.name}</strong> ({selectedCountry.popularSchool}) مع مؤقت حقيقي وتصحيح فوري وشرح تفصيلي لكافة الإشارات وقواعد السير.
+            {t.heroDesc
+              .replace('%country%', getCountryName(selectedCountry.id))
+              .replace('%school%', getCountrySchool(selectedCountry.id))}
           </p>
 
           {/* Quick CTA Actions */}
@@ -76,8 +114,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
               className="bg-blue-600 hover:bg-blue-500 active:scale-98 text-white text-sm sm:text-base font-black px-6 py-3.5 rounded-2xl shadow-lg shadow-blue-500/30 transition-all flex items-center gap-2.5 cursor-pointer group"
             >
               <Award className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-              <span>ابدأ الاختبار التجريبي الكامل الآن ({selectedCountry.totalOfficialQuestions} سؤال)</span>
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              <span>{t.heroStartFullTest.replace('%count%', selectedCountry.totalOfficialQuestions.toString())}</span>
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform ltr:rotate-180" />
             </button>
 
             <button
@@ -86,7 +124,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs sm:text-sm font-bold px-5 py-3.5 rounded-2xl transition-all flex items-center gap-2 cursor-pointer"
             >
               <BookOpen className="w-4 h-4 text-blue-400" />
-              <span>استعراض دليل الإشارات</span>
+              <span>{t.heroBrowseSigns}</span>
             </button>
           </div>
 
@@ -94,15 +132,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="pt-4 grid grid-cols-2 sm:grid-cols-3 gap-3 border-t border-slate-700/60 text-xs text-slate-300">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0" />
-              <span>نسبة اجتياز تصل إلى 96.8%</span>
+              <span>{t.trustSuccessRate}</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>مؤقت زمني يماثل قاعة الفحص</span>
+              <span>{t.trustTimer}</span>
             </div>
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0" />
-              <span>مطابق لأنظمة المرور الرسمية</span>
+              <span>{t.trustOfficialSystem}</span>
             </div>
           </div>
 
@@ -110,7 +148,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
         {/* Floating Visual Traffic Signs */}
         <div className="hidden lg:flex absolute left-8 top-1/2 -translate-y-1/2 flex-col items-center gap-4 p-4 rounded-3xl bg-[#0F172A]/80 border border-slate-700 shadow-2xl backdrop-blur-md">
-          <div className="text-[11px] font-bold text-slate-400 mb-1">نماذج الإشارات</div>
+          <div className="text-[11px] font-bold text-slate-400 mb-1">{t.sampleSigns}</div>
           <div className="p-3 bg-white rounded-2xl shadow-xl shadow-black/50 transform -rotate-3 hover:rotate-0 transition-transform">
             <TrafficSignSvg signId="reg_stop" size={72} />
           </div>
@@ -129,14 +167,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h2 className="text-xl sm:text-2xl font-black text-slate-100 flex items-center gap-2">
-              <span>اختر دولتك لتخصيص أسئلة ونظام الفحص</span>
+              <span>{t.selectCountryTitle}</span>
             </h2>
             <p className="text-xs sm:text-sm text-slate-400">
-              يتم ضبط عدد الأسئلة ونسبة النجاح واللوحات حسب نظام الفحص المعتمد في الدولة المحددة.
+              {t.selectCountrySub}
             </p>
           </div>
           <div className="text-xs font-bold text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-xl border border-blue-500/20 self-start">
-            الدولة المختارة: {selectedCountry.name} {selectedCountry.flag}
+            {t.selectedCountryLabel} {getCountryName(selectedCountry.id)} {selectedCountry.flag}
           </div>
         </div>
 
@@ -163,14 +201,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   {country.flag}
                 </div>
                 <h3 className="text-sm font-bold text-slate-100 leading-tight mb-1">
-                  {country.name}
+                  {getCountryName(country.id)}
                 </h3>
                 <p className="text-[11px] text-slate-400 line-clamp-1 mb-2">
-                  {country.popularSchool}
+                  {getCountrySchool(country.id)}
                 </p>
                 <div className="flex items-center justify-between text-[10px] font-semibold text-slate-300 border-t border-slate-700/60 pt-2">
-                  <span>{country.totalOfficialQuestions} سؤالاً</span>
-                  <span className="text-blue-300 bg-blue-500/20 border border-blue-500/30 px-1.5 py-0.5 rounded">نجاح {country.passingScorePercentage}%</span>
+                  <span>{t.questionsCountLabel.replace(':', '')} {country.totalOfficialQuestions}</span>
+                  <span className="text-blue-300 bg-blue-500/20 border border-blue-500/30 px-1.5 py-0.5 rounded">{t.successUnit} {country.passingScorePercentage}%</span>
                 </div>
               </div>
             );
@@ -186,10 +224,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl sm:text-2xl font-black text-slate-100">
-              أوضاع التدريب والاختبارات المتاحة
+              {t.practiceModesTitle}
             </h2>
             <p className="text-xs sm:text-sm text-slate-400">
-              اختر الوضع الأنسب لاحتياجاتك التدريبية اليوم
+              {t.practiceModesSub}
             </p>
           </div>
         </div>
@@ -204,26 +242,26 @@ export const LandingView: React.FC<LandingViewProps> = ({
           {/* Mode 1: Full Official Simulation */}
           <div className="p-6 rounded-2xl border-2 border-blue-500/80 bg-gradient-to-br from-blue-950/40 via-[#1E293B] to-slate-900 shadow-lg shadow-blue-500/10 flex flex-col justify-between space-y-4 relative">
             <div className="absolute -top-3 left-4 bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md shadow-blue-500/30">
-              المحاكاة الرسمية
+              {t.modeOfficialBadge}
             </div>
             <div>
               <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/30 mb-3">
                 <Award className="w-6 h-6" />
               </div>
               <h3 className="text-base font-black text-slate-100 mb-1">
-                الاختبار الرسمي الكامل (محاكاة رسمية)
+                {t.modeOfficialTitle}
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed mb-3">
-                محاكاة مطابقة 100% لاختبار الحاسب الآلي في مدارس المرور، تتضمن {selectedCountry.totalOfficialQuestions} سؤالاً شاملاً مع مؤقت {selectedCountry.timeLimitMinutes} دقيقة.
+                {t.modeOfficialDesc.replace('%count%', selectedCountry.totalOfficialQuestions.toString()).replace('%time%', selectedCountry.timeLimitMinutes.toString())}
               </p>
               <div className="flex items-center gap-3 text-xs text-slate-400 font-medium">
                 <span className="flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="text-amber-400 font-bold">{selectedCountry.timeLimitMinutes} دقيقة</span>
+                  <span className="text-amber-400 font-bold">{selectedCountry.timeLimitMinutes} {t.minutesUnit}</span>
                 </span>
                 <span className="flex items-center gap-1">
                   <Target className="w-3.5 h-3.5 text-blue-400" />
-                  <span>نسبة النجاح {selectedCountry.passingScorePercentage}%</span>
+                  <span>{t.passingScoreLabel} {selectedCountry.passingScorePercentage}%</span>
                 </span>
               </div>
             </div>
@@ -232,7 +270,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               onClick={() => onStartTest('exam')}
               className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 active:scale-98 text-white rounded-xl text-xs font-black shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>بدء الاختبار الرسمي</span>
+              <span>{t.modeOfficialBtn}</span>
               <ChevronLeft className="w-4 h-4" />
             </button>
           </div>
@@ -244,14 +282,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 <BookOpen className="w-6 h-6" />
               </div>
               <h3 className="text-base font-black text-slate-100 mb-1">
-                وضع التدريب التفاعلي (تصحيح فوري)
+                {t.modePracticeTitle}
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed mb-3">
-                تدرّب بدون ضغط الوقت واكتشف الإجابة الصحيحة مع شرح مفصل وتبرير القاعدة المرورية فور اختيارك لكل إجابة.
+                {t.modePracticeDesc}
               </p>
               <div className="flex items-center gap-3 text-xs text-slate-400 font-medium">
                 <span className="flex items-center gap-1 text-teal-300 bg-teal-500/20 border border-teal-500/30 px-2 py-0.5 rounded">
-                  موصى به للمبتدئين
+                  {t.modePracticeBadge}
                 </span>
               </div>
             </div>
@@ -260,7 +298,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               onClick={() => onStartTest('practice')}
               className="w-full py-2.5 px-4 bg-teal-600 hover:bg-teal-500 active:scale-98 text-white rounded-xl text-xs font-black shadow-md shadow-teal-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>بدء وضع التدريب الفوري</span>
+              <span>{t.modePracticeBtn}</span>
               <ChevronLeft className="w-4 h-4" />
             </button>
           </div>
@@ -272,14 +310,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 <Navigation className="w-6 h-6" />
               </div>
               <h3 className="text-base font-black text-slate-100 mb-1">
-                اختبار إشارات المرور فقط
+                {t.modeSignsTitle}
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed mb-3">
-                جلسة مكثفة تركز بنسبة 100% على اللوحات التحذيرية والمنعية والإلزامية والإرشادية لتثبيت حفظها وإتقانها.
+                {t.modeSignsDesc}
               </p>
               <div className="flex items-center gap-3 text-xs text-slate-400 font-medium">
                 <span className="text-amber-300 bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded font-bold">
-                  جميع الإشارات
+                  {t.modeSignsBadge}
                 </span>
               </div>
             </div>
@@ -288,7 +326,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               onClick={() => onStartTest('signs_only')}
               className="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-500 active:scale-98 text-slate-950 font-black rounded-xl text-xs shadow-md shadow-amber-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>بدء اختبار الإشارات</span>
+              <span>{t.modeSignsBtn}</span>
               <ChevronLeft className="w-4 h-4" />
             </button>
           </div>
@@ -300,10 +338,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 <FileCheck2 className="w-6 h-6" />
               </div>
               <h3 className="text-base font-black text-slate-100 mb-1">
-                أولويات المرور والتقاطعات والدوارات
+                {t.modePriorityTitle}
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed mb-3">
-                أسئلة مواقف ومخططات مرورية واقعية لتحديد حق الأسبقية والمركبة الأولى بالعبور في التقاطعات المعقدة.
+                {t.modePriorityDesc}
               </p>
             </div>
             <button
@@ -311,7 +349,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               onClick={() => onStartTest('priority_only')}
               className="w-full py-2.5 px-4 bg-purple-600 hover:bg-purple-500 active:scale-98 text-white rounded-xl text-xs font-black shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>بدء اختبار الأولويات</span>
+              <span>{t.modePriorityBtn}</span>
               <ChevronLeft className="w-4 h-4" />
             </button>
           </div>
@@ -323,10 +361,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 <Zap className="w-6 h-6" />
               </div>
               <h3 className="text-base font-black text-slate-100 mb-1">
-                اختبار سريع (10 أسئلة خاطفة)
+                {t.modeQuickTitle}
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed mb-3">
-                مثالي للتدريب في أوقات الفراغ أو المواصلات، اختبار خفيف مكون من 10 أسئلة لتقييم مستواك في 5 دقائق.
+                {t.modeQuickDesc}
               </p>
             </div>
             <button
@@ -334,7 +372,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               onClick={() => onStartTest('quick_10', 10)}
               className="w-full py-2.5 px-4 bg-cyan-600 hover:bg-cyan-500 active:scale-98 text-white rounded-xl text-xs font-black shadow-md shadow-cyan-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>بدء الاختبار السريع</span>
+              <span>{t.modeQuickBtn}</span>
               <ChevronLeft className="w-4 h-4" />
             </button>
           </div>
@@ -346,10 +384,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 <Flame className="w-6 h-6" />
               </div>
               <h3 className="text-base font-black text-slate-100 mb-1">
-                أصعب الأسئلة (الأكثر تكراراً بالرسوب)
+                {t.modeHardTitle}
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed mb-3">
-                مجموعة منتقاة من الأسئلة الدقيقة والمخادعة التي يخطئ فيها معظم المتقدمين لاختبارات القيادة الرسمية.
+                {t.modeHardDesc}
               </p>
             </div>
             <button
@@ -357,7 +395,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               onClick={() => onStartTest('hard_questions')}
               className="w-full py-2.5 px-4 bg-red-600 hover:bg-red-500 active:scale-98 text-white rounded-xl text-xs font-black shadow-md shadow-red-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>تحدي الأسئلة الصعبة</span>
+              <span>{t.modeHardBtn}</span>
               <ChevronLeft className="w-4 h-4" />
             </button>
           </div>
@@ -372,10 +410,10 @@ export const LandingView: React.FC<LandingViewProps> = ({
       <section className="bg-[#1E293B] rounded-3xl border border-slate-700/60 p-8 shadow-xl">
         <div className="text-center max-w-xl mx-auto mb-8">
           <h2 className="text-xl sm:text-2xl font-black text-slate-100 mb-1">
-            أرقام وإحصائيات منصة اجتياز
+            {t.statsTitle}
           </h2>
           <p className="text-xs sm:text-sm text-slate-400">
-            ساعدنا آلاف السائقين الجدد في تحقيق النجاح والحصول على رخصة القيادة من أول محاولة
+            {t.statsSub}
           </p>
         </div>
 
@@ -384,28 +422,28 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="text-2xl sm:text-3xl font-black text-blue-400 mb-1">
               +185,000
             </div>
-            <div className="text-xs font-bold text-slate-300">اختبار تجريبي تم إنجازه</div>
+            <div className="text-xs font-bold text-slate-300">{t.statTestsDone}</div>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80">
             <div className="text-2xl sm:text-3xl font-black text-green-400 mb-1">
               96.8%
             </div>
-            <div className="text-xs font-bold text-slate-300">نسبة نجاح مستخدمي المنصة</div>
+            <div className="text-xs font-bold text-slate-300">{t.statSuccessRate}</div>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80">
             <div className="text-2xl sm:text-3xl font-black text-amber-400 mb-1">
               +1,400
             </div>
-            <div className="text-xs font-bold text-slate-300">سؤال وإشارة مرورية محدثة</div>
+            <div className="text-xs font-bold text-slate-300">{t.statQuestionsUp}</div>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700/80">
             <div className="text-2xl sm:text-3xl font-black text-teal-400 mb-1">
-              7 دول
+              {COUNTRIES_LIST.length}
             </div>
-            <div className="text-xs font-bold text-slate-300">نماذج فحص رسمية معتمدة</div>
+            <div className="text-xs font-bold text-slate-300">{t.statCountries}</div>
           </div>
         </div>
       </section>
@@ -413,7 +451,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
       {/* 5. How to guarantee passing (4 Steps) */}
       <section className="space-y-4">
         <h2 className="text-xl sm:text-2xl font-black text-slate-100">
-          خطة 4 خطوات لضمان النجاح من المرة الأولى
+          {t.stepsTitle}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -421,9 +459,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 font-black text-sm flex items-center justify-center border border-blue-500/30">
               1
             </div>
-            <h3 className="text-sm font-bold text-slate-100">مراجعة دليل الإشارات</h3>
+            <h3 className="text-sm font-bold text-slate-100">{t.step1Title}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              اطّلع على دليل الإشارات وصنفها حسب اللون والشكل (المثلث للتحذير، الدائرة الحمراء للمنع، الدائرة الزرقاء للإلزام).
+              {t.step1Desc}
             </p>
           </div>
 
@@ -431,9 +469,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 font-black text-sm flex items-center justify-center border border-blue-500/30">
               2
             </div>
-            <h3 className="text-sm font-bold text-slate-100">التدريب بوضع التصحيح الفوري</h3>
+            <h3 className="text-sm font-bold text-slate-100">{t.step2Title}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              ابدأ بالوضع التفاعلي لفهم أسباب الإجابات الخاطئة وقراءة التبرير القانوني لكل سؤال.
+              {t.step2Desc}
             </p>
           </div>
 
@@ -441,9 +479,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 font-black text-sm flex items-center justify-center border border-blue-500/30">
               3
             </div>
-            <h3 className="text-sm font-bold text-slate-100">خوض المحاكاة الرسمية</h3>
+            <h3 className="text-sm font-bold text-slate-100">{t.step3Title}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              أجرِ 3 اختبارات محاكاة متتالية مع المؤقت الزمني حتى تحقق نسبة أعلى من 90% باستمرار.
+              {t.step3Desc}
             </p>
           </div>
 
@@ -451,9 +489,9 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 font-black text-sm flex items-center justify-center border border-blue-500/30">
               4
             </div>
-            <h3 className="text-sm font-bold text-slate-100">الذهاب للاختبار بثقة</h3>
+            <h3 className="text-sm font-bold text-slate-100">{t.step4Title}</h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              ستجد في قاعة الفحص نفس الأسئلة والإشارات التي تدربت عليها هنا تماماً، مما يضمن اجتيازك بكل سهولة.
+              {t.step4Desc}
             </p>
           </div>
         </div>

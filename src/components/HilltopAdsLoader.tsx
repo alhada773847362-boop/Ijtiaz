@@ -21,13 +21,13 @@ export const HilltopAdsLoader: React.FC = () => {
 
     // 1. فيديو التمرير (In-Page Scroll Video) - Highly profitable video format
     injectHilltopScript(
-      '//massivesalad.com/bRXTVas.dDGTli0/YNWwcb/xezmk9lucZgUOlDkyPKTfcNzMMbDkIJzgMDj/k/t/NLz/MOwgMVjjMNzxM/w-',
+      '//massivesalad.com/bWXfVRskd.Gpl/0eYaWvco/veQmw9-uWZFUAlVksP_TOcyznMzzEMM5/NHDVkYtbNUzJM/z_Mszpk/1/MPwp',
       'hilltop-scroll-video'
     );
 
     // 2. إشعارات الدفع (In-Page Push Notifications) - High subscription yield
     injectHilltopScript(
-      '//massivesalad.com/bSXEVksZd.GHlQ0tYvWGcY/ueXmq9quXZXUslbk/P/Tjc_z/MDDiIfzQMhTwMDtZNNzIMYwqMyjqMzx/Nlwb',
+      '//massivesalad.com/b.XcVVs/d/GFlR0QYdWpcv/pezmh9_u/ZlUilZkBPqTYcvziMzzqMV5MM/zFMDtcNQz/MrzuMjzBkLzqN/wx',
       'hilltop-push-notifications'
     );
 
@@ -43,6 +43,13 @@ export const HilltopAdsLoader: React.FC = () => {
     injectHilltopScript(
       '//massivesalad.com/bdXpV/sad.GslG0QYsWScj/reQmm9ouRZ_U/lUkePDT/c/z/MUD/I/y/OATrc/t/NKznM-wAM/jeMEwzMkQP',
       'hilltop-multiformat-banner'
+    );
+
+    // 5. بوب اندر هيلتوب المطور والمضاد لحظر الإعلانات (First-Party Anti-AdBlock Popunder)
+    // Dynamic background popunder fetched directly from the secure server endpoint
+    injectHilltopScript(
+      '/antiadblock.js',
+      'hilltop-antiadblock-popunder'
     );
   }, []);
 

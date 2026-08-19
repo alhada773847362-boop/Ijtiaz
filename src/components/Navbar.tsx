@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Car, 
   Award, 
@@ -10,10 +11,12 @@ import {
   Volume2, 
   VolumeX,
   Menu,
-  X
+  X,
+  Globe
 } from 'lucide-react';
 import { CountryId, CountryInfo } from '../types';
 import { COUNTRIES_LIST } from '../data/countriesData';
+import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from '../data/translations';
 
 interface NavbarProps {
   currentView: 'home' | 'test' | 'signs' | 'violations' | 'history';
@@ -22,6 +25,8 @@ interface NavbarProps {
   onSelectCountry: (country: CountryInfo) => void;
   isAudioEnabled: boolean;
   onToggleAudio: () => void;
+  locale?: 'ar' | 'en';
+  onToggleLocale: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -31,9 +36,28 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectCountry,
   isAudioEnabled,
   onToggleAudio,
+  locale = 'ar',
+  onToggleLocale,
 }) => {
   const [isCountryMenuOpen, setIsCountryMenuOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
+  const currentLocale = locale || 'ar';
+  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
+
+  const getCountryName = (cId: string) => {
+    if (locale === 'en' && COUNTRY_TRANSLATIONS[cId]) {
+      return COUNTRY_TRANSLATIONS[cId].name;
+    }
+    return COUNTRIES_LIST.find(c => c.id === cId)?.name || '';
+  };
+
+  const getCountrySchool = (cId: string) => {
+    if (locale === 'en' && COUNTRY_TRANSLATIONS[cId]) {
+      return COUNTRY_TRANSLATIONS[cId].popularSchool;
+    }
+    return COUNTRIES_LIST.find(c => c.id === cId)?.popularSchool || '';
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-[#1E293B]/95 backdrop-blur-md border-b border-slate-700/50 shadow-lg text-slate-100 transition-colors">
@@ -49,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <div className="bg-blue-600 px-3.5 py-1.5 rounded-xl font-black text-lg tracking-wide shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 transition-all flex items-center gap-1.5 text-white">
                 <Car className="w-5 h-5 text-white" />
-                <span>اجتياز</span>
+                <span>{t.appName}</span>
               </div>
             </div>
 
@@ -64,132 +88,176 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="flex items-center gap-2 bg-slate-800/90 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-200 transition-all border border-slate-700 cursor-pointer shadow-xs"
               >
                 <span className="text-base leading-none">{selectedCountry.flag}</span>
-                <span className="max-w-[90px] sm:max-w-[130px] truncate">{selectedCountry.name.split(' ')[0]}</span>
+                <span className="max-w-[90px] sm:max-w-[130px] truncate">
+                  {locale === 'en' ? getCountryName(selectedCountry.id) : getCountryName(selectedCountry.id).split(' ')[0]}
+                </span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
 
               {/* Dropdown Menu */}
-              {isCountryMenuOpen && (
-                <div 
-                  id="country-selector-menu"
-                  className="absolute left-0 sm:right-auto mt-2 w-64 rounded-2xl bg-[#1E293B] border border-slate-700 shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150 text-slate-100"
-                >
-                  <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 border-b border-slate-700/60">
-                    اختر الدولة لتخصيص نماذج الاختبار:
-                  </div>
-                  <div className="max-h-60 overflow-y-auto py-1">
-                    {COUNTRIES_LIST.map((country) => (
-                      <button
-                        key={country.id}
-                        id={`country-option-${country.id}`}
-                        onClick={() => {
-                          onSelectCountry(country);
-                          setIsCountryMenuOpen(false);
-                        }}
-                        className={`w-full px-3.5 py-2.5 text-right flex items-center justify-between text-xs font-bold hover:bg-slate-800 transition-colors cursor-pointer ${
-                          selectedCountry.id === country.id ? 'bg-blue-600/20 text-blue-400 border-r-2 border-blue-500' : 'text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">{country.flag}</span>
-                          <div>
-                            <div className="leading-snug text-slate-100">{country.name}</div>
-                            <div className="text-[10px] text-slate-400 font-normal">{country.popularSchool}</div>
+              <AnimatePresence>
+                {isCountryMenuOpen && (
+                  <motion.div 
+                    id="country-selector-menu"
+                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                    className="absolute left-0 mt-2 w-64 rounded-2xl bg-[#1E293B] border border-slate-700 shadow-2xl py-2 z-50 text-slate-100"
+                  >
+                    <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 border-b border-slate-700/60">
+                      {t.selectCountryPrompt}
+                    </div>
+                    <div className="max-h-60 overflow-y-auto py-1">
+                      {COUNTRIES_LIST.map((country) => (
+                        <a
+                          key={country.id}
+                          href={`/${country.id}`}
+                          id={`country-option-${country.id}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onSelectCountry(country);
+                            setIsCountryMenuOpen(false);
+                          }}
+                          className={`w-full px-3.5 py-2.5 text-right flex items-center justify-between text-xs font-bold hover:bg-slate-800 transition-colors cursor-pointer decoration-none ${
+                            selectedCountry.id === country.id ? 'bg-blue-600/20 text-blue-400 border-r-2 border-blue-500' : 'text-slate-300'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{country.flag}</span>
+                            <div>
+                              <div className="leading-snug text-slate-100">{getCountryName(country.id)}</div>
+                              <div className="text-[10px] text-slate-400 font-normal">{getCountrySchool(country.id)}</div>
+                            </div>
                           </div>
-                        </div>
-                        {selectedCountry.id === country.id && (
-                          <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+                          {selectedCountry.id === country.id && (
+                            <CheckCircle2 className="w-4 h-4 text-blue-400" />
+                          )}
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1.5">
-            <button
+            <a
               id="nav-home-btn"
-              onClick={() => onNavigate('home')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              href={`/${selectedCountry.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('home');
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
                 currentView === 'home'
                   ? 'bg-slate-800 text-blue-400 border border-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
-              <span>الرئيسية</span>
-            </button>
+              <span>{t.home}</span>
+            </a>
 
-            <button
+             <a
               id="nav-test-btn"
-              onClick={() => onNavigate('test')}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              href={`/${selectedCountry.id}/test`}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('test');
+              }}
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
                 currentView === 'test'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               <Award className="w-4 h-4" />
-              <span>بدء الاختبار</span>
-            </button>
+              <span>{t.startTest}</span>
+            </a>
 
-            <button
+            <a
               id="nav-signs-btn"
-              onClick={() => onNavigate('signs')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              href={`/${selectedCountry.id}/signs`}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('signs');
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
                 currentView === 'signs'
                   ? 'bg-slate-800 text-blue-400 border border-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               <BookOpen className="w-4 h-4" />
-              <span>دليل الإشارات</span>
-            </button>
+              <span>{t.signsGuide}</span>
+            </a>
 
-            <button
+            <a
               id="nav-violations-btn"
-              onClick={() => onNavigate('violations')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              href={`/${selectedCountry.id}/violations`}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('violations');
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
                 currentView === 'violations'
                   ? 'bg-slate-800 text-blue-400 border border-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               <AlertTriangle className="w-4 h-4" />
-              <span>المخالفات والنقاط</span>
-            </button>
+              <span>{t.violations}</span>
+            </a>
 
-            <button
+            <a
               id="nav-history-btn"
-              onClick={() => onNavigate('history')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              href={`/${selectedCountry.id}/history`}
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigate('history');
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
                 currentView === 'history'
                   ? 'bg-slate-800 text-blue-400 border border-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               <History className="w-4 h-4" />
-              <span>نتائجي</span>
-            </button>
+              <span>{t.myResults}</span>
+            </a>
           </nav>
 
           {/* Right Status / Controls */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             
             {/* System Status Pulse */}
             <div className="hidden lg:flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 text-[11px] font-medium">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-sm shadow-green-500/50" />
-              <span className="text-slate-300">النظام متصل</span>
+              <span className="text-slate-300">{t.systemConnected}</span>
             </div>
+
+            {/* Language Toggle */}
+            <button
+              id="toggle-lang-btn"
+              type="button"
+              onClick={onToggleLocale}
+              title={locale === 'ar' ? 'Switch to English' : 'التغيير إلى العربية'}
+              className="p-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer shadow-xs"
+            >
+              <Globe className="w-4 h-4 text-blue-400" />
+              <span className="hidden xl:inline text-[11px] font-black">
+                {locale === 'ar' ? 'English' : 'العربية'}
+              </span>
+            </button>
 
             {/* Audio Toggle */}
             <button
               id="toggle-audio-btn"
               type="button"
               onClick={onToggleAudio}
-              title={isAudioEnabled ? 'تعطيل القارئ الصوتي للأسئلة' : 'تفعيل القارئ الصوتي للأسئلة (عربي)'}
+              title={isAudioEnabled ? (locale === 'ar' ? 'تعطيل القارئ الصوتي للأسئلة' : 'Disable Question Voice Reader') : (locale === 'ar' ? 'تفعيل القارئ الصوتي للأسئلة' : 'Enable Question Voice Reader')}
               className={`p-2 rounded-lg border text-xs font-medium transition-colors flex items-center gap-1 cursor-pointer ${
                 isAudioEnabled
                   ? 'border-blue-500/50 bg-blue-500/10 text-blue-400'
@@ -198,7 +266,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               {isAudioEnabled ? <Volume2 className="w-4 h-4 text-blue-400" /> : <VolumeX className="w-4 h-4 text-slate-500" />}
               <span className="hidden xl:inline text-[11px] font-bold">
-                {isAudioEnabled ? 'القارئ مفعل' : 'صوت'}
+                {isAudioEnabled ? t.audioOn : t.audioOff}
               </span>
             </button>
 
@@ -216,73 +284,91 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile Navigation Drawer */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-3 border-t border-slate-700/60 space-y-1 animate-in fade-in duration-150">
-            <button
-              onClick={() => {
-                onNavigate('home');
-                setIsMobileMenuOpen(false);
-              }}
-              className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 ${
-                currentView === 'home' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
-              }`}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              className="md:hidden py-3 border-t border-slate-700/60 space-y-1 overflow-hidden"
             >
-              <span>الرئيسية</span>
-            </button>
+              <a
+                href={`/${selectedCountry.id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate('home');
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 decoration-none ${
+                  currentView === 'home' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
+                }`}
+              >
+                <span>{t.home}</span>
+              </a>
 
-            <button
-              onClick={() => {
-                onNavigate('test');
-                setIsMobileMenuOpen(false);
-              }}
-              className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 ${
-                currentView === 'test' ? 'bg-blue-600 text-white' : 'text-slate-300'
-              }`}
-            >
-              <Award className="w-4 h-4" />
-              <span>بدء الاختبار التجريبي</span>
-            </button>
+              <a
+                href={`/${selectedCountry.id}/test`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate('test');
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 decoration-none ${
+                  currentView === 'test' ? 'bg-blue-600 text-white' : 'text-slate-300'
+                }`}
+              >
+                <Award className="w-4 h-4" />
+                <span>{t.startTest}</span>
+              </a>
 
-            <button
-              onClick={() => {
-                onNavigate('signs');
-                setIsMobileMenuOpen(false);
-              }}
-              className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 ${
-                currentView === 'signs' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
-              }`}
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>دليل الإشارات المرورية</span>
-            </button>
+              <a
+                href={`/${selectedCountry.id}/signs`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate('signs');
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 decoration-none ${
+                  currentView === 'signs' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
+                }`}
+              >
+                <BookOpen className="w-4 h-4" />
+                <span>{t.signsGuide}</span>
+              </a>
 
-            <button
-              onClick={() => {
-                onNavigate('violations');
-                setIsMobileMenuOpen(false);
-              }}
-              className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 ${
-                currentView === 'violations' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
-              }`}
-            >
-              <AlertTriangle className="w-4 h-4" />
-              <span>قوانين المرور والمخالفات</span>
-            </button>
+              <a
+                href={`/${selectedCountry.id}/violations`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate('violations');
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 decoration-none ${
+                  currentView === 'violations' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
+                }`}
+              >
+                <AlertTriangle className="w-4 h-4" />
+                <span>{t.violations}</span>
+              </a>
 
-            <button
-              onClick={() => {
-                onNavigate('history');
-                setIsMobileMenuOpen(false);
-              }}
-              className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 ${
-                currentView === 'history' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
-              }`}
-            >
-              <History className="w-4 h-4" />
-              <span>نتائجي السابقة</span>
-            </button>
-          </div>
-        )}
+              <a
+                href={`/${selectedCountry.id}/history`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate('history');
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 decoration-none ${
+                  currentView === 'history' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
+                }`}
+              >
+                <History className="w-4 h-4" />
+                <span>{t.myResults}</span>
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       </div>
     </header>
