@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="ijtiaz-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="shield-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#3b82f6" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Rounded Background Container -->
+  <rect width="512" height="512" rx="128" fill="url(#shield-grad)"/>
+  
+  <!-- Outer Border Ring -->
+  <rect x="12" y="12" width="488" height="488" rx="116" fill="none" stroke="url(#ijtiaz-grad)" stroke-width="12" opacity="0.8"/>
+
+  <!-- Steering Wheel & Shield Graphic -->
+  <g filter="url(#glow)" transform="translate(64, 64)">
+    <!-- Outer Wheel Rim -->
+    <circle cx="192" cy="192" r="160" fill="none" stroke="url(#ijtiaz-grad)" stroke-width="28"/>
+    
+    <!-- Central Hub -->
+    <circle cx="192" cy="192" r="54" fill="#0f172a" stroke="#10b981" stroke-width="14"/>
+    <circle cx="192" cy="192" r="28" fill="#10b981"/>
+
+    <!-- Left Spoke -->
+    <line x1="38" y1="192" x2="138" y2="192" stroke="url(#ijtiaz-grad)" stroke-width="22" stroke-linecap="round"/>
+    <!-- Right Spoke -->
+    <line x1="246" y1="192" x2="346" y2="192" stroke="url(#ijtiaz-grad)" stroke-width="22" stroke-linecap="round"/>
+    <!-- Bottom Spoke -->
+    <line x1="192" y1="246" x2="192" y2="346" stroke="url(#ijtiaz-grad)" stroke-width="22" stroke-linecap="round"/>
+
+    <!-- Checkmark of Success / Pass (اجتياز) -->
+    <path d="M 172 192 L 186 206 L 214 176" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Traffic Light Accent Dot (Green Light) -->
+  <circle cx="420" cy="92" r="24" fill="#10b981" filter="url(#glow)"/>
+  <circle cx="420" cy="92" r="12" fill="#ffffff" opacity="0.8"/>
+</svg>
