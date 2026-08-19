@@ -16,6 +16,7 @@ import { HilltopAdsLoader } from './components/HilltopAdsLoader';
 import { AdBanner } from './components/AdBanner';
 import { LegalModals, LegalModalType, CookieConsentBanner } from './components/LegalModals';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 export const LanguageContext = createContext<{
   t: any;
@@ -485,6 +486,7 @@ export default function App() {
 
     </div>
     <Analytics />
+    <SpeedInsights />
     </LanguageContext.Provider>
   );
 }
