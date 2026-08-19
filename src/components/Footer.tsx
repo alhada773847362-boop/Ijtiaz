@@ -21,9 +21,12 @@ export const Footer: React.FC<FooterProps> = ({ selectedCountry, onNavigate, loc
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold shadow-lg shadow-blue-500/30">
-                <Car className="w-5 h-5 text-white" />
-              </div>
+              <img 
+                src="/icon.png" 
+                alt="Ijtiaz Logo" 
+                className="w-9 h-9 rounded-2xl object-contain drop-shadow-md shadow-blue-500/20" 
+                referrerPolicy="no-referrer"
+              />
               <span className="text-xl font-black text-slate-100 tracking-tight">
                 {t.appName}
               </span>

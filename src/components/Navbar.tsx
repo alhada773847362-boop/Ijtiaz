@@ -71,9 +71,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-2 cursor-pointer group select-none"
               id="brand-logo-btn"
             >
-              <div className="bg-blue-600 px-3.5 py-1.5 rounded-xl font-black text-lg tracking-wide shadow-lg shadow-blue-500/30 group-hover:bg-blue-500 transition-all flex items-center gap-1.5 text-white">
-                <Car className="w-5 h-5 text-white" />
-                <span>{t.appName}</span>
+              <div className="flex items-center gap-2.5 bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700/70 px-3 py-1.5 rounded-2xl shadow-lg shadow-black/20 transition-all">
+                <img 
+                  src="/icon.png" 
+                  alt="Ijtiaz Logo" 
+                  className="w-7 h-7 rounded-xl object-contain drop-shadow-md group-hover:scale-105 transition-transform" 
+                  referrerPolicy="no-referrer"
+                />
+                <span className="font-black text-lg tracking-wide text-white">{t.appName}</span>
               </div>
             </div>
 
