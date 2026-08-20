@@ -13,9 +13,12 @@ export const HilltopAdsLoader: React.FC = () => {
         script.src = src;
         script.async = true;
         script.referrerPolicy = 'no-referrer-when-downgrade';
+        script.onerror = () => {
+          // Suppress third party ad-blocker or network fetch errors silently
+        };
         document.body.appendChild(script);
       } catch (err) {
-        console.warn('HilltopAds script injection warning:', err);
+        // Silently catch DOM append errors
       }
     };
 

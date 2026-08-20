@@ -3,10 +3,12 @@ import { ShieldCheck, Globe2, BookOpen, Award, Navigation, AlertTriangle, Histor
 import { CountryInfo } from '../types';
 import { COUNTRIES_LIST } from '../data/countriesData';
 import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from '../data/translations';
+import { AppLogo } from './AppLogo';
 
 interface FooterProps {
   selectedCountry: CountryInfo;
   onNavigate: (view: 'home' | 'test' | 'signs' | 'violations' | 'history') => void;
+  onNavigateGlobalHome?: () => void;
   onSelectCountry?: (country: CountryInfo) => void;
   onOpenLegal?: (type: 'privacy' | 'terms' | 'disclaimer' | 'contact' | 'brand') => void;
   locale?: 'ar' | 'en';
@@ -15,6 +17,7 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ 
   selectedCountry, 
   onNavigate, 
+  onNavigateGlobalHome,
   onSelectCountry,
   onOpenLegal,
   locale = 'ar' 
@@ -33,6 +36,16 @@ export const Footer: React.FC<FooterProps> = ({
   const handleLinkClick = (e: React.MouseEvent, view: 'home' | 'test' | 'signs' | 'violations' | 'history') => {
     e.preventDefault();
     onNavigate(view);
+  };
+
+  const handleGlobalHomeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavigateGlobalHome) {
+      onNavigateGlobalHome();
+    } else {
+      window.history.pushState(null, '', '/');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
   };
 
   const handleCountryClick = (e: React.MouseEvent, country: CountryInfo) => {
@@ -55,12 +68,7 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <img 
-                src="/icon.png" 
-                alt="Ijtiaz Logo" 
-                className="w-9 h-9 rounded-2xl object-contain drop-shadow-md shadow-blue-500/20" 
-                referrerPolicy="no-referrer"
-              />
+              <AppLogo size="md" />
               <span className="text-xl font-black text-slate-100 tracking-tight">
                 {t.appName}
               </span>
@@ -80,12 +88,22 @@ export const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-2 text-xs">
               <li>
                 <a 
+                  href="/" 
+                  onClick={handleGlobalHomeClick} 
+                  className="hover:text-cyan-400 text-cyan-300 font-bold transition-colors flex items-center gap-1.5"
+                >
+                  <Globe2 className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>{isAr ? 'البوابة العالمية (26 دولة)' : 'Global Portal (All Countries)'}</span>
+                </a>
+              </li>
+              <li>
+                <a 
                   href={`/${selectedCountry.id}`} 
                   onClick={(e) => handleLinkClick(e, 'home')} 
                   className="hover:text-blue-400 transition-colors flex items-center gap-1.5"
                 >
                   <BookOpen className="w-3.5 h-3.5 text-slate-500" />
-                  <span>{t.footerLinks.home}</span>
+                  <span>{t.footerLinks.home} ({getCountryName(selectedCountry.id)})</span>
                 </a>
               </li>
               <li>

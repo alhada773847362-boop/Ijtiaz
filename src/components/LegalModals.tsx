@@ -18,6 +18,7 @@ import {
   Image as ImageIcon,
   Palette
 } from 'lucide-react';
+import { AppLogo } from './AppLogo';
 
 export type LegalModalType = 'privacy' | 'terms' | 'disclaimer' | 'contact' | 'brand' | null;
 
@@ -254,12 +255,9 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   {/* Card 1: Ultra HD App Icon PNG */}
                   <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <img 
-                        src="/icon.png" 
-                        alt="Ijtiaz HD Icon" 
-                        className="w-16 h-16 rounded-2xl shadow-lg border border-slate-700 object-cover shrink-0" 
-                        referrerPolicy="no-referrer"
-                      />
+                      <div className="w-16 h-16 rounded-2xl bg-[#0f172a] border border-cyan-500/30 flex items-center justify-center p-2 shrink-0 shadow-lg">
+                        <AppLogo size="md" />
+                      </div>
                       <div>
                         <h4 className="font-bold text-white text-sm">
                           {isAr ? 'أيقونة التطبيق الفائقة (HD PNG)' : 'Ultra HD App Icon (PNG)'}
@@ -283,13 +281,8 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   {/* Card 2: Vector Scalable SVG */}
                   <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-16 h-16 rounded-2xl bg-[#0f172a] border border-blue-500/30 flex items-center justify-center p-2 shrink-0">
-                        <img 
-                          src="/favicon.svg" 
-                          alt="Ijtiaz Vector" 
-                          className="w-12 h-12" 
-                          referrerPolicy="no-referrer"
-                        />
+                      <div className="w-16 h-16 rounded-2xl bg-[#0f172a] border border-blue-500/30 flex items-center justify-center p-2 shrink-0 shadow-lg">
+                        <AppLogo size="md" />
                       </div>
                       <div>
                         <h4 className="font-bold text-white text-sm">
@@ -314,12 +307,9 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   {/* Card 3: Favicon ICO & Small Icons */}
                   <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <img 
-                        src="/favicon.png" 
-                        alt="Ijtiaz Favicon" 
-                        className="w-12 h-12 rounded-xl shadow-md border border-slate-700 object-cover shrink-0" 
-                        referrerPolicy="no-referrer"
-                      />
+                      <div className="w-16 h-16 rounded-2xl bg-[#0f172a] border border-slate-700 flex items-center justify-center p-2 shrink-0 shadow-lg">
+                        <AppLogo size="sm" />
+                      </div>
                       <div>
                         <h4 className="font-bold text-white text-sm">
                           {isAr ? 'حزمة فافيكون المتصفح (Favicon)' : 'Browser Favicon Package'}

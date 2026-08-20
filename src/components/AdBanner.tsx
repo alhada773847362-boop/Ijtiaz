@@ -17,24 +17,31 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   useEffect(() => {
     // Inject HilltopAds Desktop/Mobile banner dynamically based on device and slotType
     if (containerRef.current) {
-      containerRef.current.innerHTML = '';
-      const script = document.createElement('script');
-      
-      const isMobile = typeof window !== 'undefined' && 
-        (window.innerWidth < 768 || /mobi|ipad|iphone|blackberry|android/i.test(navigator.userAgent));
-      
-      // Load standard high-performing banner zones
-      if (isMobile) {
-        // High-earnings mobile banner script provided by the user
-        script.src = '//massivesalad.com/bqXxV.s/ddGul_0qYEWvcO/oeDmG9Vu/ZEUolTkLPYThc/ztMjzTMF5aM_DMU/tkNqzvM/z-MuzJkpwhOXQI';
-      } else {
-        // High-earnings desktop banner script provided by the user
-        script.src = '//massivesalad.com/bGXkVKsUd.G/l/0tYhWccq/Pe/m-9OuzZ/UilzkxPrTcc/ziMPzeMT5fMOT/cVt/NUzdMEzvMuzMkGy/MZQD';
+      try {
+        containerRef.current.innerHTML = '';
+        const script = document.createElement('script');
+        
+        const isMobile = typeof window !== 'undefined' && 
+          (window.innerWidth < 768 || /mobi|ipad|iphone|blackberry|android/i.test(navigator.userAgent));
+        
+        // Load standard high-performing banner zones
+        if (isMobile) {
+          // High-earnings mobile banner script provided by the user
+          script.src = '//massivesalad.com/bqXxV.s/ddGul_0qYEWvcO/oeDmG9Vu/ZEUolTkLPYThc/ztMjzTMF5aM_DMU/tkNqzvM/z-MuzJkpwhOXQI';
+        } else {
+          // High-earnings desktop banner script provided by the user
+          script.src = '//massivesalad.com/bGXkVKsUd.G/l/0tYhWccq/Pe/m-9OuzZ/UilzkxPrTcc/ziMPzeMT5fMOT/cVt/NUzdMEzvMuzMkGy/MZQD';
+        }
+        
+        script.async = true;
+        script.referrerPolicy = 'no-referrer-when-downgrade';
+        script.onerror = () => {
+          // Silently handle ad blockers or blocked requests
+        };
+        containerRef.current.appendChild(script);
+      } catch (e) {
+        // Prevent layout crashes
       }
-      
-      script.async = true;
-      script.referrerPolicy = 'no-referrer-when-downgrade';
-      containerRef.current.appendChild(script);
     }
   }, [slotType]);
 

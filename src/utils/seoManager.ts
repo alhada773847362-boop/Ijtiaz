@@ -3,13 +3,14 @@ import { COUNTRY_TRANSLATIONS } from '../data/translations';
 
 export interface SeoConfig {
   country: CountryInfo;
-  view: 'home' | 'test' | 'results' | 'signs' | 'violations' | 'history';
+  view: 'home' | 'test' | 'results' | 'signs' | 'violations' | 'history' | 'global_home';
   locale: 'ar' | 'en';
+  isGlobalHome?: boolean;
 }
 
 const BASE_URL = 'https://ijtiaz.vercel.app';
 
-export function updatePageSeo({ country, view, locale }: SeoConfig) {
+export function updatePageSeo({ country, view, locale, isGlobalHome = false }: SeoConfig) {
   if (typeof document === 'undefined') return;
 
   const isAr = locale === 'ar';
@@ -23,13 +24,24 @@ export function updatePageSeo({ country, view, locale }: SeoConfig) {
     ? country.authority
     : COUNTRY_TRANSLATIONS[country.id]?.authority || country.authority;
 
-  // 1. Build Targeted Title
+  // 1. Build Targeted Title & Canonical
   let pageTitle = '';
   let metaDescription = '';
   let metaKeywords = '';
   let subPath = '';
 
-  if (view === 'home') {
+  if (isGlobalHome || view === 'global_home') {
+    subPath = '';
+    if (isAr) {
+      pageTitle = 'منصة اجتياز | المحاكي العربي والعالمي لاختبارات القيادة النظرية 2026';
+      metaDescription = 'المنصة الأولى المعتمدة للتدرب على اختبارات رخصة القيادة النظرية، إشارات المرور، ونظام المخالفات في 26 دولة عربية وعالمية (السعودية، الإمارات، مصر، أمريكا، بريطانيا، كندا، والمزيد). محاكاة واقعية 100% مجاناً.';
+      metaKeywords = 'اختبار القيادة النظري, امتحان السواقة النظري, اسئلة دله, اختبار المرور, رخصة القيادة, اشارات المرور, DMV test in Arabic, driving theory test 2026, اجتياز';
+    } else {
+      pageTitle = 'Ijtiaz Platform | Global Driving Theory Test & Road Signs Simulator 2026';
+      metaDescription = 'The #1 driving theory test simulator covering 26 countries. Practice official mock exams for Saudi Arabia, UAE, Egypt, USA, UK, Canada, Australia, and more. 100% free.';
+      metaKeywords = 'driving theory test, DMV practice test, RTA theory test, Dallah driving test, road signs catalog, driving test simulator 2026';
+    }
+  } else if (view === 'home') {
     subPath = `/${country.id}`;
     if (isAr) {
       pageTitle = `اختبار القيادة النظري ${countryName} 2026 | نماذج ${popularSchool} الرسمية - اجتياز`;

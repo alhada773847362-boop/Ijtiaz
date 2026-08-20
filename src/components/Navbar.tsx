@@ -17,27 +17,32 @@ import {
 import { CountryId, CountryInfo } from '../types';
 import { COUNTRIES_LIST } from '../data/countriesData';
 import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from '../data/translations';
+import { AppLogo } from './AppLogo';
 
 interface NavbarProps {
-  currentView: 'home' | 'test' | 'signs' | 'violations' | 'history';
+  currentView: 'home' | 'test' | 'signs' | 'violations' | 'history' | 'global_home';
   onNavigate: (view: 'home' | 'test' | 'signs' | 'violations' | 'history') => void;
+  onNavigateGlobalHome: () => void;
   selectedCountry: CountryInfo;
   onSelectCountry: (country: CountryInfo) => void;
   isAudioEnabled: boolean;
   onToggleAudio: () => void;
   locale?: 'ar' | 'en';
   onToggleLocale: () => void;
+  isGlobalHome?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentView,
   onNavigate,
+  onNavigateGlobalHome,
   selectedCountry,
   onSelectCountry,
   isAudioEnabled,
   onToggleAudio,
   locale = 'ar',
   onToggleLocale,
+  isGlobalHome = false,
 }) => {
   const [isCountryMenuOpen, setIsCountryMenuOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -66,89 +71,74 @@ export const Navbar: React.FC<NavbarProps> = ({
           
           {/* Brand Logo & Authority Badge */}
           <div className="flex items-center gap-3">
-            <div 
-              onClick={() => onNavigate('home')} 
-              className="flex items-center gap-2 cursor-pointer group select-none"
+            <a 
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigateGlobalHome();
+              }} 
+              className="flex items-center gap-2 cursor-pointer group select-none decoration-none"
               id="brand-logo-btn"
+              title={locale === 'ar' ? 'العودة إلى البوابة الرئيسية لجميع الدول' : 'Return to Global Portal'}
             >
               <div className="flex items-center gap-2.5 bg-slate-800/80 hover:bg-slate-700/90 border border-slate-700/70 px-3 py-1.5 rounded-2xl shadow-lg shadow-black/20 transition-all">
-                <img 
-                  src="/icon.png" 
-                  alt="Ijtiaz Logo" 
-                  className="w-7 h-7 rounded-xl object-contain drop-shadow-md group-hover:scale-105 transition-transform" 
-                  referrerPolicy="no-referrer"
-                />
+                <AppLogo size="sm" className="group-hover:scale-105 transition-transform" />
                 <span className="font-black text-lg tracking-wide text-white">{t.appName}</span>
               </div>
-            </div>
+            </a>
 
             <div className="hidden sm:block h-6 w-[1px] bg-slate-700 mx-1" />
 
-            {/* Country Selector Pill */}
+            {/* Country Indicator / Return to Global Home to switch countries */}
             <div className="relative">
-              <button
-                id="country-selector-dropdown-btn"
-                type="button"
-                onClick={() => setIsCountryMenuOpen(!isCountryMenuOpen)}
-                className="flex items-center gap-2 bg-slate-800/90 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-200 transition-all border border-slate-700 cursor-pointer shadow-xs"
-              >
-                <span className="text-base leading-none">{selectedCountry.flag}</span>
-                <span className="max-w-[90px] sm:max-w-[130px] truncate">
-                  {locale === 'en' ? getCountryName(selectedCountry.id) : getCountryName(selectedCountry.id).split(' ')[0]}
-                </span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-              </button>
-
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {isCountryMenuOpen && (
-                  <motion.div 
-                    id="country-selector-menu"
-                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                    transition={{ duration: 0.15, ease: 'easeOut' }}
-                    className="absolute left-0 mt-2 w-64 rounded-2xl bg-[#1E293B] border border-slate-700 shadow-2xl py-2 z-50 text-slate-100"
-                  >
-                    <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 border-b border-slate-700/60">
-                      {t.selectCountryPrompt}
-                    </div>
-                    <div className="max-h-60 overflow-y-auto py-1">
-                      {COUNTRIES_LIST.map((country) => (
-                        <a
-                          key={country.id}
-                          href={`/${country.id}`}
-                          id={`country-option-${country.id}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            onSelectCountry(country);
-                            setIsCountryMenuOpen(false);
-                          }}
-                          className={`w-full px-3.5 py-2.5 text-right flex items-center justify-between text-xs font-bold hover:bg-slate-800 transition-colors cursor-pointer decoration-none ${
-                            selectedCountry.id === country.id ? 'bg-blue-600/20 text-blue-400 border-r-2 border-blue-500' : 'text-slate-300'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">{country.flag}</span>
-                            <div>
-                              <div className="leading-snug text-slate-100">{getCountryName(country.id)}</div>
-                              <div className="text-[10px] text-slate-400 font-normal">{getCountrySchool(country.id)}</div>
-                            </div>
-                          </div>
-                          {selectedCountry.id === country.id && (
-                            <CheckCircle2 className="w-4 h-4 text-blue-400" />
-                          )}
-                        </a>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {isGlobalHome ? (
+                <div
+                  id="country-selector-dropdown-btn"
+                  className="flex items-center gap-2 bg-cyan-950/60 border border-cyan-500/40 px-3 py-1.5 rounded-xl text-xs font-black text-cyan-300 shadow-xs"
+                >
+                  <span className="text-base leading-none">🌍</span>
+                  <span className="font-bold">
+                    {locale === 'ar' ? 'جميع الدول (26)' : 'All Countries'}
+                  </span>
+                </div>
+              ) : (
+                <button
+                  id="country-selector-dropdown-btn"
+                  type="button"
+                  onClick={onNavigateGlobalHome}
+                  title={locale === 'ar' ? 'تغيير الدولة من الصفحة الرئيسية' : 'Change country from Home page'}
+                  className="flex items-center gap-2 bg-slate-800/90 hover:bg-cyan-950/70 hover:border-cyan-500/60 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-200 hover:text-cyan-300 transition-all border border-slate-700 cursor-pointer shadow-xs group"
+                >
+                  <span className="text-base leading-none group-hover:scale-110 transition-transform">{selectedCountry.flag}</span>
+                  <span className="max-w-[90px] sm:max-w-[130px] truncate">
+                    {locale === 'en' ? getCountryName(selectedCountry.id) : getCountryName(selectedCountry.id).split(' ')[0]}
+                  </span>
+                  <span className="hidden sm:inline-block text-[10px] text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-1.5 py-0.5 rounded font-normal">
+                    {locale === 'ar' ? 'تغيير الدولة' : 'Change'}
+                  </span>
+                </button>
+              )}
             </div>
           </div>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1.5">
+            <a
+              id="nav-global-btn"
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigateGlobalHome();
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
+                isGlobalHome
+                  ? 'bg-slate-800 text-cyan-400 border border-cyan-500/30'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+              }`}
+            >
+              <span>{locale === 'ar' ? 'جميع الدول' : 'All Countries'}</span>
+            </a>
+
             <a
               id="nav-home-btn"
               href={`/${selectedCountry.id}`}
@@ -157,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onNavigate('home');
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
-                currentView === 'home'
+                !isGlobalHome && currentView === 'home'
                   ? 'bg-slate-800 text-blue-400 border border-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
@@ -173,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onNavigate('test');
               }}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
-                currentView === 'test'
+                !isGlobalHome && currentView === 'test'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
@@ -190,7 +180,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onNavigate('signs');
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
-                currentView === 'signs'
+                !isGlobalHome && currentView === 'signs'
                   ? 'bg-slate-800 text-blue-400 border border-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
@@ -207,7 +197,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onNavigate('violations');
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
-                currentView === 'violations'
+                !isGlobalHome && currentView === 'violations'
                   ? 'bg-slate-800 text-blue-400 border border-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
@@ -224,7 +214,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onNavigate('history');
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer decoration-none ${
-                currentView === 'history'
+                !isGlobalHome && currentView === 'history'
                   ? 'bg-slate-800 text-blue-400 border border-blue-500/30'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
               }`}
@@ -299,6 +289,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="md:hidden py-3 border-t border-slate-700/60 space-y-1 overflow-hidden"
             >
               <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigateGlobalHome();
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 decoration-none ${
+                  isGlobalHome ? 'bg-cyan-500/20 text-cyan-400 font-black' : 'text-cyan-300'
+                }`}
+              >
+                <span>🌍</span>
+                <span>{locale === 'ar' ? 'جميع الدول (البوابة العالمية)' : 'All Countries (Global Portal)'}</span>
+              </a>
+
+              <a
                 href={`/${selectedCountry.id}`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -306,10 +311,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setIsMobileMenuOpen(false);
                 }}
                 className={`w-full px-4 py-2.5 rounded-lg text-right text-xs font-bold flex items-center gap-2 decoration-none ${
-                  currentView === 'home' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
+                  !isGlobalHome && currentView === 'home' ? 'bg-slate-800 text-blue-400' : 'text-slate-300'
                 }`}
               >
-                <span>{t.home}</span>
+                <span>{selectedCountry.flag}</span>
+                <span>{t.home} ({getCountryName(selectedCountry.id)})</span>
               </a>
 
               <a

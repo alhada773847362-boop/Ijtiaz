@@ -48,7 +48,12 @@ async function startServer() {
     res.json({ status: 'ok', time: new Date().toISOString() });
   });
 
-  // Country SEO definitions for Programmatic SEO Dynamic Metadata Injection - 26 countries
+  // Country SEO definitions for Programmatic SEO Dynamic Metadata Injection - 26 countries + Global Portal
+  const GLOBAL_SEO = {
+    title: "منصة اجتياز | المحاكي العربي والعالمي لاختبارات القيادة النظرية 2026",
+    description: "المنصة الأولى المعتمدة للتدرب على اختبارات رخصة القيادة النظرية، إشارات المرور، ونظام المخالفات في 26 دولة عربية وعالمية (السعودية، الإمارات، مصر، أمريكا، بريطانيا، كندا، والمزيد). محاكاة واقعية 100% مجاناً."
+  };
+
   const COUNTRY_SEO: Record<string, { title: string; description: string }> = {
     sa: {
       title: "محاكي اختبار القيادة النظري السعودي (مدرسة دله) | منصة اجتياز",
@@ -156,13 +161,16 @@ async function startServer() {
     }
   };
 
-  function injectMetadata(html: string, countryCode: string, req?: express.Request): string {
-    const seo = COUNTRY_SEO[countryCode.toLowerCase()] || COUNTRY_SEO.sa;
+  function injectMetadata(html: string, countryCode?: string, req?: express.Request): string {
+    const isGlobal = !countryCode || countryCode.toLowerCase() === 'global';
+    const seo = isGlobal
+      ? GLOBAL_SEO
+      : COUNTRY_SEO[countryCode.toLowerCase()] || COUNTRY_SEO.sa;
 
     const protocol = req?.headers['x-forwarded-proto'] || req?.protocol || 'https';
     const host = req?.get('host') || 'ijtiaz.vercel.app';
     const baseUrl = `${protocol}://${host}`;
-    const pageUrl = `${baseUrl}/${countryCode.toLowerCase()}`;
+    const pageUrl = isGlobal ? `${baseUrl}/` : `${baseUrl}/${countryCode.toLowerCase()}`;
     const imageUrl = `${baseUrl}/og-image.jpg?v=2026`;
 
     let modifiedHtml = html;
@@ -224,6 +232,19 @@ async function startServer() {
   }
 
   // 3. SEO Static Files & Google Site Verification
+  app.get('/favicon.ico', (req, res) => {
+    const icoDist = path.join(process.cwd(), 'dist', 'favicon.ico');
+    const icoPublic = path.join(process.cwd(), 'public', 'favicon.ico');
+    const target = fs.existsSync(icoDist) ? icoDist : icoPublic;
+    if (fs.existsSync(target)) {
+      res.setHeader('Content-Type', 'image/x-icon');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.sendFile(target);
+    } else {
+      res.status(204).end();
+    }
+  });
+
   app.get('/googled26e0b9780f8aa69.html', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.send('google-site-verification: googled26e0b9780f8aa69.html');
@@ -247,6 +268,16 @@ async function startServer() {
       res.send(fs.readFileSync(sitemapPath, 'utf-8'));
     } else {
       res.status(404).send('Sitemap not found');
+    }
+  });
+
+  app.get('/antiadblock.js', (req, res) => {
+    const filePath = path.join(process.cwd(), 'public', 'antiadblock.js');
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.send('(function(){ window.__ijtiaz_antiadblock_ready = true; })();');
     }
   });
 
@@ -285,9 +316,24 @@ async function startServer() {
     }
   });
 
-  // Root redirect to default /sa
-  app.get('/', (req, res) => {
-    res.redirect('/sa');
+  // 6. Global Portal Homepage (Root /)
+  app.get('/', async (req, res, next) => {
+    try {
+      let html = '';
+      if (process.env.NODE_ENV !== 'production' && vite) {
+        const rawHtml = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf-8');
+        html = await vite.transformIndexHtml(req.originalUrl, rawHtml);
+      } else {
+        html = fs.readFileSync(path.join(process.cwd(), 'dist/index.html'), 'utf-8');
+      }
+
+      const seoHtml = injectMetadata(html, 'global', req);
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.status(200).send(seoHtml);
+    } catch (err) {
+      console.error('Error rendering Global Portal page:', err);
+      next();
+    }
   });
 
   // 5. Serve remaining static assets and wildcard routing

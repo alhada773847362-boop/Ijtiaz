@@ -8,6 +8,7 @@ import { updatePageSeo } from './utils/seoManager';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { LandingView } from './components/LandingView';
+import { GlobalHomeView } from './components/GlobalHomeView';
 import { TestSimulator } from './components/TestSimulator';
 import { TestResults } from './components/TestResults';
 import { TrafficSignsGuide } from './components/TrafficSignsGuide';
@@ -68,7 +69,7 @@ export default function App() {
       australia: 'au'
     };
 
-    const VIEW_ALIASES: Record<string, 'home' | 'test' | 'signs' | 'violations' | 'history'> = {
+    const VIEW_ALIASES: Record<string, 'home' | 'test' | 'signs' | 'violations' | 'history' | 'global_home'> = {
       test: 'test',
       exam: 'test',
       quiz: 'test',
@@ -89,7 +90,8 @@ export default function App() {
       stats: 'history',
       home: 'home',
       main: 'home',
-      index: 'home'
+      index: 'home',
+      global: 'global_home'
     };
 
     // Clean pathname: remove .html, query parameters, leading/trailing slashes
@@ -102,6 +104,17 @@ export default function App() {
     else if (pathParts.includes('disclaimer')) legalModal = 'disclaimer';
     else if (pathParts.includes('contact')) legalModal = 'contact';
     else if (pathParts.includes('brand')) legalModal = 'brand';
+
+    // Root path "/" is the dedicated Global Portal Homepage
+    if (pathParts.length === 0) {
+      const savedCountryId = localStorage.getItem('ijtiaz_selected_country') as CountryId;
+      const defaultCountry = (savedCountryId && COUNTRIES_DATA[savedCountryId]) ? COUNTRIES_DATA[savedCountryId] : COUNTRIES_DATA.sa;
+      return {
+        country: defaultCountry,
+        view: 'global_home' as const,
+        legalModal
+      };
+    }
 
     // Saved country fallback
     const savedCountryId = localStorage.getItem('ijtiaz_selected_country') as CountryId;
@@ -127,7 +140,7 @@ export default function App() {
 
     // Check subview
     const secondPart = pathParts[1] || '';
-    let view: 'home' | 'test' | 'results' | 'signs' | 'violations' | 'history' = 'home';
+    let view: 'home' | 'test' | 'results' | 'signs' | 'violations' | 'history' | 'global_home' = 'home';
     if (VIEW_ALIASES[secondPart]) {
       view = VIEW_ALIASES[secondPart];
     }
@@ -139,7 +152,7 @@ export default function App() {
 
   // Navigation View
   const [currentView, setCurrentView] = useState<
-    'home' | 'test' | 'results' | 'signs' | 'violations' | 'history'
+    'home' | 'test' | 'results' | 'signs' | 'violations' | 'history' | 'global_home'
   >(initialRoute.view);
 
   // Selected Country (default Saudi Arabia, with localStorage persistence)
@@ -215,21 +228,29 @@ export default function App() {
       if (legalModal) {
         setActiveLegalModal(legalModal);
       }
-
-      // Ensure path normalization (redirect "/" to "/sa" or saved country)
-      if (window.location.pathname === '/' || window.location.pathname === '') {
-        window.history.replaceState(null, '', `/${country.id}`);
-      }
     };
 
     window.addEventListener('popstate', handleUrlSync);
-    // Trigger initial sync and normalization
-    handleUrlSync();
-
     return () => {
       window.removeEventListener('popstate', handleUrlSync);
     };
   }, []);
+
+  // Navigate directly to Global Portal Homepage
+  const handleNavigateGlobalHome = () => {
+    setCurrentView('global_home');
+    window.history.pushState(null, '', '/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Select country from global directory or search -> always opens country landing page
+  const handleSelectCountryFromGlobal = (country: CountryInfo) => {
+    setSelectedCountry(country);
+    localStorage.setItem('ijtiaz_selected_country', country.id);
+    setCurrentView('home');
+    window.history.pushState(null, '', `/${country.id}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Sync selected country to storage and push new URL path
   const handleSelectCountry = (country: CountryInfo) => {
@@ -396,12 +417,14 @@ export default function App() {
       <Navbar
         currentView={currentView === 'results' ? 'test' : currentView}
         onNavigate={handleNavigate}
+        onNavigateGlobalHome={handleNavigateGlobalHome}
         selectedCountry={selectedCountry}
         onSelectCountry={handleSelectCountry}
         isAudioEnabled={isAudioEnabled}
         onToggleAudio={handleToggleAudio}
         locale={locale}
         onToggleLocale={handleToggleLocale}
+        isGlobalHome={currentView === 'global_home'}
       />
 
       {/* Main Content Area */}
@@ -412,12 +435,19 @@ export default function App() {
         
         <AnimatePresence mode="wait">
           <motion.div
-            key={`${selectedCountry.id}-${currentView}`}
+            key={currentView === 'global_home' ? 'global_home' : `${selectedCountry.id}-${currentView}`}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.22, ease: 'easeInOut' }}
           >
+            {currentView === 'global_home' && (
+              <GlobalHomeView
+                onSelectCountry={handleSelectCountryFromGlobal}
+                locale={locale}
+              />
+            )}
+
             {currentView === 'home' && (
               <LandingView
                 selectedCountry={selectedCountry}
@@ -425,6 +455,8 @@ export default function App() {
                 onStartTest={handleStartTest}
                 onNavigateToSigns={() => handleNavigate('signs')}
                 onNavigateToViolations={() => handleNavigate('violations')}
+                onNavigateToHistory={() => handleNavigate('history')}
+                onNavigateGlobalHome={handleNavigateGlobalHome}
                 locale={locale}
               />
             )}
@@ -493,6 +525,7 @@ export default function App() {
       <Footer
         selectedCountry={selectedCountry}
         onNavigate={handleNavigate}
+        onNavigateGlobalHome={handleNavigateGlobalHome}
         onOpenLegal={(type) => setActiveLegalModal(type)}
         locale={locale}
       />

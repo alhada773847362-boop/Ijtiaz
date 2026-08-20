@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   Award, 
   BookOpen, 
@@ -14,11 +14,20 @@ import {
   ChevronLeft,
   ChevronDown,
   HelpCircle,
-  Navigation
+  Navigation,
+  Search,
+  Scale,
+  Filter,
+  FileText,
+  Compass,
+  Check,
+  AlertTriangle
 } from 'lucide-react';
 import { CountryInfo, TestMode } from '../types';
 import { COUNTRIES_LIST } from '../data/countriesData';
 import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from '../data/translations';
+import { TRAFFIC_SIGNS_DATA } from '../data/trafficSignsData';
+import { VIOLATIONS_DATA } from '../data/violationsData';
 import { AdBanner } from './AdBanner';
 import { TrafficSignSvg } from './TrafficSignSvg';
 
@@ -28,8 +37,12 @@ interface LandingViewProps {
   onStartTest: (mode: TestMode, customQuestionsCount?: number) => void;
   onNavigateToSigns: () => void;
   onNavigateToViolations: () => void;
+  onNavigateToHistory?: () => void;
+  onNavigateGlobalHome?: () => void;
   locale?: 'ar' | 'en';
 }
+
+type CountryContentCategory = 'all' | 'tests' | 'signs' | 'violations' | 'rules';
 
 export const LandingView: React.FC<LandingViewProps> = ({
   selectedCountry,
@@ -37,12 +50,17 @@ export const LandingView: React.FC<LandingViewProps> = ({
   onStartTest,
   onNavigateToSigns,
   onNavigateToViolations,
+  onNavigateToHistory,
+  onNavigateGlobalHome,
   locale = 'ar',
 }) => {
   const currentLocale = locale || 'ar';
+  const isAr = currentLocale === 'ar';
   const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
 
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [contentSearchQuery, setContentSearchQuery] = useState('');
+  const [contentCategory, setContentCategory] = useState<CountryContentCategory>('all');
 
   const getCountryName = (cId: string) => {
     if (locale === 'en' && COUNTRY_TRANSLATIONS[cId]) {
@@ -65,6 +83,130 @@ export const LandingView: React.FC<LandingViewProps> = ({
     return COUNTRIES_LIST.find((c) => c.id === cId)?.authority || '';
   };
 
+  // Test modes definition for country search
+  const AVAILABLE_TEST_MODES = useMemo(() => [
+    {
+      id: 'exam' as TestMode,
+      title: isAr ? 'الاختبار الوزاري الشامل المعتمد' : 'Full Official Simulation Exam',
+      desc: isAr ? `محاكاة رسمية مطابقة للاختبار الفعلي (${selectedCountry.totalOfficialQuestions} سؤال، ${selectedCountry.timeLimitMinutes} دقيقة)` : `Official simulation matching real test (${selectedCountry.totalOfficialQuestions} questions, ${selectedCountry.timeLimitMinutes} mins)`,
+      badge: isAr ? 'الموصى به' : 'Recommended',
+      badgeColor: 'bg-blue-600',
+      icon: Award,
+      color: 'text-blue-400',
+      keywords: 'رسمي شامل معتمد دله مرور كامل exam full official'
+    },
+    {
+      id: 'practice' as TestMode,
+      title: isAr ? 'التدريب الفوري مع توضيح الإجابات' : 'Practice Mode with Instant Explanations',
+      desc: isAr ? 'تدرب بدون وقت مع ظهور التصحيح الفوري والشرح التفصيلي لكل سؤال وقاعدة' : 'Untimed practice with instant feedback and rule explanations',
+      badge: isAr ? 'بدون توقيت' : 'Untimed',
+      badgeColor: 'bg-teal-600',
+      icon: BookOpen,
+      color: 'text-teal-400',
+      keywords: 'تدريب شرح فوري توضيح تصحيح practice learn explanation'
+    },
+    {
+      id: 'signs_only' as TestMode,
+      title: isAr ? 'اختبار إشارات وعلامات المرور المتخصص' : 'Traffic Signs Mastery Quiz',
+      desc: isAr ? 'تركيز حصري ومكثف على كافة الإشارات التحذيرية والتنظيمية والإرشادية' : 'Dedicated focus on warning, regulatory, and informational road signs',
+      badge: isAr ? 'إشارات فقط' : 'Signs Only',
+      badgeColor: 'bg-amber-600',
+      icon: Navigation,
+      color: 'text-amber-400',
+      keywords: 'اشارات علامات تحذيرية تنظيمية ارشادية signs warning regulatory'
+    },
+    {
+      id: 'priority_only' as TestMode,
+      title: isAr ? 'اختبار التقاطعات وحق الأولوية والدوار' : 'Intersections & Priority Rules Quiz',
+      desc: isAr ? 'أسئلة وسيناريوهات حق الأسبقية، الدوارات، التقاطعات، والمسارات' : 'Right of way scenarios, roundabouts, junctions and road lane rules',
+      badge: isAr ? 'قواعد الأولوية' : 'Priority Rules',
+      badgeColor: 'bg-purple-600',
+      icon: FileCheck2,
+      color: 'text-purple-400',
+      keywords: 'تقاطعات دوار اولوية اسبقية حق المرور priority intersections roundabout'
+    },
+    {
+      id: 'quick_10' as TestMode,
+      title: isAr ? 'تحدي الـ 10 أسئلة السريع (Sprint)' : '10-Question Quick Sprint Challenge',
+      desc: isAr ? 'تدريب سريع ومكثف لاختبار معلوماتك في أقل من 5 دقائق' : 'Fast 10-question sprint to test your knowledge in under 5 minutes',
+      badge: isAr ? 'سريع 5 دقائق' : '5 Min Sprint',
+      badgeColor: 'bg-cyan-600',
+      icon: Zap,
+      color: 'text-cyan-400',
+      keywords: 'سريع عشر اسئلة سريع 10 quick sprint fast challenge'
+    },
+    {
+      id: 'hard_questions' as TestMode,
+      title: isAr ? 'بنك أصعب الأسئلة وأكثرها خطأً' : 'Hardest & Most Failed Questions Bank',
+      desc: isAr ? 'تجميعة الأسئلة الدقيقة التي يقع فيها غالبية المتقدمين في قاعات الاختبار' : 'Curated collection of tricky questions with the highest fail rates',
+      badge: isAr ? 'مستوى متقدم' : 'Hard Level',
+      badgeColor: 'bg-red-600',
+      icon: Flame,
+      color: 'text-red-400',
+      keywords: 'صعب اصعب اسئلة اخطاء معقد hard difficult tricky failed'
+    }
+  ], [isAr, selectedCountry]);
+
+  // Filtered country content items
+  const searchResults = useMemo(() => {
+    const q = contentSearchQuery.toLowerCase().trim();
+    const results = {
+      tests: [] as typeof AVAILABLE_TEST_MODES,
+      signs: [] as typeof TRAFFIC_SIGNS_DATA,
+      violations: [] as typeof VIOLATIONS_DATA,
+    };
+
+    // Filter Tests
+    if (contentCategory === 'all' || contentCategory === 'tests') {
+      results.tests = AVAILABLE_TEST_MODES.filter((m) => {
+        if (!q) return true;
+        return (
+          m.title.toLowerCase().includes(q) ||
+          m.desc.toLowerCase().includes(q) ||
+          m.keywords.toLowerCase().includes(q)
+        );
+      });
+    }
+
+    // Filter Signs
+    if (contentCategory === 'all' || contentCategory === 'signs') {
+      results.signs = TRAFFIC_SIGNS_DATA.filter((s) => {
+        if (!q) return true;
+        return (
+          s.name.toLowerCase().includes(q) ||
+          (s.nameEn && s.nameEn.toLowerCase().includes(q)) ||
+          s.meaning.toLowerCase().includes(q) ||
+          s.description.toLowerCase().includes(q) ||
+          s.categoryName.toLowerCase().includes(q) ||
+          s.code.toLowerCase().includes(q)
+        );
+      }).slice(0, q ? 12 : 8);
+    }
+
+    // Filter Violations
+    if (contentCategory === 'all' || contentCategory === 'violations') {
+      results.violations = VIOLATIONS_DATA.filter((v) => {
+        const countryMatch = v.countryId === 'all' || v.countryId === selectedCountry.id;
+        if (!countryMatch) return false;
+        if (!q) return true;
+        return (
+          v.violation.toLowerCase().includes(q) ||
+          (v.violationEn && v.violationEn.toLowerCase().includes(q)) ||
+          v.category.toLowerCase().includes(q) ||
+          v.fineRange.toLowerCase().includes(q) ||
+          v.consequences.toLowerCase().includes(q)
+        );
+      }).slice(0, q ? 8 : 4);
+    }
+
+    return results;
+  }, [contentSearchQuery, contentCategory, AVAILABLE_TEST_MODES, selectedCountry]);
+
+  const totalResultsCount = 
+    searchResults.tests.length + 
+    searchResults.signs.length + 
+    searchResults.violations.length;
+
   return (
     <div className="space-y-12 pb-12 animate-in fade-in duration-200 text-slate-100">
       
@@ -86,13 +228,27 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <span>{t.heroBadge.replace('%year%', new Date().getFullYear().toString())}</span>
           </div>
 
-          {/* Visual Localization Block for High Dwell-time SEO */}
-          <div className="flex items-center gap-2.5 bg-slate-800/80 border border-slate-700/60 rounded-2xl px-4 py-2.5 w-fit shadow-lg shadow-black/10">
-            <span className="text-2xl leading-none" role="img" aria-label={getCountryName(selectedCountry.id)}>{selectedCountry.flag}</span>
-            <span className="text-xs sm:text-sm font-black text-slate-100 flex items-center gap-1.5">
-              <span>{t.heroSimulatorIn}</span>
-              <span className="text-blue-400">{getCountryName(selectedCountry.id)}</span>
-            </span>
+          {/* Visual Localization Block for Selected Country & Change Country Button */}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2.5 bg-slate-800/80 border border-slate-700/60 rounded-2xl px-4 py-2.5 shadow-lg shadow-black/10">
+              <span className="text-2xl leading-none" role="img" aria-label={getCountryName(selectedCountry.id)}>{selectedCountry.flag}</span>
+              <span className="text-xs sm:text-sm font-black text-slate-100 flex items-center gap-1.5">
+                <span>{t.heroSimulatorIn}</span>
+                <span className="text-blue-400">{getCountryName(selectedCountry.id)}</span>
+              </span>
+            </div>
+
+            {onNavigateGlobalHome && (
+              <button
+                onClick={onNavigateGlobalHome}
+                id="change-country-hero-btn"
+                className="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 hover:border-cyan-500/50 text-xs font-bold text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-md group"
+                title={isAr ? 'العودة للصفحة الرئيسية لاختيار دولة أخرى' : 'Return to home page to choose another country'}
+              >
+                <Compass className="w-4 h-4 text-cyan-400 group-hover:rotate-45 transition-transform" />
+                <span>{isAr ? 'تغيير الدولة (العودة للرئيسية)' : 'Change Country (Home)'}</span>
+              </button>
+            )}
           </div>
 
           {/* Heading */}
@@ -166,58 +322,271 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
       </section>
 
-      {/* 2. Country Selector Grid (Hyper-Localized) */}
-      <section className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-100 flex items-center gap-2">
-              <span>{t.selectCountryTitle}</span>
+      {/* 2. Country Smart Search & Discovery Hub (مركز البحث السريع والمستكشف الشامل) */}
+      <section className="bg-gradient-to-b from-[#1E293B] to-slate-900 rounded-3xl border border-slate-700/80 p-6 sm:p-8 shadow-xl space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-bold">
+              <Compass className="w-3.5 h-3.5" />
+              <span>{isAr ? `مستكشف محتوى دولة ${getCountryName(selectedCountry.id)}` : `${getCountryName(selectedCountry.id)} Content Explorer`}</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-100">
+              {isAr ? 'ابحث عن ما تريده في اختبارات وأنظمة القيادة' : 'Search Tests, Road Signs, Violations & Rules'}
             </h2>
             <p className="text-xs sm:text-sm text-slate-400">
-              {t.selectCountrySub}
+              {isAr
+                ? 'ابحث فوراً بالاسم عن أي نموذج اختبار، إشارة مرورية، غرامة أو مخالفة، أو قاعدة أولوية'
+                : 'Instantly search by keyword for any test simulator, road sign, violation fine, or driving rule'}
             </p>
           </div>
-          <div className="text-xs font-bold text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-xl border border-blue-500/20 self-start">
-            {t.selectedCountryLabel} {getCountryName(selectedCountry.id)} {selectedCountry.flag}
+
+          <div className="flex items-center gap-2 self-start md:self-auto text-xs font-bold text-slate-300 bg-slate-800 px-3.5 py-2 rounded-2xl border border-slate-700">
+            <span>{selectedCountry.flag}</span>
+            <span>{getCountryName(selectedCountry.id)}</span>
+            <span className="text-slate-500">•</span>
+            <span className="text-emerald-400">{selectedCountry.totalOfficialQuestions} {isAr ? 'سؤال' : 'Q'}</span>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-          {COUNTRIES_LIST.map((country) => {
-            const isSelected = selectedCountry.id === country.id;
+        {/* Search Bar */}
+        <div className="relative group">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-teal-500/20 to-cyan-500/20 rounded-2xl blur-md opacity-60 group-focus-within:opacity-100 transition-opacity" />
+          <div className="relative flex items-center bg-slate-950/90 border border-slate-700 focus-within:border-cyan-400 rounded-2xl px-4 py-3.5 shadow-xl transition-all">
+            <Search className="w-5 h-5 text-cyan-400 shrink-0 mx-2" />
+            <input
+              type="text"
+              value={contentSearchQuery}
+              onChange={(e) => setContentSearchQuery(e.target.value)}
+              placeholder={
+                isAr
+                  ? `🔍 اكتب ما تبحث عنه (مثال: اختبار شامل، قف، دوار، حزام الأمان، قطع الإشارة، سرعة، مطب...)`
+                  : `🔍 Search (e.g. Full exam, Stop sign, Roundabout, Seatbelt, Red light, Speeding...)`
+              }
+              className="w-full bg-transparent text-white placeholder-slate-400 text-sm sm:text-base outline-none font-bold"
+              aria-label="Search country content"
+            />
+            {contentSearchQuery && (
+              <button
+                onClick={() => setContentSearchQuery('')}
+                className="text-xs text-slate-400 hover:text-white bg-slate-800 px-3 py-1.5 rounded-lg transition-colors font-bold"
+              >
+                {isAr ? 'مسح' : 'Clear'}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Category Filter Pills */}
+        <div className="flex flex-wrap items-center gap-2 pt-1 border-b border-slate-800 pb-4">
+          <span className="text-xs text-slate-400 font-bold ml-1 flex items-center gap-1">
+            <Filter className="w-3.5 h-3.5" />
+            <span>{isAr ? 'تصفية حسب:' : 'Filter by:'}</span>
+          </span>
+
+          {[
+            { id: 'all' as CountryContentCategory, labelAr: 'الكل 🌟', labelEn: 'All 🌟', count: totalResultsCount },
+            { id: 'tests' as CountryContentCategory, labelAr: 'نماذج الاختبارات 🎯', labelEn: 'Test Modes 🎯', count: searchResults.tests.length },
+            { id: 'signs' as CountryContentCategory, labelAr: 'إشارات المرور 🛑', labelEn: 'Traffic Signs 🛑', count: searchResults.signs.length },
+            { id: 'violations' as CountryContentCategory, labelAr: 'المخالفات والغرامات ⚖️', labelEn: 'Violations & Fines ⚖️', count: searchResults.violations.length },
+          ].map((tab) => {
+            const isActive = contentCategory === tab.id;
             return (
-              <div
-                key={country.id}
-                id={`country-card-${country.id}`}
-                onClick={() => onSelectCountry(country)}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer relative overflow-hidden group ${
-                  isSelected
-                    ? 'border-blue-500 bg-blue-600/15 shadow-lg shadow-blue-500/20 ring-2 ring-blue-500/30'
-                    : 'border-slate-700/80 bg-[#1E293B] hover:border-slate-600 hover:bg-slate-800/80'
+              <button
+                key={tab.id}
+                onClick={() => setContentCategory(tab.id)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  isActive
+                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30'
+                    : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700'
                 }`}
               >
-                {isSelected && (
-                  <div className="absolute top-2 left-2 w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-sm">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                  </div>
-                )}
-                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform inline-block">
-                  {country.flag}
-                </div>
-                <h3 className="text-sm font-bold text-slate-100 leading-tight mb-1">
-                  {getCountryName(country.id)}
-                </h3>
-                <p className="text-[11px] text-slate-400 line-clamp-1 mb-2">
-                  {getCountrySchool(country.id)}
-                </p>
-                <div className="flex items-center justify-between text-[10px] font-semibold text-slate-300 border-t border-slate-700/60 pt-2">
-                  <span>{t.questionsCountLabel.replace(':', '')} {country.totalOfficialQuestions}</span>
-                  <span className="text-blue-300 bg-blue-500/20 border border-blue-500/30 px-1.5 py-0.5 rounded">{t.successUnit} {country.passingScorePercentage}%</span>
-                </div>
-              </div>
+                <span>{isAr ? tab.labelAr : tab.labelEn}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-slate-950/20 text-slate-950 font-black' : 'bg-slate-700 text-slate-300'}`}>
+                  {tab.count}
+                </span>
+              </button>
             );
           })}
         </div>
+
+        {/* Instant Dynamic Search Results Section */}
+        {(contentSearchQuery.trim().length > 0 || contentCategory !== 'all') && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-top-2 duration-200">
+            {/* Header info */}
+            <div className="flex items-center justify-between text-xs text-slate-400 bg-slate-950/60 px-4 py-2 rounded-xl border border-slate-800">
+              <span>
+                {isAr
+                  ? `تم العثور على (${totalResultsCount}) نتيجة مطابقة`
+                  : `Found (${totalResultsCount}) matching results`}
+              </span>
+              <button
+                onClick={() => {
+                  setContentSearchQuery('');
+                  setContentCategory('all');
+                }}
+                className="text-cyan-400 hover:underline font-bold"
+              >
+                {isAr ? 'إعادة ضبط البحث' : 'Reset search'}
+              </button>
+            </div>
+
+            {/* 1. Matched Tests */}
+            {searchResults.tests.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-xs font-black text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <Award className="w-4 h-4" />
+                  <span>{isAr ? 'نماذج الاختبارات المعتمدة' : 'Practice Test Simulators'} ({searchResults.tests.length})</span>
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {searchResults.tests.map((mode) => {
+                    const IconComp = mode.icon;
+                    return (
+                      <div
+                        key={mode.id}
+                        onClick={() => onStartTest(mode.id)}
+                        className="p-4 rounded-2xl bg-slate-800/90 border border-slate-700 hover:border-blue-500/80 hover:bg-slate-800 transition-all cursor-pointer group flex flex-col justify-between space-y-3"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className={`p-2.5 rounded-xl bg-slate-900 border border-slate-700 ${mode.color}`}>
+                            <IconComp className="w-5 h-5" />
+                          </div>
+                          <span className={`text-[10px] font-bold text-white px-2 py-0.5 rounded-full ${mode.badgeColor}`}>
+                            {mode.badge}
+                          </span>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-slate-100 group-hover:text-blue-400 transition-colors">
+                            {mode.title}
+                          </h4>
+                          <p className="text-xs text-slate-400 line-clamp-2 mt-1 leading-relaxed">
+                            {mode.desc}
+                          </p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onStartTest(mode.id);
+                          }}
+                          className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5"
+                        >
+                          <span>{isAr ? 'بدء الاختبار فوراً' : 'Start Test Now'}</span>
+                          <ArrowLeft className="w-3.5 h-3.5 ltr:rotate-180" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* 2. Matched Traffic Signs */}
+            {searchResults.signs.length > 0 && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Navigation className="w-4 h-4" />
+                    <span>{isAr ? 'إشارات وعلامات المرور المطابقة' : 'Matching Road Signs'} ({searchResults.signs.length})</span>
+                  </h3>
+                  <button
+                    onClick={onNavigateToSigns}
+                    className="text-xs text-cyan-400 hover:underline font-bold"
+                  >
+                    {isAr ? 'عرض موسوعة الإشارات كاملة ←' : 'View full signs guide →'}
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {searchResults.signs.map((sign) => (
+                    <div
+                      key={sign.id}
+                      onClick={onNavigateToSigns}
+                      className="p-3.5 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-amber-500/60 transition-all flex flex-col justify-between space-y-2 cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-white rounded-xl shadow-sm shrink-0 flex items-center justify-center">
+                          <TrafficSignSvg signId={sign.id} size={42} />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-slate-100 group-hover:text-amber-300 transition-colors line-clamp-1">
+                            {isAr ? sign.name : (sign.nameEn || sign.name)}
+                          </div>
+                          <div className="text-[10px] text-amber-400 font-medium">
+                            {sign.categoryName}
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                        {isAr ? sign.meaning : (sign.meaningEn || sign.meaning)}
+                      </p>
+                      <div className="text-[10px] text-cyan-400 font-bold flex items-center gap-1 pt-1 border-t border-slate-700/60">
+                        <span>{isAr ? 'استعراض في الدليل' : 'View in guide'}</span>
+                        <ArrowLeft className="w-3 h-3 ltr:rotate-180" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 3. Matched Violations */}
+            {searchResults.violations.length > 0 && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-black text-red-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Scale className="w-4 h-4" />
+                    <span>{isAr ? 'المخالفات والغرامات المرورية' : 'Traffic Fines & Penalties'} ({searchResults.violations.length})</span>
+                  </h3>
+                  <button
+                    onClick={onNavigateToViolations}
+                    className="text-xs text-cyan-400 hover:underline font-bold"
+                  >
+                    {isAr ? 'جدول المخالفات الكامل ←' : 'View all violations →'}
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {searchResults.violations.map((v) => (
+                    <div
+                      key={v.id}
+                      onClick={onNavigateToViolations}
+                      className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-red-500/60 transition-all flex flex-col justify-between space-y-2 cursor-pointer group"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className="text-xs font-bold text-slate-100 group-hover:text-red-300 transition-colors">
+                          {isAr ? v.violation : (v.violationEn || v.violation)}
+                        </h4>
+                        {v.points > 0 && (
+                          <span className="text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full font-bold shrink-0">
+                            {v.points} {isAr ? 'نقاط' : 'pts'}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs font-black text-amber-400">
+                        {isAr ? v.fineRange : (v.fineRangeEn || v.fineRange)}
+                      </div>
+                      <p className="text-[11px] text-slate-400 line-clamp-2">
+                        {isAr ? v.consequences : (v.consequencesEn || v.consequences)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* No Results Fallback */}
+            {totalResultsCount === 0 && (
+              <div className="p-8 text-center bg-slate-900/80 border border-slate-800 rounded-2xl space-y-2">
+                <AlertTriangle className="w-8 h-8 text-amber-400 mx-auto" />
+                <h4 className="text-sm font-bold text-slate-200">
+                  {isAr ? `لم نجد نتائج مطابقة لـ "${contentSearchQuery}"` : `No results matching "${contentSearchQuery}"`}
+                </h4>
+                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                  {isAr
+                    ? 'جرب البحث بكلمات عامة مثل: اختبار، إشارة، سرعة، دوار، حزام، أو اختر أحد تصنيفات التصفية أعلاه.'
+                    : 'Try broader keywords such as: test, sign, speed, roundabout, seatbelt.'}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
       {/* Strategic Mid-Landing AdBanner */}

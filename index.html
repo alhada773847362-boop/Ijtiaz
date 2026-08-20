@@ -4,6 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    <!-- Script Error Resilience Handler -->
+    <script>
+      (function() {
+        var originalOnError = window.onerror;
+        window.onerror = function(msg, url, line, col, error) {
+          if (msg === 'Script error.' || (url && (url.indexOf('massivesalad') !== -1 || url.indexOf('antiadblock') !== -1))) {
+            return true;
+          }
+          if (typeof originalOnError === 'function') {
+            return originalOnError.apply(this, arguments);
+          }
+          return false;
+        };
+        window.addEventListener('error', function(e) {
+          if (e.message === 'Script error.' || (e.filename && (e.filename.indexOf('massivesalad') !== -1 || e.filename.indexOf('antiadblock') !== -1))) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, true);
+        window.addEventListener('unhandledrejection', function(e) {
+          if (e.reason && (String(e.reason).indexOf('Script error') !== -1 || String(e.reason).indexOf('massivesalad') !== -1)) {
+            e.preventDefault();
+          }
+        });
+      })();
+    </script>
+    
     <!-- Primary SEO Meta Tags -->
     <title>منصة اجتياز | المحاكي المعتمد لاختبار رخصة القيادة النظري 2026</title>
     <meta name="title" content="منصة اجتياز | المحاكي المعتمد لاختبار رخصة القيادة النظري 2026" />
