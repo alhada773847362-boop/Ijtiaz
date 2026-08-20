@@ -1,324 +1,1710 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <!-- Root Homepage -->
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Core Root Entry -->
   <url>
     <loc>https://ijtiaz.vercel.app/</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/" />
+    <lastmod>2026-08-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://ijtiaz.vercel.app/en</loc>
     <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/" />
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>منصة اجتياز - محاكي اختبار القيادة النظري الرسمي</image:title>
+    </image:image>
   </url>
-
-  <!-- 1. Saudi Arabia (KSA) -->
   <url>
     <loc>https://ijtiaz.vercel.app/sa</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sa" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/sa" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sa" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sa" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SA</image:title>
+    </image:image>
   </url>
   <url>
-    <loc>https://ijtiaz.vercel.app/en/sa</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sa" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/sa" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sa" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 2. UAE -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/ae</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ae" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/ae" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ae" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://ijtiaz.vercel.app/en/ae</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ae" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/ae" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ae" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 3. Egypt -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/eg</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/eg" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/eg" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/eg" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://ijtiaz.vercel.app/en/eg</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/eg" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/eg" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/eg" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 4. Kuwait -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/kw</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/kw" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/kw" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/kw" />
+    <loc>https://ijtiaz.vercel.app/sa/test</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sa/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sa/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sa/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SA</image:title>
+    </image:image>
   </url>
-
-  <!-- 5. Qatar -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/qa</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/qa" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/qa" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/qa" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 6. Jordan -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/jo</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/jo" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/jo" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/jo" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 7. United States (USA) -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/us</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/us" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/us" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/us" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://ijtiaz.vercel.app/en/us</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/us" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/us" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/us" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 8. United Kingdom (UK) -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/gb</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/gb" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/gb" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/gb" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 9. Morocco -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/ma</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ma" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/ma" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ma" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 10. Algeria -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/dz</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dz" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/dz" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dz" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 11. Oman -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/om</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/om" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/om" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/om" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 12. Tunisia -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/tn</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/tn" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/tn" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/tn" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 13. Iraq -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/iq</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/iq" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/iq" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/iq" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 14. Bahrain -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/bh</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/bh" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/bh" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/bh" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 15. Lebanon -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/lb</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/lb" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/lb" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 16. Palestine -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/ps</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ps" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/ps" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 17. Syria -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/sy</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sy" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/sy" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 18. Yemen -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/ye</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ye" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/ye" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 19. Sudan -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/sd</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sd" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/sd" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 20. Libya -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/ly</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ly" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/ly" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 21. Mauritania -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/mr</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/mr" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/mr" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 22. Somalia -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/so</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/so" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/so" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 23. Djibouti -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/dj</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dj" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/dj" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 24. Comoros -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/km</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/km" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/km" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 25. Canada -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/ca</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ca" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/ca" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 26. Australia -->
-  <url>
-    <loc>https://ijtiaz.vercel.app/au</loc>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/au" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/en/au" />
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Guides & Traffic Signs -->
   <url>
     <loc>https://ijtiaz.vercel.app/sa/signs</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sa/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sa/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sa/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SA</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://ijtiaz.vercel.app/sa/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sa/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sa/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sa/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sa/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sa/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sa/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sa/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ae</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ae" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ae" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ae" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ae/test</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ae/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ae/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ae/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AE</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://ijtiaz.vercel.app/ae/signs</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ae/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ae/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ae/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ae/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ae/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ae/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ae/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ae/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ae/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ae/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ae/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/eg</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/eg" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/eg" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/eg" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - EG</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/eg/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/eg/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/eg/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/eg/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - EG</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://ijtiaz.vercel.app/eg/signs</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/eg/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/eg/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/eg/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - EG</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/eg/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/eg/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/eg/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/eg/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - EG</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/eg/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/eg/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/eg/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/eg/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - EG</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/kw</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/kw" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/kw" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/kw" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KW</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/kw/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/kw/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/kw/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/kw/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KW</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/kw/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/kw/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/kw/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/kw/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KW</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/kw/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/kw/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/kw/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/kw/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KW</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/kw/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/kw/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/kw/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/kw/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KW</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/qa</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/qa" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/qa" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/qa" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - QA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/qa/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/qa/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/qa/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/qa/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - QA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/qa/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/qa/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/qa/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/qa/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - QA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/qa/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/qa/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/qa/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/qa/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - QA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/qa/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/qa/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/qa/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/qa/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - QA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/jo</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/jo" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/jo" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/jo" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - JO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/jo/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/jo/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/jo/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/jo/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - JO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/jo/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/jo/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/jo/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/jo/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - JO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/jo/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/jo/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/jo/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/jo/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - JO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/jo/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/jo/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/jo/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/jo/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - JO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/om</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/om" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/om" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/om" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - OM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/om/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/om/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/om/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/om/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - OM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/om/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/om/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/om/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/om/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - OM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/om/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/om/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/om/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/om/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - OM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/om/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/om/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/om/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/om/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - OM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/bh</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/bh" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/bh" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/bh" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - BH</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/bh/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/bh/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/bh/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/bh/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - BH</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/bh/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/bh/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/bh/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/bh/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - BH</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/bh/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/bh/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/bh/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/bh/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - BH</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/bh/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/bh/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/bh/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/bh/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - BH</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/iq</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/iq" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/iq" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/iq" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - IQ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/iq/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/iq/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/iq/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/iq/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - IQ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/iq/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/iq/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/iq/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/iq/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - IQ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/iq/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/iq/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/iq/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/iq/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - IQ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/iq/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/iq/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/iq/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/iq/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - IQ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dz</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dz" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dz" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dz" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DZ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dz/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dz/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dz/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dz/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DZ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dz/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dz/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dz/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dz/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DZ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dz/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dz/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dz/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dz/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DZ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dz/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dz/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dz/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dz/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DZ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ma</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ma" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ma" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ma" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ma/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ma/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ma/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ma/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ma/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ma/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ma/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ma/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ma/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ma/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ma/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ma/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ma/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ma/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ma/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ma/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/tn</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/tn" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/tn" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/tn" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - TN</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/tn/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/tn/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/tn/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/tn/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - TN</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/tn/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/tn/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/tn/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/tn/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - TN</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/tn/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/tn/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/tn/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/tn/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - TN</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/tn/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/tn/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/tn/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/tn/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - TN</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ye</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ye" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ye" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ye" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - YE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ye/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ye/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ye/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ye/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - YE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ye/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ye/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ye/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ye/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - YE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ye/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ye/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ye/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ye/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - YE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ye/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ye/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ye/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ye/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - YE</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sd</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sd" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sd" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sd" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SD</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sd/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sd/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sd/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sd/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SD</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sd/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sd/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sd/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sd/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SD</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sd/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sd/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sd/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sd/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SD</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sd/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sd/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sd/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sd/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SD</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ly</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ly" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ly" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ly" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ly/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ly/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ly/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ly/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ly/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ly/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ly/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ly/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ly/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ly/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ly/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ly/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ly/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ly/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ly/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ly/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sy</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sy" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sy" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sy/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sy/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sy/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sy/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sy/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sy/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sy/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sy/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sy/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sy/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sy/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sy/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/sy/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/sy/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/sy/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/sy/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SY</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/lb</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/lb" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/lb" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/lb" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/lb/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/lb/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/lb/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/lb/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/lb/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/lb/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/lb/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/lb/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/lb/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/lb/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/lb/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/lb/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/lb/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/lb/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/lb/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/lb/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - LB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ps</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ps" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ps" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ps" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - PS</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ps/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ps/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ps/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ps/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - PS</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ps/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ps/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ps/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ps/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - PS</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ps/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ps/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ps/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ps/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - PS</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ps/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ps/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ps/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ps/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - PS</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/mr</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/mr" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/mr" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/mr" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MR</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/mr/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/mr/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/mr/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/mr/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MR</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/mr/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/mr/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/mr/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/mr/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MR</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/mr/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/mr/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/mr/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/mr/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MR</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/mr/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/mr/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/mr/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/mr/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - MR</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/so</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/so" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/so" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/so" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/so/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/so/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/so/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/so/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/so/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/so/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/so/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/so/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/so/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/so/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/so/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/so/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/so/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/so/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/so/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/so/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - SO</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dj</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dj" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dj" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dj" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DJ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dj/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dj/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dj/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dj/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DJ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dj/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dj/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dj/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dj/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DJ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dj/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dj/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dj/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dj/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DJ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/dj/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/dj/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/dj/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/dj/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - DJ</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/km</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/km" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/km" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/km" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/km/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/km/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/km/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/km/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/km/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/km/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/km/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/km/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/km/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/km/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/km/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/km/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/km/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/km/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/km/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/km/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - KM</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/us</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/us" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/us" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/us" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - US</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/us/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/us/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/us/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/us/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - US</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/us/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/us/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/us/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/us/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - US</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/us/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/us/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/us/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/us/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - US</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/us/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/us/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/us/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/us/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - US</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/gb</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/gb" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/gb" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/gb" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - GB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/gb/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/gb/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/gb/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/gb/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - GB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/gb/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/gb/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/gb/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/gb/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - GB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/gb/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/gb/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/gb/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/gb/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - GB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/gb/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/gb/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/gb/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/gb/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - GB</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ca</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ca" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ca" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ca" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - CA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ca/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ca/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ca/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ca/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - CA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ca/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ca/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ca/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ca/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - CA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ca/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ca/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ca/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ca/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - CA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/ca/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/ca/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/ca/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/ca/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - CA</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/au</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/au" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/au" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/au" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AU</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/au/test</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/au/test" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/au/test" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/au/test" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AU</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/au/signs</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/au/signs" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/au/signs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/au/signs" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AU</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/au/violations</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/au/violations" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/au/violations" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/au/violations" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AU</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://ijtiaz.vercel.app/au/history</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://ijtiaz.vercel.app/au/history" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://ijtiaz.vercel.app/au/history" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ijtiaz.vercel.app/au/history" />
+    <image:image>
+      <image:loc>https://ijtiaz.vercel.app/og-image.jpg</image:loc>
+      <image:title>اختبار القيادة النظري - AU</image:title>
+    </image:image>
   </url>
 </urlset>
