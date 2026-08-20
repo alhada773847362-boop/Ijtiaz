@@ -58,9 +58,79 @@ export const LandingView: React.FC<LandingViewProps> = ({
   const isAr = currentLocale === 'ar';
   const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
 
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-  const [contentSearchQuery, setContentSearchQuery] = useState('');
-  const [contentCategory, setContentCategory] = useState<CountryContentCategory>('all');
+  // Dynamic Design Theme based on Country
+  const getCountryTheme = (cId: string) => {
+    switch (cId) {
+      case 'sa':
+        return { 
+          gradient: 'from-emerald-900/40 via-slate-900 to-slate-950', 
+          accent: 'emerald', 
+          primary: 'text-emerald-400', 
+          bg: 'bg-emerald-500/10', 
+          border: 'border-emerald-500/30',
+          btn: 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/30'
+        };
+      case 'ae':
+        return { 
+          gradient: 'from-blue-900/40 via-slate-900 to-slate-950', 
+          accent: 'blue', 
+          primary: 'text-blue-400', 
+          bg: 'bg-blue-500/10', 
+          border: 'border-blue-500/30',
+          btn: 'bg-blue-600 hover:bg-blue-500 shadow-blue-500/30'
+        };
+      case 'eg':
+        return { 
+          gradient: 'from-red-900/40 via-slate-900 to-slate-950', 
+          accent: 'red', 
+          primary: 'text-red-400', 
+          bg: 'bg-red-500/10', 
+          border: 'border-red-500/30',
+          btn: 'bg-red-600 hover:bg-red-500 shadow-red-500/30'
+        };
+      case 'kw':
+        return { 
+          gradient: 'from-cyan-900/40 via-slate-900 to-slate-950', 
+          accent: 'cyan', 
+          primary: 'text-cyan-400', 
+          bg: 'bg-cyan-500/10', 
+          border: 'border-cyan-500/30',
+          btn: 'bg-cyan-600 hover:bg-cyan-500 shadow-cyan-500/30'
+        };
+      case 'qa':
+        return { 
+          gradient: 'from-rose-900/40 via-slate-900 to-slate-950', 
+          accent: 'rose', 
+          primary: 'text-rose-400', 
+          bg: 'bg-rose-500/10', 
+          border: 'border-rose-500/30',
+          btn: 'bg-rose-600 hover:bg-rose-500 shadow-rose-500/30'
+        };
+      case 'jo':
+      case 'ma':
+      case 'dz':
+        return { 
+          gradient: 'from-green-900/40 via-slate-900 to-slate-950', 
+          accent: 'green', 
+          primary: 'text-green-400', 
+          bg: 'bg-green-500/10', 
+          border: 'border-green-500/30',
+          btn: 'bg-green-600 hover:bg-green-500 shadow-green-500/30'
+        };
+      default:
+        return { 
+          gradient: 'from-blue-950/40 via-slate-900 to-slate-950', 
+          accent: 'blue', 
+          primary: 'text-blue-400', 
+          bg: 'bg-blue-500/10', 
+          border: 'border-blue-500/30',
+          btn: 'bg-blue-600 hover:bg-blue-500 shadow-blue-500/30'
+        };
+    }
+  };
+
+  const theme = getCountryTheme(selectedCountry.id);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const getCountryName = (cId: string) => {
     if (locale === 'en' && COUNTRY_TRANSLATIONS[cId]) {
@@ -82,6 +152,83 @@ export const LandingView: React.FC<LandingViewProps> = ({
     }
     return COUNTRIES_LIST.find((c) => c.id === cId)?.authority || '';
   };
+
+  // Dynamic Country-Specific Search Trend FAQs
+  const getCountryFaqs = (cId: string) => {
+    const common = [
+      {
+        qAr: `كم عدد أسئلة اختبار القيادة النظري في ${getCountryName(cId)} لعام 2026؟`,
+        qEn: `How many questions are in the 2026 ${getCountryName(cId)} driving theory test?`,
+        aAr: `يتكون الاختبار الرسمي في ${getCountryName(cId)} من ${selectedCountry.totalOfficialQuestions} سؤالاً، تغطي إشارات المرور وقواعد الأولوية. يجب عليك الإجابة على ${Math.ceil((selectedCountry.totalOfficialQuestions * selectedCountry.passingScorePercentage) / 100)} سؤالاً بشكل صحيح للنجاح.`,
+        aEn: `The official exam in ${getCountryName(cId)} consists of ${selectedCountry.totalOfficialQuestions} questions. You must answer ${Math.ceil((selectedCountry.totalOfficialQuestions * selectedCountry.passingScorePercentage) / 100)} correctly to pass.`
+      },
+      {
+        qAr: `هل يمكنني مراجعة إجابات الخبراء والشروحات القانونية؟`,
+        qEn: `Can I review expert explanations and legal justifications?`,
+        aAr: `بالتأكيد، عند استخدام "وضع التدريب الفوري"، ستظهر لك الإجابة الصحيحة فوراً مع شرح قانوني مفصل مستمد من المنهج الرسمي لـ ${getCountryName(cId)}، مما يساعدك على فهم القاعدة بدلاً من مجرد حفظ السؤال.`,
+        aEn: `Absolutely, when using "Instant Practice Mode", the correct answer is shown immediately with a detailed legal explanation derived from ${getCountryName(cId)}'s official curriculum.`
+      }
+    ];
+
+    const countrySpecific: Record<string, { qAr: string; qEn: string; aAr: string; aEn: string }[]> = {
+      sa: [
+        {
+          qAr: 'كيف أحجز موعد اختبار القيادة في مدرسة دله؟',
+          qEn: 'How to book a driving test appointment at Dallah School?',
+          aAr: 'يتم الحجز عبر منصة "أبشر" أو تطبيق "توكلنا" من خلال خدمة حجز مواعد تدريب القيادة. ننصحك بإتمام كافة الاختبارات التجريبية هنا أولاً لضمان جاهزيتك لموعد دله الرسمي.',
+          aEn: 'Booking is done via "Absher" or "Tawakkalna" apps. We recommend completing all mock tests here first to ensure you are ready for your official Dallah appointment.'
+        },
+        {
+          qAr: 'ما هو "التقييم" قبل بدء التدريب في السعودية؟',
+          qEn: 'What is the "Assessment" before training in Saudi Arabia?',
+          aAr: 'هو فحص مهارة أولي يحدد عدد ساعات التدريب التي تحتاجها (6 أو 15 أو 30 ساعة). دراستك لإشارات المرور وقواعد الأولوية هنا ستساعدك في الحصول على أقل عدد ساعات تدريب ممكن.',
+          aEn: 'It\'s an initial skill test that determines your training hours (6, 15, or 30). Studying signs and rules here helps you qualify for the minimum training hours.'
+        }
+      ],
+      ae: [
+        {
+          qAr: 'ما هي أسئلة اختبار المعرفة من هيئة الطرق والمواصلات (RTA)؟',
+          qEn: 'What are the RTA Knowledge Test questions?',
+          aAr: 'يغطي اختبار RTA في دبي والإمارات الأخرى مفاهيم السلامة، إشارات المرور، وإدارة المخاطر. بنك أسئلتنا محدث ليشمل أحدث سيناريوهات RTA الخاصة بحوادث الطرق والتقاطعات الذكية.',
+          aEn: 'RTA test in Dubai covers safety concepts, signs, and hazard management. Our bank is updated with latest RTA scenarios for road accidents and smart intersections.'
+        },
+        {
+          qAr: 'هل يمكنني إجراء اختبار القيادة باللغة العربية في الإمارات؟',
+          qEn: 'Can I take the driving test in Arabic in UAE?',
+          aAr: 'نعم، اختبار RTA متوفر بلغات متعددة منها العربية والإنجليزية والأوردو. محاكي الاختبارات لدينا يدعم العربية والإنجليزية بشكل كامل لمساعدتك في التدرب على المصطلحات القانونية المستخدمة.',
+          aEn: 'Yes, RTA tests are available in multiple languages. Our simulator fully supports Arabic and English to help you practice the legal terminology used in exams.'
+        }
+      ],
+      eg: [
+        {
+          qAr: 'ما هي الأوراق المطلوبة لاستخراج رخصة قيادة خاصة في مصر؟',
+          qEn: 'What documents are required for a private driving license in Egypt?',
+          aAr: 'تحتاج إلى بطاقة الرقم القومي، 4 صور شخصية، شهادة طبية (نظر وباطنة)، وشهادة محو الأمية أو مؤهل دراسي. بعد استيفاء الأوراق، ستمتحن "إشارات المرور" أولاً على الكمبيوتر، وهي نفس الأسئلة المتوفرة في محاكي موقعنا.',
+          aEn: 'You need ID card, 4 photos, medical certificate, and education degree. You will first take the "Traffic Signs" computer test, which uses the same questions found in our simulator.'
+        },
+        {
+          qAr: 'هل هناك أسئلة عن "الميكانيكا" في اختبار المرور المصري؟',
+          qEn: 'Are there mechanics questions in Egypt traffic test?',
+          aAr: 'نعم، يشمل الاختبار بعض الأسئلة الأساسية عن صيانة السيارة والإسعافات الأولية. لقد قمنا بتضمين هذه الأسئلة في بنك أسئلة جمهورية مصر العربية لضمان تغطية شاملة بنسبة 100%.',
+          aEn: 'Yes, the test includes basic car maintenance and first aid questions. We included these in Egypt\'s question bank for 100% coverage.'
+        }
+      ],
+      kw: [
+        {
+          qAr: 'كيف أحجز موعد فحص فني وقيادة في الكويت؟',
+          qEn: 'How to book a driving test in Kuwait?',
+          aAr: 'يتم الحجز عبر الموقع الرسمي لوزارة الداخلية (MOI). اختبار الإشارات في الكويت يتميز بالدقة، لذا ننصحك بالتركيز على قسم "إشارات المرور الكويتية" المتوفر في منصتنا.',
+          aEn: 'Booking is via the MOI official website. Kuwait\'s signs test is very precise, so we recommend focusing on the "Kuwait Traffic Signs" section on our platform.'
+        }
+      ]
+    };
+
+    return [...(countrySpecific[cId] || []), ...common];
+  };
+
+  const currentFaqs = getCountryFaqs(selectedCountry.id);
+  const [contentSearchQuery, setContentSearchQuery] = useState('');
+  const [contentCategory, setContentCategory] = useState<CountryContentCategory>('all');
 
   // Test modes definition for country search
   const AVAILABLE_TEST_MODES = useMemo(() => [
@@ -213,28 +360,29 @@ export const LandingView: React.FC<LandingViewProps> = ({
       {/* Top Strategic Ad Placement (CLS-safe) */}
       <AdBanner slotType="leaderboard" adId="ad-top-hero" className="max-w-5xl" />
 
-      {/* 1. Hero Section (Immersive Dark Command Center) */}
-      <section className="relative overflow-hidden rounded-3xl bg-[#1E293B] text-white p-6 sm:p-10 lg:p-12 shadow-2xl border border-slate-700/60">
+      {/* 1. Hero Section (Immersive Dark Command Center with Country Theme) */}
+      <section className={`relative overflow-hidden rounded-[2.5rem] bg-slate-950 text-white p-6 sm:p-10 lg:p-12 shadow-2xl border border-slate-800/60`}>
         
-        {/* Ambient background glows */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Ambient background glows based on theme */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} opacity-60 pointer-events-none`} />
+        <div className={`absolute top-0 left-0 w-96 h-96 ${theme.bg} rounded-full blur-[100px] pointer-events-none`} />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-slate-800/20 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl space-y-6 text-right ltr:text-left">
           
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ${theme.bg} border ${theme.border} ${theme.primary} text-xs font-bold backdrop-blur-md`}>
+            <Sparkles className={`w-3.5 h-3.5 ${theme.primary}`} />
             <span>{t.heroBadge.replace('%year%', new Date().getFullYear().toString())}</span>
           </div>
 
-          {/* Visual Localization Block for Selected Country & Change Country Button */}
+          {/* Visual Localization Block */}
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2.5 bg-slate-800/80 border border-slate-700/60 rounded-2xl px-4 py-2.5 shadow-lg shadow-black/10">
+            <div className="flex items-center gap-2.5 bg-slate-900/60 border border-slate-700/40 rounded-2xl px-4 py-2.5 shadow-lg backdrop-blur-sm">
               <span className="text-2xl leading-none" role="img" aria-label={getCountryName(selectedCountry.id)}>{selectedCountry.flag}</span>
               <span className="text-xs sm:text-sm font-black text-slate-100 flex items-center gap-1.5">
                 <span>{t.heroSimulatorIn}</span>
-                <span className="text-blue-400">{getCountryName(selectedCountry.id)}</span>
+                <span className={theme.primary}>{getCountryName(selectedCountry.id)}</span>
               </span>
             </div>
 
@@ -242,25 +390,24 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <button
                 onClick={onNavigateGlobalHome}
                 id="change-country-hero-btn"
-                className="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 hover:border-cyan-500/50 text-xs font-bold text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-md group"
-                title={isAr ? 'العودة للصفحة الرئيسية لاختيار دولة أخرى' : 'Return to home page to choose another country'}
+                className="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-700/50 hover:border-cyan-500/50 text-xs font-bold text-slate-300 hover:text-cyan-300 transition-all cursor-pointer shadow-md group backdrop-blur-sm"
               >
                 <Compass className="w-4 h-4 text-cyan-400 group-hover:rotate-45 transition-transform" />
-                <span>{isAr ? 'تغيير الدولة (العودة للرئيسية)' : 'Change Country (Home)'}</span>
+                <span>{isAr ? 'تغيير الدولة' : 'Change Country'}</span>
               </button>
             )}
           </div>
 
           {/* Heading */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight sm:leading-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight sm:leading-tight">
             {t.heroPassTitle}<br className="hidden sm:inline" />
-            <span className="bg-gradient-to-l from-blue-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
+            <span className={`bg-gradient-to-l ${theme.primary.replace('text-', 'from-')} via-slate-100 to-white bg-clip-text text-transparent`}>
               {t.heroPassSub}
             </span>
           </h1>
 
           {/* Subtext */}
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl font-medium">
+          <p className="text-sm sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-medium">
             {t.heroDesc
               .replace('%country%', getCountryName(selectedCountry.id))
               .replace('%school%', getCountrySchool(selectedCountry.id))}
@@ -271,7 +418,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <button
               id="hero-start-full-test-btn"
               onClick={() => onStartTest('exam')}
-              className="bg-blue-600 hover:bg-blue-500 active:scale-98 text-white text-sm sm:text-base font-black px-6 py-3.5 rounded-2xl shadow-lg shadow-blue-500/30 transition-all flex items-center gap-2.5 cursor-pointer group"
+              className={`${theme.btn} text-slate-950 text-sm sm:text-base font-black px-8 py-4 rounded-2xl shadow-xl transition-all flex items-center gap-2.5 cursor-pointer group scale-100 hover:scale-105 active:scale-95`}
             >
               <Award className="w-5 h-5 group-hover:rotate-12 transition-transform" />
               <span>{t.heroStartFullTest.replace('%count%', selectedCountry.totalOfficialQuestions.toString())}</span>
@@ -323,36 +470,38 @@ export const LandingView: React.FC<LandingViewProps> = ({
       </section>
 
       {/* 2. Country Smart Search & Discovery Hub (مركز البحث السريع والمستكشف الشامل) */}
-      <section className="bg-gradient-to-b from-[#1E293B] to-slate-900 rounded-3xl border border-slate-700/80 p-6 sm:p-8 shadow-xl space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-bold">
+      <section className={`bg-gradient-to-b from-slate-900 to-slate-950 rounded-[2.5rem] border border-slate-800 p-6 sm:p-10 shadow-xl space-y-8 relative overflow-hidden`}>
+        <div className={`absolute top-0 right-0 w-64 h-64 ${theme.bg} rounded-full blur-[80px] opacity-20 pointer-events-none`} />
+        
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+          <div className="space-y-2">
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${theme.bg} ${theme.primary} border ${theme.border} text-xs font-bold`}>
               <Compass className="w-3.5 h-3.5" />
               <span>{isAr ? `مستكشف محتوى دولة ${getCountryName(selectedCountry.id)}` : `${getCountryName(selectedCountry.id)} Content Explorer`}</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-100">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-100">
               {isAr ? 'ابحث عن ما تريده في اختبارات وأنظمة القيادة' : 'Search Tests, Road Signs, Violations & Rules'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400">
+            <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
               {isAr
                 ? 'ابحث فوراً بالاسم عن أي نموذج اختبار، إشارة مرورية، غرامة أو مخالفة، أو قاعدة أولوية'
                 : 'Instantly search by keyword for any test simulator, road sign, violation fine, or driving rule'}
             </p>
           </div>
 
-          <div className="flex items-center gap-2 self-start md:self-auto text-xs font-bold text-slate-300 bg-slate-800 px-3.5 py-2 rounded-2xl border border-slate-700">
-            <span>{selectedCountry.flag}</span>
+          <div className={`flex items-center gap-2 self-start md:self-auto text-xs font-black text-slate-100 bg-slate-900 px-4 py-2.5 rounded-2xl border border-slate-700 shadow-lg`}>
+            <span className="text-lg">{selectedCountry.flag}</span>
             <span>{getCountryName(selectedCountry.id)}</span>
-            <span className="text-slate-500">•</span>
-            <span className="text-emerald-400">{selectedCountry.totalOfficialQuestions} {isAr ? 'سؤال' : 'Q'}</span>
+            <span className="text-slate-600">|</span>
+            <span className={theme.primary}>{selectedCountry.totalOfficialQuestions} {isAr ? 'سؤال' : 'Q'}</span>
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative group">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-teal-500/20 to-cyan-500/20 rounded-2xl blur-md opacity-60 group-focus-within:opacity-100 transition-opacity" />
-          <div className="relative flex items-center bg-slate-950/90 border border-slate-700 focus-within:border-cyan-400 rounded-2xl px-4 py-3.5 shadow-xl transition-all">
-            <Search className="w-5 h-5 text-cyan-400 shrink-0 mx-2" />
+        {/* Search Bar with Theme Accent */}
+        <div className="relative group max-w-4xl">
+          <div className={`absolute inset-0 bg-gradient-to-r ${theme.gradient} rounded-2xl blur-md opacity-40 group-focus-within:opacity-100 transition-opacity`} />
+          <div className={`relative flex items-center bg-slate-950 border border-slate-800 focus-within:${theme.border.replace('border-', 'border-')} focus-within:ring-1 focus-within:ring-${theme.accent}-500/30 rounded-2xl px-5 py-4 shadow-2xl transition-all`}>
+            <Search className={`w-5 h-5 ${theme.primary} shrink-0 mx-2`} />
             <input
               type="text"
               value={contentSearchQuery}
@@ -362,13 +511,13 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   ? `🔍 اكتب ما تبحث عنه (مثال: اختبار شامل، قف، دوار، حزام الأمان، قطع الإشارة، سرعة، مطب...)`
                   : `🔍 Search (e.g. Full exam, Stop sign, Roundabout, Seatbelt, Red light, Speeding...)`
               }
-              className="w-full bg-transparent text-white placeholder-slate-400 text-sm sm:text-base outline-none font-bold"
+              className="w-full bg-transparent text-white placeholder-slate-500 text-sm sm:text-base outline-none font-bold"
               aria-label="Search country content"
             />
             {contentSearchQuery && (
               <button
                 onClick={() => setContentSearchQuery('')}
-                className="text-xs text-slate-400 hover:text-white bg-slate-800 px-3 py-1.5 rounded-lg transition-colors font-bold"
+                className="text-xs text-slate-400 hover:text-white bg-slate-800 px-4 py-2 rounded-xl transition-colors font-black"
               >
                 {isAr ? 'مسح' : 'Clear'}
               </button>
@@ -376,11 +525,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
           </div>
         </div>
 
-        {/* Category Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2 pt-1 border-b border-slate-800 pb-4">
-          <span className="text-xs text-slate-400 font-bold ml-1 flex items-center gap-1">
+        {/* Category Filter Pills with Theme */}
+        <div className="flex flex-wrap items-center gap-2 pt-2">
+          <span className="text-xs text-slate-500 font-bold ml-2 flex items-center gap-1">
             <Filter className="w-3.5 h-3.5" />
-            <span>{isAr ? 'تصفية حسب:' : 'Filter by:'}</span>
+            <span>{isAr ? 'تصفية:' : 'Filter:'}</span>
           </span>
 
           {[
@@ -394,14 +543,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setContentCategory(tab.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-2 cursor-pointer border ${
                   isActive
-                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30'
-                    : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700'
+                    ? `${theme.btn} text-slate-950 border-transparent shadow-lg`
+                    : 'bg-slate-900 hover:bg-slate-800 text-slate-400 border-slate-800'
                 }`}
               >
                 <span>{isAr ? tab.labelAr : tab.labelEn}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-slate-950/20 text-slate-950 font-black' : 'bg-slate-700 text-slate-300'}`}>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full ${isActive ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-800 text-slate-500'}`}>
                   {tab.count}
                 </span>
               </button>
@@ -612,39 +761,43 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <AdBanner slotType="in_article" adId="landing-grid-inarticle-ad" />
           </div>
 
-          {/* Mode 1: Full Official Simulation */}
-          <div className="p-6 rounded-2xl border-2 border-blue-500/80 bg-gradient-to-br from-blue-950/40 via-[#1E293B] to-slate-900 shadow-lg shadow-blue-500/10 flex flex-col justify-between space-y-4 relative">
-            <div className="absolute -top-3 left-4 bg-blue-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-md shadow-blue-500/30">
+          {/* Mode 1: Full Official Simulation (Themed) */}
+          <div className={`p-6 rounded-2xl border-2 ${theme.border.replace('border-', 'border-')} ${theme.bg.replace('/10', '/20')} bg-gradient-to-br ${theme.gradient} shadow-lg ${theme.btn.split(' ')[2]} flex flex-col justify-between space-y-4 relative overflow-hidden group`}>
+            <div className={`absolute -top-3 left-4 ${theme.btn.split(' ')[0]} text-slate-950 text-[10px] font-black px-3 py-1 rounded-full shadow-lg z-20`}>
               {t.modeOfficialBadge}
             </div>
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/30 mb-3">
-                <Award className="w-6 h-6" />
+            
+            {/* Background design element */}
+            <div className={`absolute -bottom-10 -right-10 w-40 h-40 ${theme.bg} rounded-full blur-3xl opacity-50 group-hover:scale-150 transition-transform duration-700`} />
+
+            <div className="relative z-10">
+              <div className={`w-14 h-14 rounded-2xl ${theme.btn.split(' ')[0]} text-slate-950 flex items-center justify-center shadow-xl mb-4 transform group-hover:rotate-6 transition-transform`}>
+                <Award className="w-7 h-7" />
               </div>
-              <h3 className="text-base font-black text-slate-100 mb-1">
+              <h3 className="text-lg font-black text-slate-100 mb-2">
                 {t.modeOfficialTitle}
               </h3>
-              <p className="text-xs text-slate-300 leading-relaxed mb-3">
+              <p className="text-xs text-slate-300 leading-relaxed mb-4">
                 {t.modeOfficialDesc.replace('%count%', selectedCountry.totalOfficialQuestions.toString()).replace('%time%', selectedCountry.timeLimitMinutes.toString())}
               </p>
-              <div className="flex items-center gap-3 text-xs text-slate-400 font-medium">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="text-amber-400 font-bold">{selectedCountry.timeLimitMinutes} {t.minutesUnit}</span>
+              <div className="flex items-center gap-4 text-xs font-black">
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-amber-400" />
+                  <span className="text-amber-400">{selectedCountry.timeLimitMinutes} {t.minutesUnit}</span>
                 </span>
-                <span className="flex items-center gap-1">
-                  <Target className="w-3.5 h-3.5 text-blue-400" />
-                  <span>{t.passingScoreLabel} {selectedCountry.passingScorePercentage}%</span>
+                <span className="flex items-center gap-1.5">
+                  <Target className={`w-4 h-4 ${theme.primary}`} />
+                  <span className={theme.primary}>{t.passingScoreLabel} {selectedCountry.passingScorePercentage}%</span>
                 </span>
               </div>
             </div>
             <button
               id="start-official-mode-btn"
               onClick={() => onStartTest('exam')}
-              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 active:scale-98 text-white rounded-xl text-xs font-black shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className={`relative z-10 w-full py-3.5 px-4 ${theme.btn} text-slate-950 rounded-xl text-xs font-black shadow-2xl transition-all flex items-center justify-center gap-2 cursor-pointer group-hover:translate-y-[-2px]`}
             >
               <span>{t.modeOfficialBtn}</span>
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform ltr:rotate-180" />
             </button>
           </div>
 
@@ -821,52 +974,29 @@ export const LandingView: React.FC<LandingViewProps> = ({
         </div>
       </section>
 
-      {/* 5. How to guarantee passing (4 Steps) */}
+      {/* 5. How to guarantee passing (Themed Steps) */}
       <section className="space-y-4">
         <h2 className="text-xl sm:text-2xl font-black text-slate-100">
           {t.stepsTitle}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl bg-[#1E293B] border border-slate-700/80 shadow-md space-y-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 font-black text-sm flex items-center justify-center border border-blue-500/30">
-              1
+          {[
+            { id: 1, title: t.step1Title, desc: t.step1Desc },
+            { id: 2, title: t.step2Title, desc: t.step2Desc },
+            { id: 3, title: t.step3Title, desc: t.step3Desc },
+            { id: 4, title: t.step4Title, desc: t.step4Desc },
+          ].map((step) => (
+            <div key={step.id} className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 shadow-md space-y-3 hover:border-slate-700 transition-all group">
+              <div className={`w-10 h-10 rounded-xl ${theme.bg} ${theme.primary} font-black text-sm flex items-center justify-center border ${theme.border} group-hover:scale-110 transition-transform shadow-lg`}>
+                {step.id}
+              </div>
+              <h3 className="text-sm font-bold text-slate-100">{step.title}</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                {step.desc}
+              </p>
             </div>
-            <h3 className="text-sm font-bold text-slate-100">{t.step1Title}</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              {t.step1Desc}
-            </p>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-[#1E293B] border border-slate-700/80 shadow-md space-y-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 font-black text-sm flex items-center justify-center border border-blue-500/30">
-              2
-            </div>
-            <h3 className="text-sm font-bold text-slate-100">{t.step2Title}</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              {t.step2Desc}
-            </p>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-[#1E293B] border border-slate-700/80 shadow-md space-y-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 font-black text-sm flex items-center justify-center border border-blue-500/30">
-              3
-            </div>
-            <h3 className="text-sm font-bold text-slate-100">{t.step3Title}</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              {t.step3Desc}
-            </p>
-          </div>
-
-          <div className="p-5 rounded-2xl bg-[#1E293B] border border-slate-700/80 shadow-md space-y-2">
-            <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 font-black text-sm flex items-center justify-center border border-blue-500/30">
-              4
-            </div>
-            <h3 className="text-sm font-bold text-slate-100">{t.step4Title}</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              {t.step4Desc}
-            </p>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -947,102 +1077,54 @@ export const LandingView: React.FC<LandingViewProps> = ({
         </div>
       </section>
 
-      {/* 7. Comprehensive SEO & User FAQ Section */}
-      <section className="space-y-5 pt-4">
+      {/* 6. Frequently Asked Questions (Customized to Country Trends) */}
+      <section className="space-y-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
+          <div className={`w-10 h-10 rounded-2xl ${theme.bg} border ${theme.border} flex items-center justify-center ${theme.primary}`}>
             <HelpCircle className="w-5 h-5" />
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-black text-slate-100">
-              {locale === 'en' ? 'Frequently Asked Questions' : 'الأسئلة الشائعة حول اختبار القيادة'}
+              {t.faqTitle}
             </h2>
             <p className="text-xs text-slate-400">
-              {locale === 'en' 
-                ? 'Everything you need to know to pass the driving theory exam from the first attempt' 
-                : `كل ما تود معرفته عن اختبار رخصة القيادة النظري في ${getCountryName(selectedCountry.id)}`}
+              {isAr ? `أكثر ما يبحث عنه المتقدمون لاختبارات القيادة في ${getCountryName(selectedCountry.id)} لعام 2026` : `Top search queries for driving tests in ${getCountryName(selectedCountry.id)} 2026`}
             </p>
           </div>
         </div>
 
         <div className="space-y-3">
-          {[
-            {
-              qAr: `كم عدد أسئلة اختبار القيادة النظري في ${getCountryName(selectedCountry.id)} لعام 2026؟`,
-              qEn: `How many questions are in the 2026 ${getCountryName(selectedCountry.id)} driving theory test?`,
-              aAr: `يتكون الاختبار الرسمي في ${getCountryName(selectedCountry.id)} من ${selectedCountry.questionsPerExam} سؤالاً، تغطي إشارات المرور، قواعد الأولوية، والقيادة الآمنة. يجب عليك الإجابة على ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} سؤالاً بشكل صحيح للنجاح.`,
-              aEn: `The official exam in ${getCountryName(selectedCountry.id)} consists of ${selectedCountry.questionsPerExam} questions, covering traffic signs, priority rules, and safe driving. You must answer ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} questions correctly to pass.`
-            },
-            {
-              qAr: `كيف يمكنني حجز موعد اختبار القيادة في ${getCountryName(selectedCountry.id)}؟`,
-              qEn: `How can I book a driving test appointment in ${getCountryName(selectedCountry.id)}?`,
-              aAr: `يتم الحجز عادةً عبر البوابة الإلكترونية الرسمية لـ (${getCountryAuthority(selectedCountry.id)}) أو من خلال زيارة أحد فروع (${getCountrySchool(selectedCountry.id)}). ننصحك بإنهاء التدريب التجريبي على منصتنا قبل الذهاب للموعد لضمان الجاهزية.`,
-              aEn: `Booking is usually done through the official portal of ${getCountryAuthority(selectedCountry.id)} or by visiting ${getCountrySchool(selectedCountry.id)} branches. We recommend completing our trial training before your appointment to ensure readiness.`
-            },
-            {
-              qAr: `ما هي أكثر الأسئلة التي يخطئ فيها المتقدمون في اختبار ${getCountryName(selectedCountry.id)}؟`,
-              qEn: `What are the most common questions people fail in the ${getCountryName(selectedCountry.id)} test?`,
-              aAr: `أكثر الأسئلة صعوبة تتعلق عادةً بـ "أولويات المرور في الدوارات غير المنظمة" و "مسافات التوقف عند السرعات العالية". يمكنك التدرب على هذه الأسئلة تحديداً عبر وضع "الأسئلة الصعبة" المتوفر في تطبيقنا.`,
-              aEn: `The trickiest questions often involve "Roundabout priority rules" and "Stopping distances at high speeds". You can practice these specifically using the "Hard Questions" mode in our app.`
-            },
-            {
-              qAr: `كم درجة ونسبة النجاح في اختبار القيادة النظري بـ ${getCountryName(selectedCountry.id)}؟`,
-              qEn: `What is the passing score for the driving theory test in ${getCountryName(selectedCountry.id)}?`,
-              aAr: `نسبة النجاح المعتمدة في ${getCountryName(selectedCountry.id)} لدى (${getCountryAuthority(selectedCountry.id)}) هي ${selectedCountry.passingScorePercentage}%، أي ما يعادل الإجابة الصحيحة على ما لا يقل عن ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} سؤالاً من أصل ${selectedCountry.questionsPerExam} سؤالاً خلال ${selectedCountry.timeLimitMinutes} دقيقة.`,
-              aEn: `The official passing score in ${getCountryName(selectedCountry.id)} under ${getCountryAuthority(selectedCountry.id)} is ${selectedCountry.passingScorePercentage}%. You need at least ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} correct answers out of ${selectedCountry.questionsPerExam} questions within ${selectedCountry.timeLimitMinutes} minutes.`
-            },
-            {
-              qAr: 'هل الأسئلة وإشارات المرور في المنصة مطابقة للمناهج الرسمية لعام 2026؟',
-              qEn: 'Are the questions and traffic signs updated and compliant with official 2026 guidelines?',
-              aAr: 'نعم، تم تدقيق وتحديث بنك الأسئلة بالكامل ومطابقته مع أحدث لوائح المرور ومدارس تعليم القيادة المعتمدة، مع شروحات تفصيلية فورية لكل سؤال وإشارة مرورية.',
-              aEn: 'Yes, our entire question bank is rigorously calibrated and updated to match the latest official guidelines from regional driving schools and traffic licensing authorities.'
-            },
-            {
-              qAr: 'هل يمكنني مراجعة إجابات الخبراء والشروحات القانونية؟',
-              qEn: 'Can I review expert explanations and legal justifications?',
-              aAr: 'بالتأكيد، عند استخدام "وضع التدريب الفوري"، ستظهر لك الإجابة الصحيحة فوراً مع شرح قانوني مفصل مستمد من المنهج الرسمي لكل دولة، مما يساعدك على فهم القاعدة بدلاً من مجرد حفظ السؤال.',
-              aEn: 'Absolutely, when using "Instant Practice Mode", the correct answer is shown immediately with a detailed legal explanation derived from each country\'s official curriculum.'
-            },
-            {
-              qAr: 'هل محاكي اختبار القيادة مجاني بالكامل؟',
-              qEn: 'Is this driving test simulator completely free?',
-              aAr: 'نعم، منصة اجتياز مجانية بنسبة 100% لجميع المتدربين بدون أي رسوم خفية وبدون اشتراك، ويمكنك إجراء اختبارات تجريبية غير محدودة في أي وقت.',
-              aEn: 'Yes, Ijtiaz is 100% free with unlimited mock test sessions, traffic signs review, and penalty guide access without registration.'
-            },
-            {
-              qAr: 'كيف أضمن اجتياز الاختبار النظري من المحاولة الأولى؟',
-              qEn: 'How can I ensure passing the theory test on my first attempt?',
-              aAr: 'ننصحك باتباع 3 خطوات: 1) مراجعة دليل إشارات المرور والمخالفات، 2) إجراء 3 إلى 5 اختبارات تجريبية بوضع الامتحان الرسمي، 3) استخدام ميزة "مراجعة الأسئلة الخاطئة فقط" حتى تحقق درجة 95% فما فوق.',
-              aEn: 'We recommend: 1) Studying the traffic signs guide, 2) Practicing 3 to 5 full mock exams under timed conditions, and 3) Retaking your mistake questions until you consistently score above 95%.'
-            }
-          ].map((item, idx) => {
-            const isOpen = openFaqIndex === idx;
+          {currentFaqs.map((faq, index) => {
+            const isOpen = openFaqIndex === index;
             return (
               <div 
-                key={idx}
-                className="bg-[#1E293B] border border-slate-700/80 rounded-2xl overflow-hidden transition-colors"
+                key={index}
+                className={`group rounded-2xl border transition-all duration-300 overflow-hidden ${
+                  isOpen 
+                    ? `bg-slate-900/80 ${theme.border} shadow-xl shadow-black/20` 
+                    : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'
+                }`}
               >
                 <button
-                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                  className="w-full p-4 sm:p-5 text-right ltr:text-left flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-100 hover:text-blue-400 transition-colors cursor-pointer"
-                  aria-expanded={isOpen}
-                  id={`faq-item-toggle-${idx}`}
+                  onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                  className="w-full flex items-center justify-between p-5 text-right ltr:text-left focus:outline-none"
                 >
-                  <span className="flex items-center gap-2.5">
-                    <span className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-400 text-xs font-black flex items-center justify-center shrink-0">
-                      {idx + 1}
-                    </span>
-                    <span>{locale === 'en' ? item.qEn : item.qAr}</span>
+                  <span className={`text-sm sm:text-base font-bold transition-colors ${isOpen ? theme.primary : 'text-slate-200 group-hover:text-white'}`}>
+                    {isAr ? faq.qAr : faq.qEn}
                   </span>
-                  <ChevronDown className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180 text-blue-400' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 shrink-0 transition-transform duration-300 ${isOpen ? `rotate-180 ${theme.primary}` : 'text-slate-500'}`} />
                 </button>
-                {isOpen && (
-                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/60 animate-in fade-in duration-150">
-                    <p className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
-                      {locale === 'en' ? item.aEn : item.aAr}
+                <div 
+                  className={`px-5 transition-all duration-300 ease-in-out overflow-hidden ${
+                    isOpen ? 'max-h-80 pb-5 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="text-xs sm:text-sm text-slate-400 leading-relaxed border-t border-slate-800/60 pt-4">
+                    <p className="p-4 rounded-xl bg-slate-950/40 border border-slate-800/40">
+                      {isAr ? faq.aAr : faq.aEn}
                     </p>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
