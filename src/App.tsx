@@ -4,6 +4,7 @@ import { CountryInfo, TestMode, Question, TestHistoryItem, CountryId } from './t
 import { COUNTRIES_DATA } from './data/countriesData';
 import { getQuestionsForTest } from './data/questionsData';
 import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from './data/translations';
+import { updatePageSeo } from './utils/seoManager';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { LandingView } from './components/LandingView';
@@ -76,23 +77,13 @@ export default function App() {
     document.documentElement.lang = locale;
     localStorage.setItem('ijtiaz_selected_locale', locale);
 
-    // Update Meta Tags for SEO
-    const countryName = locale === 'ar' ? selectedCountry.name : (COUNTRY_TRANSLATIONS[selectedCountry.id]?.name || selectedCountry.name);
-    const defaultTitle = locale === 'ar' ? `منصة اجتياز - اختبار القيادة النظري ${countryName}` : `Ijtiaz - ${countryName} Driving Theory Test`;
-    
-    // Check if country has custom SEO data
-    const seoData = selectedCountry.seo?.[locale];
-    
-    document.title = seoData ? seoData.keywords.split(',')[0] : defaultTitle;
-    
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute('content', seoData ? seoData.description : selectedCountry.description);
-  }, [locale, selectedCountry]);
+    // Call comprehensive Dynamic SEO Manager
+    updatePageSeo({
+      country: selectedCountry,
+      view: currentView,
+      locale: locale
+    });
+  }, [locale, selectedCountry, currentView]);
 
   const handleToggleLocale = () => {
     setLocale((prev) => (prev === 'ar' ? 'en' : 'ar'));

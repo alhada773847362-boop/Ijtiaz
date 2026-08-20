@@ -501,7 +501,84 @@ export const LandingView: React.FC<LandingViewProps> = ({
         </div>
       </section>
 
-      {/* 6. Comprehensive SEO & User FAQ Section */}
+      {/* 6. Comprehensive Regional Licensing & Exam SEO Guide */}
+      <section className="bg-[#1E293B] rounded-3xl border border-slate-700/80 p-6 sm:p-8 space-y-6 shadow-xl relative overflow-hidden">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-700/80 pb-6">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold">
+              <span>{locale === 'en' ? 'Official Syllabus Guide 2026' : 'دليل المنهج الرسمي المعتمد 2026'}</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-100">
+              {locale === 'en'
+                ? `Complete Guide to ${getCountryName(selectedCountry.id)} Driving Theory Test`
+                : `الدليل الشامل لاجتياز اختبار القيادة النظري في ${getCountryName(selectedCountry.id)}`}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400">
+              {locale === 'en'
+                ? `Everything you need to master the test under ${getCountryAuthority(selectedCountry.id)} & ${getCountrySchool(selectedCountry.id)}`
+                : `كل ما يلزمك للتفوق واجتياز الاختبار لدى (${getCountryAuthority(selectedCountry.id)}) و (${getCountrySchool(selectedCountry.id)})`}
+            </p>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onNavigateToSigns}
+              className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-bold text-slate-200 transition-all flex items-center gap-2"
+            >
+              <BookOpen className="w-4 h-4 text-amber-400" />
+              <span>{locale === 'en' ? 'Traffic Signs' : 'كتالوج الإشارات'}</span>
+            </button>
+            <button
+              onClick={onNavigateToViolations}
+              className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-bold text-slate-200 transition-all flex items-center gap-2"
+            >
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>{locale === 'en' ? 'Fines & Rules' : 'لائحة المخالفات'}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 3 Key Pillars of the Test */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
+            <div className="text-xs font-bold text-blue-400 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>{locale === 'en' ? '1. Traffic Signs & Signals' : '١. إشارات وعلامات المرور'}</span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              {locale === 'en'
+                ? 'Covers all triangular warning signs, circular regulatory/prohibitory signs, blue mandatory signs, and informative signs with exact real exam definitions.'
+                : 'يشمل جميع الإشارات التحذيرية المثلثة، والتنظيمية المانعة الدائرية، والإلزامية الزرقاء، والإرشادية مع التركيز على أولويات الدوار والتقاطعات.'}
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
+            <div className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>{locale === 'en' ? '2. Right of Way & Safety' : '٢. قواعد الأسبقية والمسافة الآمنة'}</span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              {locale === 'en'
+                ? 'Master the 2-second rule, emergency braking distances, roundabout lane discipline, overtaking regulations, and severe weather driving techniques.'
+                : 'قاعدة الثانيتين للمسافة الآمنة، مسافات الفرملة والتوقف، مسارات الدوار، التجاوز الصحيح، والقيادة الآمنة في الضباب والأمطار.'}
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-2">
+            <div className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>{locale === 'en' ? '3. Points & Penalties System' : '٣. نظام النقاط والمخالفات'}</span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              {locale === 'en'
+                ? 'Understanding the demerit point thresholds, mobile phone while driving penalties, seatbelt laws, and license suspension criteria.'
+                : 'التعرف على سقف النقاط التراكمية، مخالفات استخدام الجوال، ربط حزام الأمان، السرعات المقررة، وتجنب تعليق رخصة القيادة.'}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Comprehensive SEO & User FAQ Section */}
       <section className="space-y-5 pt-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
