@@ -9,6 +9,9 @@ async function startServer() {
 
   // 1. Anti-AdBlock Endpoint replicating the PHP AntiAdBlock Class 100% in TypeScript
   app.get('/antiadblock.js', async (req, res) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout for stability
+
     try {
       const userAgent = req.headers['user-agent'] || '';
       // PHP matching: mobi, ipad, iphone, blackberry, android
@@ -21,10 +24,13 @@ async function startServer() {
       const url = `https://api.hilltopads.com/publisher/antiAdBlock?zoneId=${zoneId}&key=${key}&version=1.0&transport=1`;
       
       const response = await fetch(url, {
+        signal: controller.signal,
         headers: {
           'User-Agent': 'HilltopAds Anti-AdBlock Client/1.0',
         },
       });
+      
+      clearTimeout(timeoutId);
       
       if (!response.ok) {
         throw new Error(`HilltopAds API error: ${response.status}`);
@@ -33,13 +39,16 @@ async function startServer() {
       const data = await response.json();
       const code = data?.result?.code || '';
       
-      res.setHeader('Content-Type', 'application/javascript');
-      res.send(code);
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+      res.send(code || '/* No code returned */');
     } catch (err) {
+      clearTimeout(timeoutId);
       console.error('AntiAdBlock backend handler error:', err);
-      // Clean silent fallback if API fails
-      res.setHeader('Content-Type', 'application/javascript');
-      res.send(`console.log("AntiAdblock offline fallback loaded");`);
+      // Clean silent fallback if API fails or times out (crucial for Googlebot)
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=600');
+      res.send(`(function(){ window.__ijtiaz_antiadblock_ready = true; console.log("AntiAdblock fallback active"); })();`);
     }
   });
 
@@ -238,7 +247,7 @@ async function startServer() {
     const target = fs.existsSync(icoDist) ? icoDist : icoPublic;
     if (fs.existsSync(target)) {
       res.setHeader('Content-Type', 'image/x-icon');
-      res.setHeader('Cache-Control', 'public, max-age=86400');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       res.sendFile(target);
     } else {
       res.status(204).end();
@@ -247,6 +256,7 @@ async function startServer() {
 
   app.get('/googled26e0b9780f8aa69.html', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     res.send('google-site-verification: googled26e0b9780f8aa69.html');
   });
 
@@ -254,6 +264,7 @@ async function startServer() {
     const robotsPath = path.join(process.cwd(), 'public', 'robots.txt');
     if (fs.existsSync(robotsPath)) {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
       res.send(fs.readFileSync(robotsPath, 'utf-8'));
     } else {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
@@ -265,19 +276,10 @@ async function startServer() {
     const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
     if (fs.existsSync(sitemapPath)) {
       res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
       res.send(fs.readFileSync(sitemapPath, 'utf-8'));
     } else {
       res.status(404).send('Sitemap not found');
-    }
-  });
-
-  app.get('/antiadblock.js', (req, res) => {
-    const filePath = path.join(process.cwd(), 'public', 'antiadblock.js');
-    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-    if (fs.existsSync(filePath)) {
-      res.sendFile(filePath);
-    } else {
-      res.send('(function(){ window.__ijtiaz_antiadblock_ready = true; })();');
     }
   });
 

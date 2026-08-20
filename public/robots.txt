@@ -3,6 +3,9 @@
 
 User-agent: *
 Allow: /
+Allow: /assets/
+Allow: /static/
+Allow: /fonts/
 Disallow: /api/
 
 Sitemap: https://ijtiaz.vercel.app/sitemap.xml
