@@ -968,6 +968,24 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="space-y-3">
           {[
             {
+              qAr: `كم عدد أسئلة اختبار القيادة النظري في ${getCountryName(selectedCountry.id)} لعام 2026؟`,
+              qEn: `How many questions are in the 2026 ${getCountryName(selectedCountry.id)} driving theory test?`,
+              aAr: `يتكون الاختبار الرسمي في ${getCountryName(selectedCountry.id)} من ${selectedCountry.questionsPerExam} سؤالاً، تغطي إشارات المرور، قواعد الأولوية، والقيادة الآمنة. يجب عليك الإجابة على ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} سؤالاً بشكل صحيح للنجاح.`,
+              aEn: `The official exam in ${getCountryName(selectedCountry.id)} consists of ${selectedCountry.questionsPerExam} questions, covering traffic signs, priority rules, and safe driving. You must answer ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} questions correctly to pass.`
+            },
+            {
+              qAr: `كيف يمكنني حجز موعد اختبار القيادة في ${getCountryName(selectedCountry.id)}؟`,
+              qEn: `How can I book a driving test appointment in ${getCountryName(selectedCountry.id)}?`,
+              aAr: `يتم الحجز عادةً عبر البوابة الإلكترونية الرسمية لـ (${getCountryAuthority(selectedCountry.id)}) أو من خلال زيارة أحد فروع (${getCountrySchool(selectedCountry.id)}). ننصحك بإنهاء التدريب التجريبي على منصتنا قبل الذهاب للموعد لضمان الجاهزية.`,
+              aEn: `Booking is usually done through the official portal of ${getCountryAuthority(selectedCountry.id)} or by visiting ${getCountrySchool(selectedCountry.id)} branches. We recommend completing our trial training before your appointment to ensure readiness.`
+            },
+            {
+              qAr: `ما هي أكثر الأسئلة التي يخطئ فيها المتقدمون في اختبار ${getCountryName(selectedCountry.id)}؟`,
+              qEn: `What are the most common questions people fail in the ${getCountryName(selectedCountry.id)} test?`,
+              aAr: `أكثر الأسئلة صعوبة تتعلق عادةً بـ "أولويات المرور في الدوارات غير المنظمة" و "مسافات التوقف عند السرعات العالية". يمكنك التدرب على هذه الأسئلة تحديداً عبر وضع "الأسئلة الصعبة" المتوفر في تطبيقنا.`,
+              aEn: `The trickiest questions often involve "Roundabout priority rules" and "Stopping distances at high speeds". You can practice these specifically using the "Hard Questions" mode in our app.`
+            },
+            {
               qAr: `كم درجة ونسبة النجاح في اختبار القيادة النظري بـ ${getCountryName(selectedCountry.id)}؟`,
               qEn: `What is the passing score for the driving theory test in ${getCountryName(selectedCountry.id)}?`,
               aAr: `نسبة النجاح المعتمدة في ${getCountryName(selectedCountry.id)} لدى (${getCountryAuthority(selectedCountry.id)}) هي ${selectedCountry.passingScorePercentage}%، أي ما يعادل الإجابة الصحيحة على ما لا يقل عن ${Math.ceil((selectedCountry.questionsPerExam * selectedCountry.passingScorePercentage) / 100)} سؤالاً من أصل ${selectedCountry.questionsPerExam} سؤالاً خلال ${selectedCountry.timeLimitMinutes} دقيقة.`,
@@ -978,6 +996,12 @@ export const LandingView: React.FC<LandingViewProps> = ({
               qEn: 'Are the questions and traffic signs updated and compliant with official 2026 guidelines?',
               aAr: 'نعم، تم تدقيق وتحديث بنك الأسئلة بالكامل ومطابقته مع أحدث لوائح المرور ومدارس تعليم القيادة المعتمدة، مع شروحات تفصيلية فورية لكل سؤال وإشارة مرورية.',
               aEn: 'Yes, our entire question bank is rigorously calibrated and updated to match the latest official guidelines from regional driving schools and traffic licensing authorities.'
+            },
+            {
+              qAr: 'هل يمكنني مراجعة إجابات الخبراء والشروحات القانونية؟',
+              qEn: 'Can I review expert explanations and legal justifications?',
+              aAr: 'بالتأكيد، عند استخدام "وضع التدريب الفوري"، ستظهر لك الإجابة الصحيحة فوراً مع شرح قانوني مفصل مستمد من المنهج الرسمي لكل دولة، مما يساعدك على فهم القاعدة بدلاً من مجرد حفظ السؤال.',
+              aEn: 'Absolutely, when using "Instant Practice Mode", the correct answer is shown immediately with a detailed legal explanation derived from each country\'s official curriculum.'
             },
             {
               qAr: 'هل محاكي اختبار القيادة مجاني بالكامل؟',
