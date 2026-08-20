@@ -1,4 +1,6 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/sitemap.xml",
@@ -7,6 +9,14 @@
     {
       "source": "/robots.txt",
       "destination": "/robots.txt"
+    },
+    {
+      "source": "/googled26e0b9780f8aa69.html",
+      "destination": "/googled26e0b9780f8aa69.html"
+    },
+    {
+      "source": "/9f38e2d4a17c45b88cb7e42d8f990142.txt",
+      "destination": "/9f38e2d4a17c45b88cb7e42d8f990142.txt"
     },
     {
       "source": "/(.*)",

@@ -26,33 +26,113 @@ export const LanguageContext = createContext<{
 } | null>(null);
 
 export default function App() {
-  // Helper to parse country code and sub-view from URL path
+  // Helper to parse country code and sub-view from URL path with full alias & legacy route normalization
   const getRouteFromPath = () => {
     if (typeof window === 'undefined') {
-      return { country: COUNTRIES_DATA.sa, view: 'home' as const };
+      return { country: COUNTRIES_DATA.sa, view: 'home' as const, legalModal: null as LegalModalType };
     }
-    const pathParts = window.location.pathname.split('/').filter(Boolean);
-    const countrySlug = pathParts[0]?.toLowerCase();
+
+    const COUNTRY_ALIASES: Record<string, CountryId> = {
+      ksa: 'sa',
+      saudi: 'sa',
+      saudia: 'sa',
+      uae: 'ae',
+      dubai: 'ae',
+      emirates: 'ae',
+      egypt: 'eg',
+      misr: 'eg',
+      kuwait: 'kw',
+      qatar: 'qa',
+      jordan: 'jo',
+      morocco: 'ma',
+      algeria: 'dz',
+      tunisia: 'tn',
+      oman: 'om',
+      bahrain: 'bh',
+      iraq: 'iq',
+      lebanon: 'lb',
+      palestine: 'ps',
+      syria: 'sy',
+      yemen: 'ye',
+      sudan: 'sd',
+      libya: 'ly',
+      mauritania: 'mr',
+      somalia: 'so',
+      djibouti: 'dj',
+      comoros: 'km',
+      usa: 'us',
+      america: 'us',
+      uk: 'gb',
+      britain: 'gb',
+      canada: 'ca',
+      australia: 'au'
+    };
+
+    const VIEW_ALIASES: Record<string, 'home' | 'test' | 'signs' | 'violations' | 'history'> = {
+      test: 'test',
+      exam: 'test',
+      quiz: 'test',
+      practice: 'test',
+      dallah: 'test',
+      moror: 'test',
+      signs: 'signs',
+      traffic: 'signs',
+      'traffic-signs': 'signs',
+      signals: 'signs',
+      violations: 'violations',
+      fines: 'violations',
+      penalties: 'violations',
+      points: 'violations',
+      history: 'history',
+      scores: 'history',
+      progress: 'history',
+      stats: 'history',
+      home: 'home',
+      main: 'home',
+      index: 'home'
+    };
+
+    // Clean pathname: remove .html, query parameters, leading/trailing slashes
+    let pathname = window.location.pathname.replace(/\.html$/i, '').trim();
+    const pathParts = pathname.split('/').filter(Boolean).map((p) => p.toLowerCase());
     
-    let country = COUNTRIES_DATA.sa;
-    if (countrySlug && COUNTRIES_DATA[countrySlug as CountryId]) {
-      country = COUNTRIES_DATA[countrySlug as CountryId];
-    } else {
-      // Graceful fallback from localStorage if path doesn't contain valid country
-      const savedCountryId = localStorage.getItem('ijtiaz_selected_country') as CountryId;
-      if (savedCountryId && COUNTRIES_DATA[savedCountryId]) {
-        country = COUNTRIES_DATA[savedCountryId];
-      }
+    let legalModal: LegalModalType = null;
+    if (pathParts.includes('privacy')) legalModal = 'privacy';
+    else if (pathParts.includes('terms')) legalModal = 'terms';
+    else if (pathParts.includes('disclaimer')) legalModal = 'disclaimer';
+    else if (pathParts.includes('contact')) legalModal = 'contact';
+    else if (pathParts.includes('brand')) legalModal = 'brand';
+
+    // Saved country fallback
+    const savedCountryId = localStorage.getItem('ijtiaz_selected_country') as CountryId;
+    let fallbackCountry = (savedCountryId && COUNTRIES_DATA[savedCountryId]) ? COUNTRIES_DATA[savedCountryId] : COUNTRIES_DATA.sa;
+
+    // Check if first part is a view directly (e.g. /test, /signs, /violations, /history)
+    const firstPart = pathParts[0] || '';
+    if (VIEW_ALIASES[firstPart]) {
+      return {
+        country: fallbackCountry,
+        view: VIEW_ALIASES[firstPart],
+        legalModal
+      };
     }
-    
-    const subView = pathParts[1]?.toLowerCase();
+
+    // Check if first part is country slug or alias
+    let country = fallbackCountry;
+    if (COUNTRIES_DATA[firstPart as CountryId]) {
+      country = COUNTRIES_DATA[firstPart as CountryId];
+    } else if (COUNTRY_ALIASES[firstPart]) {
+      country = COUNTRIES_DATA[COUNTRY_ALIASES[firstPart]];
+    }
+
+    // Check subview
+    const secondPart = pathParts[1] || '';
     let view: 'home' | 'test' | 'results' | 'signs' | 'violations' | 'history' = 'home';
-    if (subView === 'test') view = 'test';
-    else if (subView === 'signs') view = 'signs';
-    else if (subView === 'violations') view = 'violations';
-    else if (subView === 'history') view = 'history';
-    
-    return { country, view };
+    if (VIEW_ALIASES[secondPart]) {
+      view = VIEW_ALIASES[secondPart];
+    }
+
+    return { country, view, legalModal };
   };
 
   const initialRoute = getRouteFromPath();
@@ -124,14 +204,17 @@ export default function App() {
   } | null>(null);
 
   // Legal Modals State (Privacy, Terms, Disclaimer, Contact)
-  const [activeLegalModal, setActiveLegalModal] = useState<LegalModalType>(null);
+  const [activeLegalModal, setActiveLegalModal] = useState<LegalModalType>(initialRoute.legalModal);
 
   // Synchronize state with browser URL changes (for perfect back/forward navigation support)
   useEffect(() => {
     const handleUrlSync = () => {
-      const { country, view } = getRouteFromPath();
+      const { country, view, legalModal } = getRouteFromPath();
       setSelectedCountry(country);
       setCurrentView(view);
+      if (legalModal) {
+        setActiveLegalModal(legalModal);
+      }
 
       // Ensure path normalization (redirect "/" to "/sa" or saved country)
       if (window.location.pathname === '/' || window.location.pathname === '') {

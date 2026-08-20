@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
 
 async function startServer() {
@@ -47,7 +48,7 @@ async function startServer() {
     res.json({ status: 'ok', time: new Date().toISOString() });
   });
 
-  // Country SEO definitions for Programmatic SEO Dynamic Metadata Injection - 22 countries
+  // Country SEO definitions for Programmatic SEO Dynamic Metadata Injection - 26 countries
   const COUNTRY_SEO: Record<string, { title: string; description: string }> = {
     sa: {
       title: "محاكي اختبار القيادة النظري السعودي (مدرسة دله) | منصة اجتياز",
@@ -140,18 +141,29 @@ async function startServer() {
     us: {
       title: "اختبار القيادة النظري الأمريكي التجريبي DMV Practice Test | منصة اجتياز",
       description: "تدرب على امتحان رخصة القيادة النظري في أمريكا (DMV). 50 سؤالاً مترجماً بدقة مع إشارات المرور وقوانين القيادة الآمنة في جميع الولايات."
+    },
+    gb: {
+      title: "اختبار القيادة النظري البريطاني DVSA Theory Test بالعربي | منصة اجتياز",
+      description: "تدرب على اختبار القيادة النظري في بريطانيا DVSA باللغة العربية مع نماذج أسئلة إشارات الطرق وإدراك المخاطر."
+    },
+    ca: {
+      title: "اختبار القيادة النظري الكندي G1 / Knowledge Test | منصة اجتياز",
+      description: "نماذج اختبار رخصة القيادة النظرية في كندا (أونتاريو وكيبيك وكولومبيا البريطانية) مع بنك أسئلة قوانين وعلامات الطرق."
+    },
+    au: {
+      title: "اختبار القيادة النظري الأسترالي DKT Driver Knowledge Test | منصة اجتياز",
+      description: "محاكي امتحان معرفة القيادة في أستراليا (DKT) باللغة العربية مع أسئلة قواعد المرور وإشارات السير."
     }
   };
 
   function injectMetadata(html: string, countryCode: string, req?: express.Request): string {
-    const seo = COUNTRY_SEO[countryCode.toLowerCase()];
-    if (!seo) return html;
+    const seo = COUNTRY_SEO[countryCode.toLowerCase()] || COUNTRY_SEO.sa;
 
     const protocol = req?.headers['x-forwarded-proto'] || req?.protocol || 'https';
     const host = req?.get('host') || 'ijtiaz.vercel.app';
     const baseUrl = `${protocol}://${host}`;
     const pageUrl = `${baseUrl}/${countryCode.toLowerCase()}`;
-    const imageUrl = `${baseUrl}/og-image.jpg`;
+    const imageUrl = `${baseUrl}/og-image.jpg?v=2026`;
 
     let modifiedHtml = html;
 
@@ -218,19 +230,29 @@ async function startServer() {
   });
 
   app.get('/robots.txt', (req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send(`User-agent: *\nAllow: /\n\nSitemap: https://ijtiaz.vercel.app/sitemap.xml\n`);
+    const robotsPath = path.join(process.cwd(), 'public', 'robots.txt');
+    if (fs.existsSync(robotsPath)) {
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(fs.readFileSync(robotsPath, 'utf-8'));
+    } else {
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.send(`User-agent: *\nAllow: /\n\nSitemap: https://ijtiaz.vercel.app/sitemap.xml\n`);
+    }
   });
 
   app.get('/sitemap.xml', (req, res) => {
-    const fs = require('fs');
     const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
     if (fs.existsSync(sitemapPath)) {
-      res.setHeader('Content-Type', 'application/xml');
+      res.setHeader('Content-Type', 'application/xml; charset=utf-8');
       res.send(fs.readFileSync(sitemapPath, 'utf-8'));
     } else {
       res.status(404).send('Sitemap not found');
     }
+  });
+
+  // Direct subviews fallback (e.g. /test, /signs, /violations, /history) -> redirect to /sa/subview
+  app.get('/:directView(test|signs|violations|history)', (req, res) => {
+    res.redirect(`/${req.params.directView}`);
   });
 
   // 4. Initialize Vite dev server or setup static paths
@@ -243,21 +265,19 @@ async function startServer() {
   }
 
   // 5. Dynamic Country-Specific SEO Routes with fallback subview support (e.g. /sa, /sa/signs, /eg/violations)
-  app.get('/:countryCode(sa|ae|eg|kw|qa|jo|us|ma|dz|om|tn|iq|bh|lb|ps|sy|ye|sd|ly|mr|so|dj|km)/:subview?', async (req, res, next) => {
+  app.get('/:countryCode(sa|ae|eg|kw|qa|jo|us|gb|ca|au|ma|dz|om|tn|iq|bh|lb|ps|sy|ye|sd|ly|mr|so|dj|km)/:subview?', async (req, res, next) => {
     const { countryCode } = req.params;
     try {
       let html = '';
       if (process.env.NODE_ENV !== 'production' && vite) {
-        const fs = await import('fs');
         const rawHtml = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf-8');
         html = await vite.transformIndexHtml(req.originalUrl, rawHtml);
       } else {
-        const fs = await import('fs');
         html = fs.readFileSync(path.join(process.cwd(), 'dist/index.html'), 'utf-8');
       }
 
       const seoHtml = injectMetadata(html, countryCode, req);
-      res.setHeader('Content-Type', 'text/html');
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.status(200).send(seoHtml);
     } catch (err) {
       console.error(`Error rendering localized SEO page for country ${countryCode}:`, err);
