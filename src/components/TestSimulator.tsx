@@ -17,10 +17,10 @@ import {
   ShieldCheck,
   MessageSquarePlus
 } from 'lucide-react';
-import { Question, CountryInfo, TestMode } from '../types';
+import { Question, CountryInfo, TestMode, AppLocale } from '../types';
 import { TrafficSignSvg, RoadSituationDiagram } from './TrafficSignSvg';
 import { AdBanner } from './AdBanner';
-import { TRANSLATIONS } from '../data/translations';
+import { TRANSLATIONS, getTranslation } from '../data/translations';
 import { soundEffects } from '../utils/audioEffects';
 import { FeedbackModal } from './FeedbackModal';
 
@@ -29,7 +29,7 @@ interface TestSimulatorProps {
   mode: TestMode;
   questions: Question[];
   isAudioEnabled: boolean;
-  locale?: 'ar' | 'en';
+  locale?: AppLocale;
   onFinishTest: (sessionData: {
     questions: Question[];
     userAnswers: Record<string, string>;
@@ -49,7 +49,7 @@ export const TestSimulator: React.FC<TestSimulatorProps> = ({
   onCancelTest,
 }) => {
   const currentLocale = locale || 'ar';
-  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
+  const t = getTranslation(currentLocale);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [flaggedIds, setFlaggedIds] = useState<string[]>([]);

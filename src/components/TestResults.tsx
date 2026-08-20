@@ -33,10 +33,10 @@ import {
   Legend
 } from 'recharts';
 import confetti from 'canvas-confetti';
-import { Question, CountryInfo, TestMode } from '../types';
+import { Question, CountryInfo, TestMode, AppLocale } from '../types';
 import { TrafficSignSvg } from './TrafficSignSvg';
 import { AdBanner } from './AdBanner';
-import { TRANSLATIONS } from '../data/translations';
+import { TRANSLATIONS, getTranslation } from '../data/translations';
 import { soundEffects } from '../utils/audioEffects';
 
 interface TestResultsProps {
@@ -46,7 +46,7 @@ interface TestResultsProps {
   userAnswers: Record<string, string>;
   flaggedQuestionIds: string[];
   timeSpentSeconds: number;
-  locale?: 'ar' | 'en';
+  locale?: AppLocale;
   onRetakeFullTest: () => void;
   onRetakeWrongOnly: (wrongQuestions: Question[]) => void;
   onBackToHome: () => void;
@@ -65,7 +65,7 @@ export const TestResults: React.FC<TestResultsProps> = ({
   onBackToHome,
 }) => {
   const currentLocale = locale || 'ar';
-  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
+  const t = getTranslation(currentLocale);
   const [reviewFilter, setReviewFilter] = useState<'all' | 'wrong' | 'flagged'>('all');
   const [chartType, setChartType] = useState<'pie' | 'bar'>('pie');
   const [showShareModal, setShowShareModal] = useState(false);

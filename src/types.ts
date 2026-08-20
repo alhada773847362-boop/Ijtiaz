@@ -1,4 +1,14 @@
-export type CountryId = 'sa' | 'ae' | 'eg' | 'kw' | 'qa' | 'jo' | 'ma' | 'dz' | 'om' | 'tn' | 'iq' | 'bh' | 'lb' | 'ps' | 'sy' | 'ye' | 'sd' | 'ly' | 'mr' | 'so' | 'dj' | 'km' | 'us' | 'gb' | 'ca' | 'au';
+export type CountryId = 'sa' | 'ae' | 'eg' | 'kw' | 'qa' | 'jo' | 'ma' | 'dz' | 'om' | 'tn' | 'iq' | 'bh' | 'lb' | 'ps' | 'sy' | 'ye' | 'sd' | 'ly' | 'mr' | 'so' | 'dj' | 'km' | 'us' | 'gb' | 'ca' | 'au' | 'nl';
+
+export type AppLocale = 'ar' | 'en' | 'nl' | 'fr' | 'de' | 'es' | 'tr' | 'ur';
+
+export interface LanguageOption {
+  code: AppLocale;
+  name: string;
+  nativeName: string;
+  flag: string;
+  dir: 'rtl' | 'ltr';
+}
 
 export interface CountryInfo {
   id: CountryId;

@@ -23,9 +23,9 @@ import {
   Check,
   AlertTriangle
 } from 'lucide-react';
-import { CountryInfo, TestMode } from '../types';
+import { CountryInfo, TestMode, AppLocale } from '../types';
 import { COUNTRIES_LIST } from '../data/countriesData';
-import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from '../data/translations';
+import { TRANSLATIONS, COUNTRY_TRANSLATIONS, getTranslation } from '../data/translations';
 import { TRAFFIC_SIGNS_DATA } from '../data/trafficSignsData';
 import { VIOLATIONS_DATA } from '../data/violationsData';
 import { AdBanner } from './AdBanner';
@@ -39,7 +39,7 @@ interface LandingViewProps {
   onNavigateToViolations: () => void;
   onNavigateToHistory?: () => void;
   onNavigateGlobalHome?: () => void;
-  locale?: 'ar' | 'en';
+  locale?: AppLocale;
 }
 
 type CountryContentCategory = 'all' | 'tests' | 'signs' | 'violations' | 'rules';
@@ -55,8 +55,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
   locale = 'ar',
 }) => {
   const currentLocale = locale || 'ar';
-  const isAr = currentLocale === 'ar';
-  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
+  const isAr = currentLocale === 'ar' || currentLocale === 'ur';
+  const t = getTranslation(currentLocale);
 
   // Dynamic Design Theme based on Country
   const getCountryTheme = (cId: string) => {
@@ -69,6 +69,15 @@ export const LandingView: React.FC<LandingViewProps> = ({
           bg: 'bg-emerald-500/10', 
           border: 'border-emerald-500/30',
           btn: 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/30'
+        };
+      case 'nl':
+        return { 
+          gradient: 'from-orange-950/40 via-blue-950/30 to-slate-950', 
+          accent: 'orange', 
+          primary: 'text-orange-400', 
+          bg: 'bg-orange-500/10', 
+          border: 'border-orange-500/30',
+          btn: 'bg-orange-600 hover:bg-orange-500 shadow-orange-500/30'
         };
       case 'ae':
         return { 
@@ -171,6 +180,26 @@ export const LandingView: React.FC<LandingViewProps> = ({
     ];
 
     const countrySpecific: Record<string, { qAr: string; qEn: string; aAr: string; aEn: string }[]> = {
+      nl: [
+        {
+          qAr: 'ما هو تقسيم اختبار التيوري الهولندي CBR لعام 2026؟',
+          qEn: 'What is the CBR Auto Theorie 2026 exam structure in the Netherlands?',
+          aAr: 'يتكون امتحان CBR الهولندي الرسمي من 3 أجزاء رئيسية: 1) إدراك المخاطر (Gevaarherkenning - 25 سؤالاً خلال 8 ثوان لكل سؤال، والنجاح من 13)، 2) المعرفة وقوانين المرور (Kennis - 12 سؤالاً، والنجاح من 10)، 3) البصيرة المرورية والتقاطعات (Inzicht - 28 سؤالاً، والنجاح من 25). محاكينا يغطي جميع هذه الأقسام بدقة تامة.',
+          aEn: 'The official Dutch CBR theory exam consists of 3 parts: 1) Hazard Perception (25 questions, 8 seconds per question, pass mark: 13), 2) Knowledge (12 questions, pass mark: 10), 3) Insight & Priority (28 questions, pass mark: 25). Our simulator precisely replicates this standard.'
+        },
+        {
+          qAr: 'ما هي اللغات المتاحة لاختبار CBR في هولندا؟',
+          qEn: 'In which languages can you take the CBR theory test in the Netherlands?',
+          aAr: 'يمكن حجز اختبار CBR باللغة الهولندية أو الإنجليزية مباشرة في مراكز CBR. كما يمكن للمقيمين العرب والأتراك الاستعانة بمترجم رسمي معتمد لدى CBR (Tolk). محاكي منصة اجتياز يوفر لك التدرب بالهولندية والإنجليزية والعربية والتركية لتفوق مضمون.',
+          aEn: 'The CBR theory test can be taken in Dutch or English directly at test centers, or with a certified CBR interpreter (tolk) in Arabic, Turkish, etc. Our platform allows you to practice in all languages seamlessly.'
+        },
+        {
+          qAr: 'ما هي أهم قواعد الأولوية الهولندية التي يجب التركيز عليها؟',
+          qEn: 'What are the most critical Dutch right-of-way rules to master?',
+          aAr: 'ركز على: أولوية اليمين (Voorrang van rechts)، أسنان القرش (Haaientanden)، شوارع الدراجات (Fietsstraat)، أولوية الترام في التقاطعات المتكافئة، وقاعدة (Rechtdoor op dezelfde weg gaat voor).',
+          aEn: 'Key rules include: Priority to the right (Voorrang van rechts), Shark teeth (Haaientanden), Bicycle streets (Fietsstraat), Tram priority at equal junctions, and "Straight ahead on the same road goes first".'
+        }
+      ],
       sa: [
         {
           qAr: 'كيف أحجز موعد اختبار القيادة في مدرسة دله؟',

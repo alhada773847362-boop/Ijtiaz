@@ -353,6 +353,28 @@ export const COUNTRIES_DATA: Record<CountryId, CountryInfo> = {
       }
     }
   },
+  nl: {
+    id: 'nl',
+    name: 'مملكة هولندا (Nederland)',
+    authority: 'CBR (Centraal Bureau Rijvaardigheidsbewijzen)',
+    code: 'NLD',
+    flag: '🇳🇱',
+    totalOfficialQuestions: 65,
+    passingScorePercentage: 88,
+    timeLimitMinutes: 30,
+    description: 'امتحان القيادة النظري الهولندي الرسمي CBR Auto Theorie Examen 2026 - إدراك المخاطر (Gevaarherkenning)، المعرفة (Kennis)، والبصيرة المرورية (Inzicht).',
+    popularSchool: 'CBR Examencentrum / ANWB Rijopleiding',
+    seo: {
+      en: {
+        keywords: "CBR Auto Theorie Examen 2026, Dutch driving theory test practice, CBR mock exam English, Netherlands driving test CBR",
+        description: "Free official simulator for the CBR Auto Theorie Examen 2026 in the Netherlands. Practice Hazard Perception (Gevaarherkenning), Knowledge, and Insight in Dutch, English, Arabic, and Turkish."
+      },
+      ar: {
+        keywords: "امتحان السياقة النظري في هولندا CBR, تيوري هولندا 2026 بالعربي, أسئلة فحص التيوري الهولندي CBR, رخصة القيادة في هولندا",
+        description: "تدرب على امتحان التيوري الهولندي CBR لعام 2026 باللغة العربية والهولندية مجاناً. نماذج إدراك المخاطر وقواعد أولوية اليمين وإشارات السير الهولندية."
+      }
+    }
+  },
 };
 
 export const COUNTRIES_LIST = Object.values(COUNTRIES_DATA);

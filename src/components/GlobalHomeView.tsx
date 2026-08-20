@@ -22,15 +22,15 @@ import {
   Users,
   Zap
 } from 'lucide-react';
-import { CountryInfo, CountryId } from '../types';
+import { CountryInfo, CountryId, AppLocale } from '../types';
 import { COUNTRIES_LIST } from '../data/countriesData';
-import { TRANSLATIONS } from '../data/translations';
+import { TRANSLATIONS, getTranslation } from '../data/translations';
 import { AppLogo } from './AppLogo';
 import { TrafficSignSvg } from './TrafficSignSvg';
 
 interface GlobalHomeViewProps {
   onSelectCountry: (country: CountryInfo) => void;
-  locale: 'ar' | 'en';
+  locale: AppLocale;
 }
 
 type RegionFilter = 'all' | 'gcc' | 'levant_egypt' | 'north_africa' | 'international' | 'other_arab';
@@ -39,8 +39,8 @@ export const GlobalHomeView: React.FC<GlobalHomeViewProps> = ({
   onSelectCountry,
   locale
 }) => {
-  const isAr = locale === 'ar';
-  const t = TRANSLATIONS[locale];
+  const isAr = locale === 'ar' || locale === 'ur';
+  const t = getTranslation(locale);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<RegionFilter>('all');
@@ -54,15 +54,15 @@ export const GlobalHomeView: React.FC<GlobalHomeViewProps> = ({
   const GCC_IDS: CountryId[] = ['sa', 'ae', 'kw', 'qa', 'om', 'bh'];
   const LEVANT_EGYPT_IDS: CountryId[] = ['eg', 'jo', 'lb', 'ps', 'sy', 'iq'];
   const NORTH_AFRICA_IDS: CountryId[] = ['ma', 'dz', 'tn', 'ly', 'mr'];
-  const INTERNATIONAL_IDS: CountryId[] = ['us', 'gb', 'ca', 'au'];
+  const INTERNATIONAL_IDS: CountryId[] = ['nl', 'us', 'gb', 'ca', 'au'];
   const OTHER_ARAB_IDS: CountryId[] = ['ye', 'sd', 'so', 'dj', 'km'];
 
   const REGIONS = [
-    { id: 'all' as RegionFilter, labelAr: 'جميع الدول', labelEn: 'All Countries', count: 26, icon: '🌍' },
+    { id: 'all' as RegionFilter, labelAr: 'جميع الدول', labelEn: 'All Countries', count: 27, icon: '🌍' },
     { id: 'gcc' as RegionFilter, labelAr: 'الخليج العربي', labelEn: 'GCC Countries', count: 6, icon: '🇸🇦' },
     { id: 'levant_egypt' as RegionFilter, labelAr: 'مصر وبلاد الشام', labelEn: 'Egypt & Levant', count: 6, icon: '🇪🇬' },
     { id: 'north_africa' as RegionFilter, labelAr: 'المغرب العربي', labelEn: 'North Africa', count: 5, icon: '🇲🇦' },
-    { id: 'international' as RegionFilter, labelAr: 'المغتربين والعالم', labelEn: 'USA, UK & World', count: 4, icon: '🌐' },
+    { id: 'international' as RegionFilter, labelAr: 'هولندا والمغتربين والعالم', labelEn: 'Netherlands & Global', count: 5, icon: '🇳🇱' },
     { id: 'other_arab' as RegionFilter, labelAr: 'دول أخرى', labelEn: 'Other Countries', count: 5, icon: '📍' },
   ];
 

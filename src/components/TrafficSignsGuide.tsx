@@ -19,15 +19,15 @@ import {
   AlertCircle,
   X
 } from 'lucide-react';
-import { TrafficSign, SignCategory, CountryInfo } from '../types';
+import { TrafficSign, SignCategory, CountryInfo, AppLocale } from '../types';
 import { TRAFFIC_SIGNS_DATA } from '../data/trafficSignsData';
 import { TrafficSignSvg } from './TrafficSignSvg';
 import { AdBanner } from './AdBanner';
-import { TRANSLATIONS } from '../data/translations';
+import { TRANSLATIONS, getTranslation } from '../data/translations';
 
 interface TrafficSignsGuideProps {
   onStartSignQuiz?: (sign: TrafficSign) => void;
-  locale?: 'ar' | 'en';
+  locale?: AppLocale;
 }
 
 export const TrafficSignsGuide: React.FC<TrafficSignsGuideProps> = ({ 
@@ -35,7 +35,7 @@ export const TrafficSignsGuide: React.FC<TrafficSignsGuideProps> = ({
   locale = 'ar'
 }) => {
   const currentLocale = locale || 'ar';
-  const t = TRANSLATIONS[currentLocale] || TRANSLATIONS.ar;
+  const t = getTranslation(currentLocale);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<SignCategory | 'all'>('all');
   const [selectedSign, setSelectedSign] = useState<TrafficSign | null>(null);

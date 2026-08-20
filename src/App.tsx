@@ -1,29 +1,49 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, Suspense, lazy } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CountryInfo, TestMode, Question, TestHistoryItem, CountryId } from './types';
+import { CountryInfo, TestMode, Question, TestHistoryItem, CountryId, AppLocale } from './types';
 import { COUNTRIES_DATA } from './data/countriesData';
 import { getQuestionsForTest } from './data/questionsData';
-import { TRANSLATIONS, COUNTRY_TRANSLATIONS } from './data/translations';
+import { TRANSLATIONS, COUNTRY_TRANSLATIONS, getTranslation } from './data/translations';
 import { updatePageSeo } from './utils/seoManager';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { LandingView } from './components/LandingView';
-import { GlobalHomeView } from './components/GlobalHomeView';
-import { TestSimulator } from './components/TestSimulator';
-import { TestResults } from './components/TestResults';
-import { TrafficSignsGuide } from './components/TrafficSignsGuide';
-import { ViolationsGuide } from './components/ViolationsGuide';
-import { PastTestsHistory } from './components/PastTestsHistory';
+import { PageLoadingFallback } from './components/PageLoadingFallback';
 import { HilltopAdsLoader } from './components/HilltopAdsLoader';
 import { AdBanner } from './components/AdBanner';
-import { LegalModals, LegalModalType, CookieConsentBanner } from './components/LegalModals';
+import { LegalModalType, CookieConsentBanner } from './components/LegalModals';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 
+// Lazy load each individual page separately for fast initial load & modular chunk isolation
+const GlobalHomeView = lazy(() =>
+  import('./components/GlobalHomeView').then((m) => ({ default: m.GlobalHomeView }))
+);
+const LandingView = lazy(() =>
+  import('./components/LandingView').then((m) => ({ default: m.LandingView }))
+);
+const TestSimulator = lazy(() =>
+  import('./components/TestSimulator').then((m) => ({ default: m.TestSimulator }))
+);
+const TestResults = lazy(() =>
+  import('./components/TestResults').then((m) => ({ default: m.TestResults }))
+);
+const TrafficSignsGuide = lazy(() =>
+  import('./components/TrafficSignsGuide').then((m) => ({ default: m.TrafficSignsGuide }))
+);
+const ViolationsGuide = lazy(() =>
+  import('./components/ViolationsGuide').then((m) => ({ default: m.ViolationsGuide }))
+);
+const PastTestsHistory = lazy(() =>
+  import('./components/PastTestsHistory').then((m) => ({ default: m.PastTestsHistory }))
+);
+const LegalModals = lazy(() =>
+  import('./components/LegalModals').then((m) => ({ default: m.LegalModals }))
+);
+
 export const LanguageContext = createContext<{
   t: any;
-  locale: 'ar' | 'en';
-  setLocale: React.Dispatch<React.SetStateAction<'ar' | 'en'>>;
+  locale: AppLocale;
+  setLocale: React.Dispatch<React.SetStateAction<AppLocale>>;
 } | null>(null);
 
 export default function App() {
@@ -66,7 +86,11 @@ export default function App() {
       uk: 'gb',
       britain: 'gb',
       canada: 'ca',
-      australia: 'au'
+      australia: 'au',
+      netherlands: 'nl',
+      holland: 'nl',
+      nederland: 'nl',
+      nl: 'nl'
     };
 
     const VIEW_ALIASES: Record<string, 'home' | 'test' | 'signs' | 'violations' | 'history' | 'global_home'> = {
@@ -159,14 +183,14 @@ export default function App() {
   const [selectedCountry, setSelectedCountry] = useState<CountryInfo>(initialRoute.country);
 
   // Locale (default 'ar')
-  const [locale, setLocale] = useState<'ar' | 'en'>(() => {
-    return (localStorage.getItem('ijtiaz_selected_locale') as 'ar' | 'en') || 'ar';
+  const [locale, setLocale] = useState<AppLocale>(() => {
+    return (localStorage.getItem('ijtiaz_selected_locale') as AppLocale) || 'ar';
   });
 
-  const t = TRANSLATIONS[locale];
+  const t = getTranslation(locale);
 
   useEffect(() => {
-    document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = (locale === 'ar' || locale === 'ur') ? 'rtl' : 'ltr';
     document.documentElement.lang = locale;
     localStorage.setItem('ijtiaz_selected_locale', locale);
 
@@ -423,6 +447,7 @@ export default function App() {
         isAudioEnabled={isAudioEnabled}
         onToggleAudio={handleToggleAudio}
         locale={locale}
+        onSelectLocale={setLocale}
         onToggleLocale={handleToggleLocale}
         isGlobalHome={currentView === 'global_home'}
       />
@@ -441,78 +466,95 @@ export default function App() {
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.22, ease: 'easeInOut' }}
           >
-            {currentView === 'global_home' && (
-              <GlobalHomeView
-                onSelectCountry={handleSelectCountryFromGlobal}
-                locale={locale}
-              />
-            )}
+            <Suspense fallback={<PageLoadingFallback country={currentView === 'global_home' ? undefined : selectedCountry} locale={locale} />}>
+              {currentView === 'global_home' && (
+                <GlobalHomeView
+                  onSelectCountry={handleSelectCountryFromGlobal}
+                  locale={locale}
+                />
+              )}
 
-            {currentView === 'home' && (
-              <LandingView
-                selectedCountry={selectedCountry}
-                onSelectCountry={handleSelectCountry}
-                onStartTest={handleStartTest}
-                onNavigateToSigns={() => handleNavigate('signs')}
-                onNavigateToViolations={() => handleNavigate('violations')}
-                onNavigateToHistory={() => handleNavigate('history')}
-                onNavigateGlobalHome={handleNavigateGlobalHome}
-                locale={locale}
-              />
-            )}
+              {currentView === 'home' && (
+                <LandingView
+                  selectedCountry={selectedCountry}
+                  onSelectCountry={handleSelectCountry}
+                  onStartTest={handleStartTest}
+                  onNavigateToSigns={() => handleNavigate('signs')}
+                  onNavigateToViolations={() => handleNavigate('violations')}
+                  onNavigateToHistory={() => handleNavigate('history')}
+                  onNavigateGlobalHome={handleNavigateGlobalHome}
+                  locale={locale}
+                />
+              )}
 
-            {currentView === 'test' && (
-              <TestSimulator
-                country={selectedCountry}
-                mode={activeMode}
-                questions={
-                  activeQuestions.length > 0
-                    ? activeQuestions
-                    : getQuestionsForTest(selectedCountry.id, 'exam', locale, selectedCountry.totalOfficialQuestions)
-                }
-                isAudioEnabled={isAudioEnabled}
-                locale={locale}
-                onFinishTest={handleFinishTest}
-                onCancelTest={() => handleNavigate('home')}
-              />
-            )}
+              {currentView === 'test' && (
+                <TestSimulator
+                  country={selectedCountry}
+                  mode={activeMode}
+                  questions={
+                    activeQuestions.length > 0
+                      ? activeQuestions
+                      : getQuestionsForTest(selectedCountry.id, 'exam', locale, selectedCountry.totalOfficialQuestions)
+                  }
+                  isAudioEnabled={isAudioEnabled}
+                  locale={locale}
+                  onFinishTest={handleFinishTest}
+                  onCancelTest={() => handleNavigate('home')}
+                />
+              )}
 
-            {currentView === 'results' && completedResult && (
-              <TestResults
-                country={completedResult.country}
-                mode={completedResult.mode}
-                questions={completedResult.questions}
-                userAnswers={completedResult.userAnswers}
-                flaggedQuestionIds={completedResult.flaggedQuestionIds}
-                timeSpentSeconds={completedResult.timeSpentSeconds}
-                locale={locale}
-                onRetakeFullTest={handleRetakeFullTest}
-                onRetakeWrongOnly={handleRetakeWrongOnly}
-                onBackToHome={() => handleNavigate('home')}
-              />
-            )}
+              {currentView === 'results' && (
+                completedResult ? (
+                  <TestResults
+                    country={completedResult.country}
+                    mode={completedResult.mode}
+                    questions={completedResult.questions}
+                    userAnswers={completedResult.userAnswers}
+                    flaggedQuestionIds={completedResult.flaggedQuestionIds}
+                    timeSpentSeconds={completedResult.timeSpentSeconds}
+                    locale={locale}
+                    onRetakeFullTest={handleRetakeFullTest}
+                    onRetakeWrongOnly={handleRetakeWrongOnly}
+                    onBackToHome={() => handleNavigate('home')}
+                  />
+                ) : (
+                  <div className="p-8 text-center bg-[#1E293B] rounded-3xl border border-slate-700 space-y-4 max-w-lg mx-auto">
+                    <p className="text-slate-300 text-sm font-medium">
+                      {locale === 'ar' ? 'لا توجد نتيجة اختبار نشطة حالياً. يرجى بدء اختبار جديد.' : 'No active test result found. Please start a new test.'}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => handleNavigate('home')}
+                      className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors"
+                    >
+                      {locale === 'ar' ? 'العودة للرئيسية' : 'Back to Home'}
+                    </button>
+                  </div>
+                )
+              )}
 
-            {currentView === 'signs' && (
-              <TrafficSignsGuide
-                locale={locale}
-                onStartSignQuiz={() => {
-                  handleStartTest('signs_only', 15);
-                }}
-              />
-            )}
+              {currentView === 'signs' && (
+                <TrafficSignsGuide
+                  locale={locale}
+                  onStartSignQuiz={() => {
+                    handleStartTest('signs_only', 15);
+                  }}
+                />
+              )}
 
-            {currentView === 'violations' && (
-              <ViolationsGuide selectedCountry={selectedCountry} locale={locale} />
-            )}
+              {currentView === 'violations' && (
+                <ViolationsGuide selectedCountry={selectedCountry} locale={locale} />
+              )}
 
-            {currentView === 'history' && (
-              <PastTestsHistory
-                history={testHistory}
-                locale={locale}
-                onClearHistory={handleClearHistory}
-                onStartNewTest={() => handleStartTest('exam')}
-              />
-            )}
+              {currentView === 'history' && (
+                <PastTestsHistory
+                  history={testHistory}
+                  locale={locale}
+                  onClearHistory={handleClearHistory}
+                  onStartNewTest={() => handleStartTest('exam')}
+                />
+              )}
+            </Suspense>
           </motion.div>
         </AnimatePresence>
 
@@ -531,11 +573,15 @@ export default function App() {
       />
 
       {/* Legal Modals (Privacy Policy, Terms, Disclaimer, Contact) */}
-      <LegalModals
-        activeModal={activeLegalModal}
-        onClose={() => setActiveLegalModal(null)}
-        locale={locale}
-      />
+      <Suspense fallback={null}>
+        {activeLegalModal && (
+          <LegalModals
+            activeModal={activeLegalModal}
+            onClose={() => setActiveLegalModal(null)}
+            locale={locale}
+          />
+        )}
+      </Suspense>
 
       {/* GDPR / Cookie Consent Banner */}
       <CookieConsentBanner locale={locale} />
